@@ -1,20 +1,30 @@
 # Portable Air growth experiences
 
-An interactive proposal by Zah White / ZAH Brand Solutions.
+An interactive interview proposal by Zah White / ZAH Brand Solutions.
 
-- **Version two — Momentum:** https://yawitazah.github.io/atlas-copco-proposal/v2/
+- **Version three — Power, with purpose:** https://yawitazah.github.io/atlas-copco-proposal/v3/
+- **Version two — preserved:** https://yawitazah.github.io/atlas-copco-proposal/v2/
 - **Version one — preserved:** https://yawitazah.github.io/atlas-copco-proposal/
 
-Version two uses the installed ZAH Workshop engine, cinematic industrial motion,
-a six-part mission builder with a soda-pop reveal, a sample control room,
-transparent scenario modeling, and a phased roadmap.
+V3 adds a scroll-controlled 3D compressor cutaway, the original ZAH Tip Jar
+Soda Pop, a seven-achievement mission, real equipment photography and
+capacity comparisons, personal profiles, buying-team mapping, walkthrough
+preferences, referral invitations and an accountable local lead dashboard.
+
+It consumes the installed ZAH Workshop engine. The original Tip Jar effect
+is extracted at build time; payment and private application code are not included.
+The earlier onboarding effect remains only in preserved V2.
 
 Serve this directory with any static web server. GitHub Pages publishes main/root.
-No backend or deployment build is required. Version one is unchanged.
+No backend or deployment build is required. V1 and V2 are unchanged.
 
-All lead records and activities are fictional. No real AI, advertising, messages
-or CRM writes are activated. Scenario inputs are assumptions, not Atlas Copco
-results or a forecast. This is an independent candidate proposal.
+Sample leads are fictional. Visitor-entered data stays in the browser unless
+the visitor downloads their personal brief. Public invitation links contain an
+anonymous referral code, not contact details. No live C4C, calendar, AI,
+advertising, email or SMS provider is connected. Walkthrough dates are requests,
+not confirmed bookings. Modeled results are illustrative assumptions.
 
-Product imagery belongs to Atlas Copco. ZAH branding and presentation content
-are by Zah White. Source context appears in each experience.
+The 3D cutaway is illustrative, not factory CAD. Manufacturer photos and
+specifications are credited in V3 and its assets/CREDITS.txt.
+ZAH branding and presentation content are by Zah White. Three.js is distributed
+under the MIT license included in v3/vendor/THREE-LICENSE.txt.

@@ -1,0 +1,41 @@
+export const BASE='https://yawitazah.github.io/atlas-copco-proposal/v3/';
+const small='https://www.atlascopco.com/en-us/construction-equipment/products/mobile-air-compressors-usa/small-towable-compressors';
+export const MODELS=[
+ {id:'110',name:'XAS 110 KD',tag:'Compact capability',flow:110,pressure:'100',image:'xas110.jpg',engine:'Kubota D902',note:'A compact starting point for a lower-flow application.',url:small+'/xas-110-kd'},
+ {id:'188',name:'XAS 188 CD',tag:'More air. More possibilities.',flow:189,pressure:'100',image:'xas188.jpg',engine:'Cat C2.2T',note:'A higher-flow candidate when the job asks for more air.',url:small},
+ {id:'400',name:'XAS 400-150 CD',tag:'Step into higher capacity',flow:400,pressure:'100–150',image:'xas400.png',engine:'Cat C4.4',note:'A higher-capacity platform with adjustable pressure.',url:'https://www.atlascopco.com/en-us/construction-equipment/products/mobile-air-compressors-usa/medium-diesel-compressors/xas-400-150-cd'}
+];
+export const STEPS=[
+ {label:'Identity',badge:'On the map',xp:100,title:'First, make it yours.',sub:'Your equipment journey starts with a person.'},
+ {label:'Jobsite',badge:'Mission defined',xp:150,title:'What does your day demand?',sub:'Give your mission a purpose. We will shape the experience around it.'},
+ {label:'Equipment',badge:'Capability unlocked',xp:200,title:'Find your next level.',sub:'Swipe through the garage. Watch the capability change.'},
+ {label:'Buying team',badge:'Team connected',xp:150,title:'Who makes this move possible?',sub:'Give the right people a seat at the table.'},
+ {label:'The plan',badge:'Path selected',xp:100,title:'Turn a possibility into a plan.',sub:'How, when, and why you need the equipment matters.'},
+ {label:'Walkthrough',badge:'Next move ready',xp:200,title:'Put a face to the name.',sub:'Plan a conversation around your actual site and team.'},
+ {label:'Connections',badge:'Mission complete',xp:100,title:'Good work travels.',sub:'Choose how you would like to bring others into the experience.'}
+];
+export const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function blank(){return {version:3,step:0,done:[],answers:{},ref:'',id:''}}
+export const xp=s=>[...new Set(s.done)].reduce((n,i)=>n+(STEPS[i]?.xp||0),0);
+export const rank=s=>xp(s)<250?'Explorer':xp(s)<600?'Mission builder':xp(s)<1000?'Field strategist':'Mission ready';
+export function preferred(a){return a.flow==='110'?'110':a.flow==='189'?'188':a.flow==='400'?'400':'188'}
+export function fit(a,m){if(a.power==='Electric required')return 'Electric range review needed — these diesel models are comparison examples.';if(a.flow==='unknown'||!a.flow)return 'Sizing review needed — your rep will confirm tool demand and pressure.';if(a.flow==='above400'||Number(a.flow)>m.flow)return 'Below your indicated flow band — ask your rep to review capacity.';if(a.pressure==='above150')return 'Specialist pressure review needed — this comparison does not cover your requirement.';if(a.pressure==='150'&&m.id!=='400')return 'Your 150 psi request needs a different pressure configuration.';if(a.pressure==='unknown')return 'Pressure is still unknown — a specialist must confirm the operating point.';return 'Flow band is covered. Confirm duty cycle, pressure and site conditions with your rep.'}
+export function localDate(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+export function validate(i,a,today=localDate()){
+ if(i===0){if(!a.first?.trim()||!a.last?.trim()||!a.company?.trim()||!a.region?.trim())return 'Add your name, company and location.';if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email||''))return 'Enter a valid work email.';if(!a.role)return 'Choose your role.';}
+ if(i===1&&(!a.application||!a.flow||!a.pressure||!a.power))return 'Choose an application, flow band, pressure and power option. Not sure is a valid answer.';
+ if(i===2&&!MODELS.some(m=>m.id===a.model))return 'Choose a machine to discuss.';
+ if(i===3&&(!a.authority||!a.purchasing))return 'Tell us your role in the decision and the purchasing route.';
+ if(i===4&&(!a.intent||!a.timeframe||!a.budget||!a.priority))return 'Choose your route, timing, budget and priority.';
+ if(i===5){if(!a.visit)return 'Choose a walkthrough preference.';if(a.visit!=='Later'){if(!a.date||!/^\d{4}-\d{2}-\d{2}$/.test(a.date)||a.date<today)return 'Choose today or a future date.';if(!a.slot||!a.timezone)return 'Choose a time window and time zone.';if(a.visit==='On site'&&!a.site?.trim())return 'Add the site location for an in-person walkthrough.'}if(!a.contact)return 'Choose a preferred contact method.';if(['Phone','SMS'].includes(a.contact)&&!a.phone?.trim())return 'Add a phone number for your chosen contact method.';if(a.contact==='SMS'&&a.sms!=='yes')return 'Choose SMS permission or use email / phone instead.';}
+ if(i===6&&!a.referral)return 'Choose a referral option. You can also continue solo.';
+ return '';
+}
+export function complete(s,i,patch){const answers={...s.answers,...patch},error=validate(i,answers);if(error)return {error};if(i===6){for(let j=0;j<6;j++){const issue=validate(j,answers);if(issue)return {error:'Review '+STEPS[j].label.toLowerCase()+': '+issue,step:j};}}return {state:{...s,answers,step:Math.min(i+1,7),done:[...new Set([...s.done,i])]},earned:!s.done.includes(i)}}
+export function publicLink(code){return BASE+(code&&/^[a-zA-Z0-9-]{1,28}$/.test(code)?'?ref='+encodeURIComponent(code):'')+'#mission'}
+export function briefing(s){
+ const a=s.answers,m=MODELS.find(x=>x.id===a.model);
+ return 'PORTABLE AIR — PERSONAL MISSION BRIEF\nLocal demonstration • Not submitted to Atlas Copco\n\n'+[
+ ['Prepared for',a.first+' '+a.last],['Company',a.company],['Email',a.email],['Phone',a.phone||'Not provided'],['Location',a.region],['Role',a.role],['Application',a.application],['Flow band',a.flow],['Pressure',a.pressure],['Power',a.power],['Equipment to discuss',m?.name],['Fit review',m&&fit(a,m)],['Decision role',a.authority],['Reporting manager',a.manager||'To identify'],['Technical evaluator',a.evaluator||'To identify'],['Budget approver',a.approver||'To identify'],['Purchasing route',a.purchasing],['Current dealer / rental partner',a.partner||'None identified'],['Commercial path',a.intent],['Timing',a.timeframe],['Budget band',a.budget],['Priority',a.priority],['Walkthrough',a.visit==='Later'?'Discuss later':a.visit+' • '+a.date+' • '+a.slot+' • '+a.timezone+' (requested, not booked)'],['Site',a.site||'To confirm'],['Attendees',a.attendees||'To confirm'],['Contact preference',a.contact],['SMS permission preference',a.sms==='yes'?'Yes (demo only)':'Not opted in'],['Marketing email preference',a.marketing==='yes'?'Yes (demo only)':'Not opted in'],['Referral option',a.referral],['Referral context',a.referralContext||'None'],['Notes',a.notes||'None']
+ ].map(([k,v])=>k+': '+(v||'Not specified')).join('\n')+'\n\nA specialist must confirm final equipment fit. No meeting is booked and no email or SMS has been sent.\n';
+}

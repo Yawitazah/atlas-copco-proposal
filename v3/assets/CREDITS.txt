@@ -1,0 +1,13 @@
+Equipment imagery and specifications: Atlas Copco, official US product pages, accessed 2026-09-20.
+XAS 110 KD photo: https://atlascopco.scene7.com/is/image/atlascopco/XAS+110?$landscape950$
+XAS 188 CD photo: https://atlascopco.scene7.com/is/image/atlascopco/XAS+188+950x950?$landscape950$
+XAS 400-150 CD photo: https://atlascopco.scene7.com/is/image/atlascopco/XAS+400-150+200+CD?$landscape950$&fmt=png-alpha
+Specs: https://www.atlascopco.com/en-us/construction-equipment/products/mobile-air-compressors-usa/small-towable-compressors
+110 normal working pressure: https://www.atlascopco.com/en-us/construction-equipment/products/mobile-air-compressors-usa/small-towable-compressors/xas-110-kd
+400 specs: https://www.atlascopco.com/en-us/construction-equipment/products/mobile-air-compressors-usa/medium-diesel-compressors/xas-400-150-cd
+XAS 110: 110 cfm at 100 psi. XAS 188 CD: 189 cfm, 100 psi. XAS 400-150 CD: 400 cfm at 100 and 150 psi.
+Equipment photos may depict optional configurations. Independent interview concept, not an official Atlas Copco application.
+Illustrative cutaway geometry, presentation and interface: ZAH project.
+Zah portrait and wordmark: ZAH Brand Solutions.
+Soda Pop: original ZAH Tip Jar effect, consumed from the owner's product at build time.
+Three.js 0.180.0: MIT license in vendor/THREE-LICENSE.txt.
