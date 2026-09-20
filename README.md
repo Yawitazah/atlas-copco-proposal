@@ -1,13 +1,20 @@
-# From interest to impact
+# Portable Air growth experiences
 
-An interactive Portable Air growth concept by Zah White / ZAH Brand Solutions.
+An interactive proposal by Zah White / ZAH Brand Solutions.
 
-**Presentation:** https://yawitazah.github.io/atlas-copco-proposal/
+- **Version two — Momentum:** https://yawitazah.github.io/atlas-copco-proposal/v2/
+- **Version one — preserved:** https://yawitazah.github.io/atlas-copco-proposal/
 
-The experience includes a connected customer journey, a needs finder, a sample lead dashboard, transparent scenario modeling, a phased roadmap and a downloadable brief.
+Version two uses the installed ZAH Workshop engine, cinematic industrial motion,
+a six-part mission builder with a soda-pop reveal, a sample control room,
+transparent scenario modeling, and a phased roadmap.
 
-Open `index.html` directly or serve this directory with any static web server. GitHub Pages publishes from the root of the main branch. No build step or backend is required.
+Serve this directory with any static web server. GitHub Pages publishes main/root.
+No backend or deployment build is required. Version one is unchanged.
 
-All demonstration records and activity are fictional and stored locally in each visitor's browser. No messages or CRM writes are sent. The scenario model uses illustrative assumptions, not Atlas Copco performance or a forecast. This is a candidate-created concept, not an official Atlas Copco application.
+All lead records and activities are fictional. No real AI, advertising, messages
+or CRM writes are activated. Scenario inputs are assumptions, not Atlas Copco
+results or a forecast. This is an independent candidate proposal.
 
-Product imagery belongs to Atlas Copco; credits and sources appear in the presentation. ZAH branding and presentation content are by Zah White.
+Product imagery belongs to Atlas Copco. ZAH branding and presentation content
+are by Zah White. Source context appears in each experience.
