@@ -1,7 +1,7 @@
-import {zahSodaPop} from './sodapop.mjs?v=conversion-8';
-import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=conversion-8';
-import {actionCycle,actionAt,goalFill,ACTION_GOALS,CYCLE_MS} from './flow.mjs?v=conversion-8';
-export {CHANNELS} from './channels.mjs?v=conversion-8';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-9';
+import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=conversion-9';
+import {actionCycle,actionAt,goalFill,ACTION_GOALS,CYCLE_MS} from './flow.mjs?v=conversion-9';
+export {CHANNELS} from './channels.mjs?v=conversion-9';
 export const resolvePause=value=>typeof value==='function'?Boolean(value()):Boolean(value);
 export function mountSignals({main,paused=false}){
  paused=resolvePause(paused);
@@ -26,7 +26,7 @@ export function mountSignals({main,paused=false}){
   setTimeout(()=>el.classList.remove(fallback),kind==='tap'?500:380);
  }
  sources.forEach((b,i)=>{b.style.setProperty('--channel',CHANNELS[i].color);b.style.setProperty('--channel-light',CHANNELS[i].light);paths[i].style.setProperty('--route-color',CHANNELS[i].color);});
- destinations.forEach((d,i)=>{d.setAttribute('role','button');d.tabIndex=0;d.setAttribute('aria-label',OUTCOMES[i].title+': see how this outcome works');d.innerHTML='<div class="charge-fill" aria-hidden="true"></div><span class="delivery-check" aria-hidden="true">'+(i+1)+'</span><span class="outcome-card-icon" aria-hidden="true">'+OUTCOMES[i].icon+'</span><b>'+OUTCOMES[i].title+'</b><small>'+['A personalized sales page','A real site conversation','An accountable next action'][i]+'</small><span class="delivery-status">0 / '+ACTION_GOALS[i]+'</span><div class="outcome-progress" aria-hidden="true"><i></i></div><span class="charge-label">Building toward '+ACTION_GOALS[i]+'</span><span class="outcome-more">Why it matters ↗</span>';d.onclick=()=>outcomeDetail(i);d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();outcomeDetail(i);}};});
+ destinations.forEach((d,i)=>{d.setAttribute('role','button');d.tabIndex=0;d.setAttribute('aria-label',OUTCOMES[i].title+': see how this outcome works');d.innerHTML='<div class="charge-fill" aria-hidden="true"></div><span class="delivery-check" aria-hidden="true">'+(i+1)+'</span><b>'+OUTCOMES[i].title+'</b><small>'+['A personalized sales page','A real site conversation','An accountable next action'][i]+'</small><span class="delivery-status">0 / '+ACTION_GOALS[i]+'</span><div class="outcome-progress" aria-hidden="true"><i></i></div><span class="charge-label">Building toward '+ACTION_GOALS[i]+'</span><span class="outcome-more">Why it matters ↗</span>';d.onclick=()=>outcomeDetail(i);d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();outcomeDetail(i);}};});
  function layout(){const box=lab.getBoundingClientRect(),vertical=matchMedia('(max-width:760px)').matches;svg.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);const rect=el=>{const r=el.getBoundingClientRect();return {x:r.left-box.left,y:r.top-box.top,w:r.width,h:r.height};},hub=rect(core);const curve=(a,b)=>vertical?`M ${a.x} ${a.y} C ${a.x} ${(a.y+b.y)/2}, ${b.x} ${(a.y+b.y)/2}, ${b.x} ${b.y}`:`M ${a.x} ${a.y} C ${(a.x+b.x)/2} ${a.y}, ${(a.x+b.x)/2} ${b.y}, ${b.x} ${b.y}`;
  sources.forEach((el,i)=>{const r=rect(el),k=(i+1)/5;paths[i].setAttribute('d',curve(vertical?{x:r.x+r.w/2,y:r.y+r.h+3}:{x:r.x+r.w+3,y:r.y+r.h/2},vertical?{x:hub.x+hub.w*k,y:hub.y-6}:{x:hub.x-6,y:hub.y+hub.h*k}));});
  destinations.forEach((el,i)=>{const r=rect(el),k=(i+1)/4;paths[i+4].setAttribute('d',curve(vertical?{x:hub.x+hub.w*k,y:hub.y+hub.h+6}:{x:hub.x+hub.w+6,y:hub.y+hub.h*k},vertical?{x:r.x+r.w/2,y:r.y-7}:{x:r.x-7,y:r.y+r.h/2}));});}

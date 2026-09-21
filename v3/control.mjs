@@ -1,5 +1,5 @@
-import {esc,MODELS} from './mission.mjs?v=conversion-8';
-import {zahSodaPop} from './sodapop.mjs?v=conversion-8';
+import {esc,MODELS} from './mission.mjs?v=conversion-9';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-9';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 function mountProfileTeaser(){
@@ -15,7 +15,7 @@ function mountProfileTeaser(){
  const teaser=document.createElement('aside');
  teaser.id='zah-profile-teaser';teaser.className='profile-teaser is-pending';teaser.setAttribute('aria-label','About Zah (Lorenzo) White');
  teaser.dataset.aboutTarget='.about-grid';teaser.dataset.profilePortrait='./assets/zah-headshot.png';
- teaser.innerHTML='<a class="profile-teaser-link" href="#'+about.id+'"><span class="profile-teaser-ribbon">MARKETING COMMUNICATIONS MANAGER · APE CANDIDATE</span><span class="profile-teaser-portrait"><span class="profile-teaser-initials" aria-hidden="true">LW</span><img src="./assets/zah-headshot.png" alt="Lorenzo White"></span><span class="profile-teaser-copy"><span class="profile-teaser-eyebrow">FOUNDER · ZAH BRAND SOLUTIONS</span><strong>Zah (Lorenzo) White</strong><span>Growth Marketing Strategy &amp; Systems Architect</span><small>Atlas Copco role candidate</small><b>Explore Lorenzo <i aria-hidden="true">→</i></b></span></a>';
+ teaser.innerHTML='<a class="profile-teaser-link" href="#'+about.id+'"><span class="profile-teaser-ribbon"><span>MARKETING COMMUNICATIONS MANAGER</span><span>APE CANDIDATE</span></span><span class="profile-teaser-portrait"><span class="profile-teaser-initials" aria-hidden="true">LW</span><img src="./assets/zah-headshot.png" alt="Lorenzo White"></span><span class="profile-teaser-copy"><span class="profile-teaser-eyebrow">FOUNDER · ZAH BRAND SOLUTIONS</span><strong>Zah (Lorenzo) White</strong><span>Growth Marketing Strategy &amp; Systems Architect</span><small>Atlas Copco role candidate</small><b>Explore Lorenzo <i aria-hidden="true">→</i></b></span></a>';
  document.body.append(teaser);
  let entranceDone=false;
  const finishEntrance=()=>{

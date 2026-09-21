@@ -26,7 +26,6 @@
 .charge-fill{z-index:0}
 .signal-destinations .delivery-check,.signal-destinations .charge-label{z-index:2}
 .signal-destinations>div .pop-wash{z-index:1;pointer-events:none}
-.outcome-card-icon{position:relative;z-index:2;display:grid;place-items:center;width:34px;height:34px;margin:0 0 10px;border-radius:10px;background:#edf3ee;color:#174c3c;box-shadow:inset 0 0 0 1px #8aa99a55}.outcome-card-icon .strategy-icon{width:20px;height:20px}.signal-destinations>div.delivered .outcome-card-icon{background:var(--charge-color,#d6ece3)}
 .outcome-detail-icon{float:left;display:grid;place-items:center;width:58px;height:58px;margin:0 18px 10px 0;border-radius:16px;background:#e6f0ea;color:#164d3d;box-shadow:inset 0 0 0 1px #7ba18d55}.outcome-detail-icon .strategy-icon{width:30px;height:30px}.outcome-summary:after{content:"";display:block;clear:both}
 @media(max-width:760px){
  .question-options:has(.answer-choice:nth-child(5)){grid-template-columns:1fr 1fr}

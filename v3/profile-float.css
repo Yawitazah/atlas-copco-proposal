@@ -49,20 +49,25 @@ body:has(dialog[open]) .profile-teaser{
 .profile-teaser-ribbon{
  position:absolute;
  z-index:3;
- right:15px;
- top:-13px;
- max-width:calc(100% - 88px);
+ right:12px;
+ top:-40px;
+ display:grid;
+ justify-items:center;
+ gap:2px;
+ width:max-content;
+ max-width:calc(100% - 48px);
  padding:7px 12px 6px;
  border:1px solid #ffe29a;
  border-radius:7px 7px 3px 3px;
  background:linear-gradient(90deg,#e2b54d,#f5cd71);
  color:#092e28;
  box-shadow:0 7px 16px #001b1840;
- font:800 6.6px/1 system-ui,sans-serif;
- letter-spacing:.075em;
+ font:850 11px/1.08 system-ui,sans-serif;
+ letter-spacing:.035em;
  text-align:center;
  white-space:nowrap;
 }
+.profile-teaser-ribbon span:last-child{font-size:.92em;letter-spacing:.13em}
 .profile-teaser-link:hover{transform:translateY(-2px);border-color:#ffd875}
 .profile-teaser-link:focus-visible{outline:3px solid #f5c36b;outline-offset:4px}
 .profile-teaser-portrait{
@@ -102,7 +107,7 @@ body:has(dialog[open]) .profile-teaser{
  .profile-teaser-copy small{display:none}
  .profile-teaser-eyebrow{font-size:7px}
  .profile-teaser-copy b{font-size:9px;margin-top:3px}
- .profile-teaser-ribbon{right:8px;top:-10px;max-width:calc(100% - 58px);padding:5px 7px 4px;font-size:5.45px;letter-spacing:.055em}
+ .profile-teaser-ribbon{right:8px;top:-35px;max-width:calc(100% - 28px);padding:5px 9px 4px;font-size:10px;letter-spacing:.025em}
 }
 @media(prefers-reduced-motion:reduce){.profile-teaser-link:hover{transform:none}}
 @media print{.profile-teaser{display:none!important}}
