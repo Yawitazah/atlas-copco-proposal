@@ -3,7 +3,7 @@ const VIDEO_SLOTS=[
  {file:'strategy-02-personalized-return.mp4',title:'Use what the prospect told you'},
  {file:'strategy-03-accountability.mp4',title:'Keep accountability through conversion'}
 ];
-const AVAILABLE_VIDEO_FILES=[];
+const AVAILABLE_VIDEO_FILES=["strategy-01-first-opening.mp4","strategy-02-personalized-return.mp4","strategy-03-accountability.mp4"];
 
 export const strategyVideoFiles=()=>VIDEO_SLOTS.map(slot=>slot.file);
 
