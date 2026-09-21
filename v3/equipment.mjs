@@ -1,7 +1,11 @@
-import {MODELS,esc,fit} from './mission.mjs?v=conversion-9';
+import {MODELS,esc,fit} from './mission.mjs?v=conversion-10';
 
 const POWER_SEGMENTS=10;
 const MAX_COMPARISON_FLOW=Math.max(...MODELS.map(model=>model.flow));
+const footprintVolume=model=>model.dimensions.split('×').map(value=>Number.parseFloat(value)).reduce((total,value)=>total*value,1);
+const FOOTPRINT_VOLUMES=MODELS.map(footprintVolume);
+const MIN_WEIGHT=Math.min(...MODELS.map(model=>model.weight)),MAX_WEIGHT=Math.max(...MODELS.map(model=>model.weight));
+const MIN_VOLUME=Math.min(...FOOTPRINT_VOLUMES),MAX_VOLUME=Math.max(...FOOTPRINT_VOLUMES);
 
 export function equipmentPower(model){
  const level=Math.max(1,Math.min(POWER_SEGMENTS,Math.round(model.flow/MAX_COMPARISON_FLOW*POWER_SEGMENTS)));
@@ -9,16 +13,21 @@ export function equipmentPower(model){
  return {level,descriptor,max:POWER_SEGMENTS};
 }
 
+export function transportFootprintScore(model){
+ const weightCompactness=(MAX_WEIGHT-model.weight)/(MAX_WEIGHT-MIN_WEIGHT);
+ const volumeCompactness=(MAX_VOLUME-footprintVolume(model))/(MAX_VOLUME-MIN_VOLUME);
+ return Math.max(4,Math.min(10,4+Math.floor(((weightCompactness+volumeCompactness)/2)*6)));
+}
+
 export function equipmentCapabilities(model){
  const delivery=equipmentPower(model).level;
  const metrics=[
   {key:'delivery',label:'Air delivery',icon:'≈',value:delivery,detail:model.flow+' cfm at 100 psi'},
   {key:'pressure',label:'Pressure flexibility',icon:'↕',value:model.pressureLevel,detail:model.pressure+' psi working range'},
-  {key:'footprint',label:'Transport footprint',icon:'↔',scored:false,detail:'Published size and wet weight',weight:model.weight,dimensions:model.dimensions},
+  {key:'footprint',label:'Transport footprint*',icon:'↔',value:transportFootprintScore(model),detail:model.weight.toLocaleString()+' lb · '+model.dimensions},
   {key:'range',label:'Application range',icon:'◇',value:model.rangeLevel,detail:model.signature}
  ];
- const scored=metrics.filter(item=>item.scored!==false);
- const overall=Math.round(scored.reduce((sum,item)=>sum+item.value,0)/scored.length);
+ const overall=Math.round(metrics.reduce((sum,item)=>sum+item.value,0)/metrics.length);
  return {metrics,overall,signature:model.signature};
 }
 
@@ -28,7 +37,7 @@ function capabilitySegments(value){
 
 function capabilityPanel(model,variant='compact'){
  const profile=equipmentCapabilities(model);
- return '<section class="capability-profile capability-profile--'+variant+'" aria-label="'+model.name+' capability profile"><header><span>Comparative capability</span><strong>'+String(profile.overall).padStart(2,'0')+' <small>/ 10</small></strong><b>'+profile.signature+'</b></header><div class="capability-list">'+profile.metrics.map(metric=>'<div class="capability-row'+(metric.scored===false?' capability-row--fact':'')+'"><span class="capability-label"><i aria-hidden="true">'+metric.icon+'</i><b>'+metric.label+'</b><small>'+metric.detail+'</small></span>'+(metric.scored===false?'<span class="capability-fact" aria-label="'+metric.label+': '+metric.weight.toLocaleString()+' pounds wet weight, '+metric.dimensions+'"><strong>'+metric.weight.toLocaleString()+' lb</strong><small>'+metric.dimensions+'</small></span>':'<span class="capability-score" aria-label="'+metric.label+' '+metric.value+' out of 10"><em>'+metric.value+'</em><span>'+capabilitySegments(metric.value)+'</span></span>')+'</div>').join('')+'</div></section>';
+ return '<section class="capability-profile capability-profile--'+variant+'" aria-label="'+model.name+' capability profile"><header><span>Comparative capability</span><strong>'+String(profile.overall).padStart(2,'0')+' <small>/ 10</small></strong><b>'+profile.signature+'</b></header><div class="capability-list">'+profile.metrics.map(metric=>'<div class="capability-row"><span class="capability-label"><i aria-hidden="true">'+metric.icon+'</i><b>'+metric.label+'</b><small>'+metric.detail+'</small></span><span class="capability-score" aria-label="'+metric.label.replace('*','')+' '+metric.value+' out of 10"><em>'+metric.value+'</em><span>'+capabilitySegments(metric.value)+'</span></span></div>').join('')+'</div><p class="capability-note">* Illustrative compactness score from relative wet weight and dimensions across these three examples. Higher means smaller and lighter. Not an Atlas Copco rating.</p></section>';
 }
 
 function powerMeter(model,power){
@@ -51,7 +60,7 @@ export function showDetails(title,html){
 
 export function equipmentDetails(model,answers,previous){
  const m=model,old=previous&&previous.id!==m.id?previous:null,power=equipmentPower(m);
- showDetails(m.name,'<div class="equipment-detail-image" data-power-level="'+power.level+'" style="--equipment-accent:'+m.accent+'">'+airflowField()+'<img src="./assets/'+m.image+'" alt="'+m.name+' product cutout"></div><p>'+m.use+'</p>'+capabilityPanel(m,'detail')+'<dl class="detail-specs"><div><dt>Airflow at 100 psi</dt><dd>'+m.flow+' cfm</dd></div><div><dt>Working pressure</dt><dd>'+m.pressure+' psi</dd></div><div><dt>Engine</dt><dd>'+m.engine+'</dd></div><div><dt>Wet weight</dt><dd>'+m.weight.toLocaleString()+' lb</dd></div><div><dt>Dimensions</dt><dd>'+m.dimensions+'</dd></div><div><dt>Sound pressure</dt><dd>'+m.sound+'</dd></div></dl><div class="application-signature"><span>Signature strength</span><b>'+m.signature+'</b><p>'+m.applications+'.</p></div>'+(old?'<div class="compare-change"><b>Compared with '+old.name+'</b><p>'+(m.flow-old.flow>0?'+':'')+(m.flow-old.flow)+' cfm at 100 psi. '+(m.id==='400'?'This option also lists 150 psi operation.':'Compare the operating point with your actual tool demand.')+'</p></div>':'')+'<h3>Your application</h3><p>'+esc(answers.application||'Tell us about your site to make this comparison more useful.')+'</p><p class="fit-note">'+esc(fit(answers,m))+'</p><p>Final selection depends on simultaneous tool demand, duty cycle and site conditions. More capacity is useful when the work requires it.</p><a class="btn dark" href="'+m.url+'" target="_blank" rel="noopener">Manufacturer details ↗</a><p class="form-hint">Air delivery, pressure flexibility and application range are comparative presentation scores across these three machines; they are not Atlas Copco quality, efficiency or final-sizing ratings. Transport footprint shows published dimensions and wet weight and is not scored. Product image may show optional equipment. Published specifications checked September 21, 2026.</p>');
+ showDetails(m.name,'<div class="equipment-detail-image" data-power-level="'+power.level+'" style="--equipment-accent:'+m.accent+'">'+airflowField()+'<img src="./assets/'+m.image+'" alt="'+m.name+' product cutout"></div><p>'+m.use+'</p>'+capabilityPanel(m,'detail')+'<dl class="detail-specs"><div><dt>Airflow at 100 psi</dt><dd>'+m.flow+' cfm</dd></div><div><dt>Working pressure</dt><dd>'+m.pressure+' psi</dd></div><div><dt>Engine</dt><dd>'+m.engine+'</dd></div><div><dt>Wet weight</dt><dd>'+m.weight.toLocaleString()+' lb</dd></div><div><dt>Dimensions</dt><dd>'+m.dimensions+'</dd></div><div><dt>Sound pressure</dt><dd>'+m.sound+'</dd></div></dl><div class="application-signature"><span>Signature strength</span><b>'+m.signature+'</b><p>'+m.applications+'.</p></div>'+(old?'<div class="compare-change"><b>Compared with '+old.name+'</b><p>'+(m.flow-old.flow>0?'+':'')+(m.flow-old.flow)+' cfm at 100 psi. '+(m.id==='400'?'This option also lists 150 psi operation.':'Compare the operating point with your actual tool demand.')+'</p></div>':'')+'<h3>Your application</h3><p>'+esc(answers.application||'Tell us about your site to make this comparison more useful.')+'</p><p class="fit-note">'+esc(fit(answers,m))+'</p><p>Final selection depends on simultaneous tool demand, duty cycle and site conditions. More capacity is useful when the work requires it.</p><a class="btn dark" href="'+m.url+'" target="_blank" rel="noopener">Manufacturer details ↗</a><p class="form-hint">All capability scores are illustrative comparisons across these three machines; they are not Atlas Copco quality, efficiency or final-sizing ratings. The transport-footprint score is calculated from relative published wet weight and dimensions. Product image may show optional equipment. Published specifications checked September 21, 2026.</p>');
 }
 
 export function mountEquipment(host,answers,{paused,onSelect}){

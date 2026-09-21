@@ -1,4 +1,4 @@
-import {showDetails} from './equipment.mjs?v=conversion-9';
+import {showDetails} from './equipment.mjs?v=conversion-10';
 
 const svg=paths=>`<svg class="strategy-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 const ICONS={

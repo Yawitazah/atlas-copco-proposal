@@ -1,13 +1,13 @@
-import {mountSalesPage} from './sales-page.mjs?v=conversion-9';
-import {mountSignals} from './signals.mjs?v=conversion-9';
-import {mountGame} from './game.mjs?v=conversion-9';
-import {mountControl} from './control.mjs?v=conversion-9';
-import {BASE} from './mission.mjs?v=conversion-9';
-import {mountOverview} from './overview.mjs?v=conversion-9';
-import {alignedScrollTop} from './navigation.mjs?v=conversion-9';
-import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-9';
-import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-9';
-import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-9';
+import {mountSalesPage} from './sales-page.mjs?v=conversion-10';
+import {mountSignals} from './signals.mjs?v=conversion-10';
+import {mountGame} from './game.mjs?v=conversion-10';
+import {mountControl} from './control.mjs?v=conversion-10';
+import {BASE} from './mission.mjs?v=conversion-10';
+import {mountOverview} from './overview.mjs?v=conversion-10';
+import {alignedScrollTop} from './navigation.mjs?v=conversion-10';
+import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-10';
+import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-10';
+import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-10';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
