@@ -1,9 +1,9 @@
-import {mountSalesPage} from './sales-page.mjs?v=strategy-2';
-import {mountSignals} from './signals.mjs?v=strategy-2';
-import {mountGame} from './game.mjs?v=strategy-2';
-import {mountControl} from './control.mjs?v=strategy-2';
-import {BASE} from './mission.mjs?v=strategy-2';
-import {mountOverview} from './overview.mjs?v=strategy-2';
+import {mountSalesPage} from './sales-page.mjs?v=strategy-3';
+import {mountSignals} from './signals.mjs?v=strategy-3';
+import {mountGame} from './game.mjs?v=strategy-3';
+import {mountControl} from './control.mjs?v=strategy-3';
+import {BASE} from './mission.mjs?v=strategy-3';
+import {mountOverview} from './overview.mjs?v=strategy-3';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
@@ -30,7 +30,7 @@ export function boot(mountDeck){
  if(location.hash==='#signal')requestAnimationFrame(()=>go(1));
  const explanations=[
   ['Sales context from C4C','Lead identity, company, source and assigned owner supply the starting point. This example uses fictional records; a real export or connection has not been configured.'],
-  ['Customer context from the Goal Pulse Check','The customer adds application, equipment needs, buying team and visit preferences. Those details shape the equipment page and enrich the matching local record.'],
+  ['Customer context from the Goal Pulse Check','The customer adds application, equipment needs, buying team and visit preferences. Those details shape a personalized equipment page and enrich the matching local record.'],
   ['A request becomes a next action','A quote or walkthrough request stays attached to its owner. The demo dashboard shows the new activity. Sending it back to C4C would require a verified write-back connection.']
  ];
  function explain(i){document.querySelectorAll('[data-crm-stage]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.crmStage)===i)));$('#crm-explanation').innerHTML='<h4>'+explanations[i][0]+'</h4><p>'+explanations[i][1]+'</p>';}

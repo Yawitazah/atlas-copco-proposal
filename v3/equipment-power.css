@@ -1,0 +1,319 @@
+/* Equipment comparison power treatment. Load after refinement.css. */
+.equipment-selector[data-power-level="3"],
+.equipment-detail-image[data-power-level="3"]{
+ --power-accent:#50c7e8;
+ --power-hot:#d8f8ff;
+ --power-stage-glow:rgba(50,199,232,.2);
+ --power-meter-glow:rgba(50,199,232,.13);
+ --power-shadow:rgba(50,199,232,.32);
+ --airflow-opacity:.42;
+ --airflow-speed:4.2s;
+ --energy-speed:2.25s;
+ --engine-speed:1.4s;
+}
+
+.equipment-selector[data-power-level="5"],
+.equipment-detail-image[data-power-level="5"]{
+ --power-accent:#9185ff;
+ --power-hot:#e6e2ff;
+ --power-stage-glow:rgba(121,101,255,.31);
+ --power-meter-glow:rgba(121,101,255,.18);
+ --power-shadow:rgba(139,124,255,.46);
+ --airflow-opacity:.58;
+ --airflow-speed:3.35s;
+ --energy-speed:1.85s;
+ --engine-speed:1.1s;
+}
+
+.equipment-selector[data-power-level="10"],
+.equipment-detail-image[data-power-level="10"]{
+ --power-accent:#ff9b32;
+ --power-hot:#ffe56b;
+ --power-stage-glow:rgba(255,119,26,.43);
+ --power-meter-glow:rgba(255,119,26,.23);
+ --power-shadow:rgba(255,139,42,.58);
+ --airflow-opacity:.78;
+ --airflow-speed:2.55s;
+ --energy-speed:1.35s;
+ --engine-speed:.85s;
+}
+
+.equipment-selector[data-power-level] .equipment-stage{
+ background:
+  radial-gradient(ellipse at 50% 42%,var(--power-stage-glow) 0,transparent 56%),
+  radial-gradient(ellipse at 50% 52%,#344651,#10202b 70%);
+}
+
+.equipment-selector[data-power-level] .equipment-title p{color:var(--power-accent)}
+.equipment-selector[data-power-level] .platform-ring{
+ border-color:var(--power-accent);
+ background:radial-gradient(ellipse,var(--power-stage-glow),transparent 67%);
+ box-shadow:0 0 48px var(--power-shadow);
+ opacity:.52;
+ z-index:0;
+}
+
+.equipment-selector[data-power-level] .machine-platform{isolation:isolate}
+.equipment-selector[data-power-level] .machine-running{
+ position:absolute;
+ inset:0;
+ z-index:2;
+ display:grid;
+ place-items:center;
+ pointer-events:none;
+ transform-origin:52% 73%;
+ animation:equipmentEngineIdle var(--engine-speed) linear infinite;
+ will-change:transform;
+}
+
+.equipment-selector[data-power-level] .machine-platform .equipment-cutout{
+ animation:none;
+ filter:drop-shadow(0 13px 13px #0008) drop-shadow(0 0 12px var(--power-stage-glow));
+}
+
+.equipment-selector[data-power-level] .machine-shadow{
+ z-index:1;
+ animation:equipmentEngineShadow var(--engine-speed) linear infinite;
+}
+
+.equipment-selector[data-power-level] .machine-platform.is-interacting .machine-running,
+.equipment-selector[data-power-level] .machine-platform.is-interacting .machine-shadow{
+ animation-play-state:paused;
+}
+
+.airflow-field{
+ position:absolute;
+ inset:2% 2% 8%;
+ z-index:0;
+ overflow:hidden;
+ opacity:var(--airflow-opacity);
+ pointer-events:none;
+ -webkit-mask-image:linear-gradient(90deg,transparent,#000 13%,#000 87%,transparent);
+ mask-image:linear-gradient(90deg,transparent,#000 13%,#000 87%,transparent);
+}
+
+.airflow-stream{
+ position:absolute;
+ top:var(--air-top);
+ left:5%;
+ width:90%;
+ height:2px;
+ border-radius:999px;
+ background:linear-gradient(90deg,transparent 0,var(--power-accent) 32%,var(--power-hot) 60%,transparent 100%);
+ box-shadow:0 0 9px var(--power-shadow);
+ opacity:.85;
+ animation:equipmentAirflow var(--airflow-speed) linear infinite both;
+ animation-delay:var(--air-delay);
+ will-change:transform,opacity;
+}
+
+.airflow-stream:nth-child(3n){height:1px;opacity:.62}
+.airflow-stream:nth-child(even){animation-delay:calc(var(--air-delay) - .18s)}
+.equipment-selector[data-power-level="3"] .airflow-stream:nth-child(n+5){display:none}
+.equipment-selector[data-power-level="5"] .airflow-stream:nth-child(n+7){display:none}
+
+.equipment-selector[data-power-level] .model-positions button[aria-pressed="true"]{
+ background:var(--power-accent);
+ border-color:var(--power-hot);
+ color:#102737;
+ box-shadow:0 0 0 1px var(--power-hot),0 0 20px var(--power-shadow);
+}
+
+.equipment-selector[data-power-level] .equipment-switch>button:not(:disabled):hover{
+ background:var(--power-stage-glow);
+ box-shadow:inset 0 0 0 1px var(--power-accent);
+}
+
+.equipment-power-meter{
+ grid-column:1/-1;
+ position:relative;
+ min-width:0;
+ overflow:hidden;
+ padding:14px 16px 12px;
+ border:1px solid #b9cbd3;
+ border-color:color-mix(in srgb,var(--power-accent) 45%,#b9cbd3);
+ border-radius:10px;
+ background:linear-gradient(105deg,#fff 0,var(--power-meter-glow) 100%);
+ box-shadow:inset 4px 0 0 var(--power-accent);
+ transform-origin:left center;
+}
+
+.equipment-power-meter:after{
+ content:"";
+ position:absolute;
+ right:-12%;
+ bottom:-90%;
+ width:48%;
+ aspect-ratio:1;
+ border-radius:50%;
+ background:var(--power-shadow);
+ filter:blur(32px);
+ opacity:.28;
+ pointer-events:none;
+}
+
+.equipment-metrics .power-meter-heading{
+ position:relative;
+ z-index:1;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:16px;
+}
+
+.equipment-metrics .power-meter-heading>span{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ color:#314f5c;
+ font-size:13px;
+ font-weight:750;
+ letter-spacing:.055em;
+ text-transform:uppercase;
+}
+
+.equipment-metrics .power-icon{
+ display:inline-grid;
+ place-items:center;
+ width:24px;
+ height:24px;
+ border-radius:50%;
+ background:var(--power-accent);
+ color:#102737;
+ font-size:16px;
+ line-height:1;
+ box-shadow:0 0 13px var(--power-shadow);
+}
+
+.equipment-metrics .power-meter-heading strong{
+ display:block;
+ margin:0;
+ color:#13394a;
+ font-size:23px;
+ line-height:1;
+ letter-spacing:-.025em;
+}
+
+.equipment-metrics .power-meter-heading strong small{
+ font-size:12px;
+ letter-spacing:.04em;
+ color:#55707c;
+}
+
+.equipment-selector .capacity-track.segmented-power{
+ position:relative;
+ z-index:1;
+ display:grid;
+ grid-template-columns:repeat(10,minmax(0,1fr));
+ align-items:end;
+ gap:5px;
+ height:30px;
+ margin-top:11px;
+ overflow:visible;
+ border-radius:0;
+ background:transparent;
+}
+
+.equipment-selector .capacity-track.segmented-power .power-segment{
+ display:block;
+ height:var(--segment-height);
+ min-height:8px;
+ border:1px solid #b7c7ce;
+ border-radius:3px 3px 1px 1px;
+ background:#d6e0e4;
+ box-shadow:none;
+ opacity:.78;
+ transform-origin:center bottom;
+}
+
+.equipment-selector .capacity-track.segmented-power .power-segment.is-active{
+ border-color:color-mix(in srgb,var(--power-accent) 82%,#fff);
+ background:linear-gradient(180deg,var(--power-hot),var(--power-accent));
+ box-shadow:0 0 9px var(--power-shadow);
+ opacity:1;
+ animation:equipmentPowerPulse var(--energy-speed) ease-in-out infinite;
+ animation-delay:var(--power-delay);
+}
+
+.equipment-power-meter>p{
+ position:relative;
+ z-index:1;
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ margin:8px 0 0;
+ color:#526d78;
+ font-size:12px;
+ line-height:1.35;
+}
+
+.equipment-power-meter>p b{color:#193f50;font-size:12px}
+.equipment-power-meter>p span{min-width:0;color:#526d78;font-size:12px;text-align:right}
+
+.equipment-detail-image[data-power-level]{
+ position:relative;
+ background:
+  radial-gradient(ellipse at center,var(--power-stage-glow),transparent 55%),
+  radial-gradient(ellipse at center,#344651,#102330 72%);
+ box-shadow:inset 0 0 45px var(--power-shadow);
+}
+
+.equipment-detail-image[data-power-level] img{
+ position:relative;
+ z-index:1;
+ animation:equipmentDetailIdle var(--engine-speed) linear infinite;
+}
+
+.detail-specs>div:last-child:nth-child(odd){grid-column:1/-1}
+
+@keyframes equipmentEngineIdle{
+ 0%,100%{transform:translate3d(0,0,0) rotate(0)}
+ 25%{transform:translate3d(.55px,-.9px,0) rotate(.045deg)}
+ 52%{transform:translate3d(-.3px,-.25px,0) rotate(-.03deg)}
+ 76%{transform:translate3d(.15px,-.65px,0) rotate(.02deg)}
+}
+
+@keyframes equipmentEngineShadow{
+ 0%,100%{opacity:.8;transform:scale(1)}
+ 50%{opacity:.68;transform:scale(.985)}
+}
+
+@keyframes equipmentAirflow{
+ 0%{transform:translate3d(-115%,0,0) scaleX(.38);opacity:0}
+ 14%{opacity:.85}
+ 76%{opacity:.9}
+ 100%{transform:translate3d(115%,var(--air-drift),0) scaleX(.9);opacity:0}
+}
+
+@keyframes equipmentPowerPulse{
+ 0%,100%{filter:brightness(1);transform:scaleY(1)}
+ 50%{filter:brightness(1.18);transform:scaleY(.94)}
+}
+
+@keyframes equipmentDetailIdle{
+ 0%,100%{transform:translate3d(0,0,0)}
+ 35%{transform:translate3d(.55px,-.9px,0)}
+ 70%{transform:translate3d(-.3px,-.25px,0)}
+}
+
+@media(max-width:760px){
+ .equipment-power-meter{padding:12px 13px 11px}
+ .equipment-selector .capacity-track.segmented-power{gap:3px;height:27px}
+ .equipment-power-meter>p{display:block}
+ .equipment-power-meter>p span{display:block;margin-top:3px;text-align:left}
+}
+
+@media(max-width:360px){
+ .equipment-metrics .power-meter-heading>span{font-size:12px}
+ .equipment-metrics .power-meter-heading strong{font-size:21px}
+ .equipment-selector .capacity-track.segmented-power{gap:2px}
+}
+
+.motion-paused .equipment-selector[data-power-level] .airflow-field{opacity:.3}
+
+@media(forced-colors:active){
+ .equipment-selector .capacity-track.segmented-power .power-segment{border:1px solid CanvasText;background:Canvas}
+ .equipment-selector .capacity-track.segmented-power .power-segment.is-active{border:2px solid Highlight;background:Highlight}
+ .equipment-power-meter{border:1px solid CanvasText;box-shadow:inset 4px 0 0 Highlight}
+ .airflow-field{display:none}
+}

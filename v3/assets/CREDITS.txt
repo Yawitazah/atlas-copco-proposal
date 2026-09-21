@@ -14,3 +14,4 @@ Three.js 0.180.0: MIT license in vendor/THREE-LICENSE.txt.
 
 Transparent *-cutout.png images: AI-assisted derivatives of the original Atlas Copco reference photos. See CUTOUTS.md.
 trade-show-booth.png / trade-show-booth.webp: AI-generated illustrative marketing concept using the presentation's jobsite and XAS 400 reference imagery. The WebP is the optimized delivery asset. See TRADE-SHOW-BOOTH.md.
+strategy-triptych.png / strategy-triptych.webp: AI-generated illustrative introduction, personalization and accountability sequence. The WebP is the optimized delivery asset. See STRATEGY-TRIPTYCH.md.

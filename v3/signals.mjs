@@ -1,7 +1,7 @@
-import {zahSodaPop} from './sodapop.mjs?v=strategy-2';
-import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=strategy-2';
-import {actionCycle,actionAt,goalFill,ACTION_GOALS,CYCLE_MS} from './flow.mjs?v=strategy-2';
-export {CHANNELS} from './channels.mjs?v=strategy-2';
+import {zahSodaPop} from './sodapop.mjs?v=strategy-3';
+import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=strategy-3';
+import {actionCycle,actionAt,goalFill,ACTION_GOALS,CYCLE_MS} from './flow.mjs?v=strategy-3';
+export {CHANNELS} from './channels.mjs?v=strategy-3';
 export const resolvePause=value=>typeof value==='function'?Boolean(value()):Boolean(value);
 export function mountSignals({main,paused=false}){
  paused=resolvePause(paused);
@@ -12,7 +12,7 @@ export function mountSignals({main,paused=false}){
  let selected=0,armed=-1,clock=0,last=0,raf=0,visible=false,cycle=1,jobs=[],counts=[0,0,0],completed=[null,null,null],queuedSource=null;
  function pulse(el,kind){if(paused)return;el.getAnimations().forEach(a=>a.cancel());const center=el===core?'translate(-50%,-50%) ':'';const scales=kind==='in'?[1,1.06,1]:kind==='out'?[1,.965,1.025,1]:[1,.94,1.06,1];el.animate(scales.map(n=>({transform:center+'scale('+n+')'})),{duration:kind==='tap'?480:350,easing:'cubic-bezier(.2,.75,.25,1)'});}
  sources.forEach((b,i)=>{b.style.setProperty('--channel',CHANNELS[i].color);b.style.setProperty('--channel-light',CHANNELS[i].light);paths[i].style.setProperty('--route-color',CHANNELS[i].color);});
- destinations.forEach((d,i)=>{d.setAttribute('role','button');d.tabIndex=0;d.setAttribute('aria-label',OUTCOMES[i].title+': see how this outcome works');d.innerHTML='<div class="charge-fill" aria-hidden="true"></div><span class="delivery-check" aria-hidden="true">'+(i+1)+'</span><b>'+OUTCOMES[i].title+'</b><small>'+['A personal sales page','A real site conversation','A tracked next action'][i]+'</small><span class="delivery-status">0 / '+ACTION_GOALS[i]+'</span><div class="outcome-progress" aria-hidden="true"><i></i></div><span class="charge-label">Building toward '+ACTION_GOALS[i]+'</span><span class="outcome-more">Why it matters ↗</span>';d.onclick=()=>outcomeDetail(i);d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();outcomeDetail(i);}};});
+ destinations.forEach((d,i)=>{d.setAttribute('role','button');d.tabIndex=0;d.setAttribute('aria-label',OUTCOMES[i].title+': see how this outcome works');d.innerHTML='<div class="charge-fill" aria-hidden="true"></div><span class="delivery-check" aria-hidden="true">'+(i+1)+'</span><b>'+OUTCOMES[i].title+'</b><small>'+['A personalized sales page','A real site conversation','An accountable next action'][i]+'</small><span class="delivery-status">0 / '+ACTION_GOALS[i]+'</span><div class="outcome-progress" aria-hidden="true"><i></i></div><span class="charge-label">Building toward '+ACTION_GOALS[i]+'</span><span class="outcome-more">Why it matters ↗</span>';d.onclick=()=>outcomeDetail(i);d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();outcomeDetail(i);}};});
  function layout(){const box=lab.getBoundingClientRect(),vertical=matchMedia('(max-width:760px)').matches;svg.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);const rect=el=>{const r=el.getBoundingClientRect();return {x:r.left-box.left,y:r.top-box.top,w:r.width,h:r.height};},hub=rect(core);const curve=(a,b)=>vertical?`M ${a.x} ${a.y} C ${a.x} ${(a.y+b.y)/2}, ${b.x} ${(a.y+b.y)/2}, ${b.x} ${b.y}`:`M ${a.x} ${a.y} C ${(a.x+b.x)/2} ${a.y}, ${(a.x+b.x)/2} ${b.y}, ${b.x} ${b.y}`;
  sources.forEach((el,i)=>{const r=rect(el),k=(i+1)/5;paths[i].setAttribute('d',curve(vertical?{x:r.x+r.w/2,y:r.y+r.h+3}:{x:r.x+r.w+3,y:r.y+r.h/2},vertical?{x:hub.x+hub.w*k,y:hub.y-6}:{x:hub.x-6,y:hub.y+hub.h*k}));});
  destinations.forEach((el,i)=>{const r=rect(el),k=(i+1)/4;paths[i+4].setAttribute('d',curve(vertical?{x:hub.x+hub.w*k,y:hub.y+hub.h+6}:{x:hub.x+hub.w+6,y:hub.y+hub.h*k},vertical?{x:r.x+r.w/2,y:r.y-7}:{x:r.x-7,y:r.y+r.h/2}));});}

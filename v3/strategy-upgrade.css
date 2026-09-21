@@ -1,0 +1,204 @@
+/* Strategy imagery and the sales-accountability story. */
+.strategy-card-visual{
+ position:relative;
+ width:100%;
+ aspect-ratio:3/4;
+ margin:-10px 0 23px;
+ overflow:hidden;
+ border:1px solid #173b4740;
+ border-radius:11px;
+ background-image:linear-gradient(180deg,transparent 62%,#071f1db8),url("./assets/strategy-triptych.webp");
+ background-repeat:no-repeat;
+ background-size:300% auto;
+ box-shadow:0 18px 35px #143b4720;
+ isolation:isolate;
+}
+.strategy-card-visual::before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:linear-gradient(135deg,#ffffff18,transparent 45%);
+ pointer-events:none;
+}
+.strategy-card-visual::after{
+ position:absolute;
+ z-index:1;
+ left:14px;
+ bottom:13px;
+ padding:7px 9px;
+ border:1px solid #fff7;
+ border-radius:999px;
+ background:#092e28d9;
+ color:#fff7d9;
+ font-size:10px;
+ font-weight:750;
+ letter-spacing:.08em;
+ text-transform:uppercase;
+ backdrop-filter:blur(8px);
+}
+.strategy-card-visual--1{background-position:0 50%}
+.strategy-card-visual--1::after{content:"Attract + scout"}
+.strategy-card-visual--2{background-position:50% 50%}
+.strategy-card-visual--2::after{content:"Personalize + return"}
+.strategy-card-visual--3{background-position:100% 50%}
+.strategy-card-visual--3::after{content:"Assign + account"}
+
+.campaign-platform .strategy-icon{width:30px;height:30px;display:block}
+.strategy-steps li{position:relative;display:grid;grid-template-columns:48px 1fr;column-gap:14px;align-items:start}
+.strategy-steps .strategy-step-icon{
+ grid-row:1/3;
+ display:grid;
+ place-items:center;
+ width:44px;
+ height:44px;
+ border:1px solid #a9c8d2;
+ border-radius:50%;
+ background:#edf5f6;
+ color:#174c61;
+}
+.strategy-step-icon .strategy-icon{width:24px;height:24px}
+.strategy-steps li>b,.strategy-steps li>p{grid-column:2}
+.channel-demo-action{margin-top:28px;padding:24px;border:1px solid #c2d4d9;border-radius:10px;background:#edf4f4}
+.channel-demo-action .form-hint{margin:12px 0 0;font-size:13px;line-height:1.5;color:#4d6873}
+
+.accountability-story{
+ display:grid;
+ grid-template-columns:minmax(280px,.78fr) minmax(600px,1.6fr);
+ gap:clamp(35px,6vw,90px);
+ align-items:center;
+ max-width:1350px;
+ margin:0 auto 52px;
+ padding:36px;
+ border:1px solid #4c7181;
+ border-radius:18px;
+ background:linear-gradient(135deg,#173c4d,#0d2d3b 72%);
+ box-shadow:0 26px 80px #00151e35;
+ color:#edf6f4;
+}
+.accountability-copy .eyebrow{color:#8ed4e5}
+.accountability-copy h3{
+ margin:12px 0 18px;
+ font-family:Archivo,sans-serif;
+ font-size:clamp(31px,3.25vw,48px);
+ line-height:1.04;
+ letter-spacing:-.05em;
+}
+.accountability-copy>p{max-width:520px;color:#c6dce2;font-size:16px;line-height:1.65}
+.accountability-proof{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.accountability-proof span{padding:10px 11px;border:1px solid #84abba45;border-radius:8px;background:#ffffff08;color:#def1ed;font-size:12px;line-height:1.35}
+
+.accountability-map{
+ position:relative;
+ display:grid;
+ grid-template-columns:1fr 72px 1fr 72px 1fr;
+ grid-template-rows:auto 118px;
+ gap:22px 8px;
+ align-items:center;
+ min-height:355px;
+ padding:34px 28px 18px;
+ border:1px solid #78a1b166;
+ border-radius:15px;
+ background:radial-gradient(circle at 50% 15%,#28677d5c,transparent 52%),repeating-linear-gradient(90deg,transparent 0 54px,#a6d0dd09 55px 56px),#0a2734;
+ overflow:hidden;
+}
+.accountability-map::before{
+ content:"";
+ position:absolute;
+ inset:17px;
+ border:1px dashed #87b5c553;
+ border-radius:12px;
+ pointer-events:none;
+}
+.account-node{position:relative;z-index:2;display:grid;justify-items:center;text-align:center;gap:8px;min-width:0}
+.account-icon{
+ display:grid;
+ place-items:center;
+ width:82px;
+ height:82px;
+ border:1px solid #93c7d8;
+ border-radius:50%;
+ background:#123b4b;
+ color:#c8eef1;
+ box-shadow:0 0 0 8px #65c5df0c,0 0 28px #5cd3f329;
+}
+.account-icon svg{width:46px;height:46px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.account-node b{font-size:15px;color:#fff}
+.account-node small{max-width:145px;font-size:12px;line-height:1.35;color:#a9cbd5}
+.account-lead .account-icon{border-color:#76d7f2;color:#9be7fa}
+.account-rep .account-icon{border-color:#f2c86d;color:#ffe09a;background:#493e25;box-shadow:0 0 0 8px #ffc64e0d,0 0 30px #ffc6542b}
+.account-partner .account-icon{border-color:#bb9cff;color:#dccaff;background:#31294a;box-shadow:0 0 0 8px #b58aff0d,0 0 30px #aa7cff2a}
+.account-arrow{position:relative;z-index:2;display:grid;align-items:center;gap:7px;color:#8eb7c5;text-align:center;font-size:8px;font-weight:750;letter-spacing:.12em}
+.account-arrow i{display:block;position:relative;height:2px;background:#6ea9b9}
+.account-arrow i::before{content:"";position:absolute;left:0;top:-3px;width:8px;height:8px;border-radius:50%;background:#f2c86d;box-shadow:0 0 14px #f2c86d;animation:accountFlow 2.4s ease-in-out infinite}
+.account-arrow i::after{content:"";position:absolute;right:-1px;top:-4px;border-left:7px solid #6ea9b9;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.account-arrow-two i::before{animation-delay:1.2s}
+.account-oversight{
+ position:relative;
+ z-index:2;
+ grid-column:2/5;
+ grid-row:2;
+ align-self:end;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:14px;
+ width:min(390px,100%);
+ min-height:88px;
+ margin:auto;
+ padding:14px 22px;
+ border:1px solid #84c3a5;
+ border-radius:999px;
+ background:#153e35;
+ box-shadow:0 14px 35px #00191555;
+}
+.account-oversight .account-icon{flex:0 0 auto;width:54px;height:54px;border-color:#8ad1a7;color:#afe5be;background:#194d3e;box-shadow:none}
+.account-oversight .account-icon svg{width:32px;height:32px}
+.account-oversight b{display:block;font-size:14px;color:#f7f3df}
+.account-oversight small{display:block;margin-top:4px;color:#b9d5c3;font-size:11px;line-height:1.35}
+.account-return{
+ position:absolute;
+ z-index:1;
+ left:17%;
+ right:17%;
+ bottom:88px;
+ height:66px;
+ border:1px solid #8bd0aa78;
+ border-top:0;
+ border-radius:0 0 100px 100px;
+ color:#9edbb5;
+}
+.account-return::before,.account-return::after{content:"";position:absolute;top:-1px;width:8px;height:8px;border-radius:50%;background:#9edbb5;box-shadow:0 0 14px #9edbb5}
+.account-return::before{left:-4px}.account-return::after{right:-4px}
+.account-return i{position:absolute;left:10%;right:10%;bottom:-1px;height:2px;overflow:hidden}
+.account-return i::after{content:"";position:absolute;left:-20%;width:22%;height:100%;background:linear-gradient(90deg,transparent,#e7fbd9,transparent);animation:accountReturn 2.8s linear infinite}
+.account-return span{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font-size:8px;font-weight:750;letter-spacing:.15em;white-space:nowrap}
+
+@keyframes accountFlow{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 8px);opacity:0}}
+@keyframes accountReturn{to{left:118%}}
+
+@media(max-width:1000px){
+ .accountability-story{grid-template-columns:1fr;padding:28px;gap:32px}
+ .accountability-copy>p{max-width:780px}
+}
+@media(max-width:760px){
+ .strategy-card-visual{aspect-ratio:4/3;margin:-5px 0 20px;background-size:300% auto;background-position-y:40%}
+ .accountability-story{margin-bottom:38px;padding:24px 16px;border-radius:14px}
+ .accountability-copy h3{font-size:34px}
+ .accountability-copy>p{font-size:15px}
+ .accountability-proof{grid-template-columns:1fr}
+ .accountability-map{grid-template-columns:1fr;grid-template-rows:auto 42px auto 42px auto auto;gap:9px;min-height:0;padding:25px 17px}
+ .account-node{display:grid;grid-template-columns:66px 1fr;grid-template-rows:auto auto;text-align:left;justify-items:start;column-gap:13px;width:min(280px,100%);margin:auto}
+ .account-node .account-icon{grid-row:1/3;width:60px;height:60px}
+ .account-node .account-icon svg{width:34px;height:34px}
+ .account-node b{align-self:end;font-size:15px}.account-node small{align-self:start;max-width:none;font-size:12px}
+ .account-arrow{height:42px;width:2px;margin:auto;display:block}
+ .account-arrow i{width:2px;height:100%;background:#6ea9b9}
+ .account-arrow i::before{top:0;left:-3px;animation-name:accountFlowVertical}
+ .account-arrow i::after{right:-4px;top:auto;bottom:-1px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #6ea9b9;border-bottom:0}
+ .account-arrow span{position:absolute;left:13px;top:50%;transform:translateY(-50%);white-space:nowrap}
+ .account-oversight{grid-column:1;grid-row:6;width:100%;border-radius:12px;margin-top:14px;padding:14px 16px;justify-content:flex-start}
+ .account-return{display:none}
+}
+@keyframes accountFlowVertical{0%{top:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{top:calc(100% - 8px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.account-arrow i::before,.account-return i::after{animation:none}}
+@media print{.strategy-card-visual,.accountability-story{print-color-adjust:exact}}

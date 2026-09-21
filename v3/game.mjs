@@ -1,9 +1,9 @@
-import {STEPS,MODELS,blank,preferred,complete,esc,localDate} from './mission.mjs?v=strategy-2';
-import {QUESTIONS,questionsFor,questionError} from './questions.mjs?v=strategy-2';
-import {mountEquipment,showDetails} from './equipment.mjs?v=strategy-2';
-import {mountSalesPage} from './sales-page.mjs?v=strategy-2';
-import {zahSodaPop} from './sodapop.mjs?v=strategy-2';
-import {completionProgress} from './progress.mjs?v=strategy-2';
+import {STEPS,MODELS,blank,preferred,complete,esc,localDate} from './mission.mjs?v=strategy-3';
+import {QUESTIONS,questionsFor,questionError} from './questions.mjs?v=strategy-3';
+import {mountEquipment,showDetails} from './equipment.mjs?v=strategy-3';
+import {mountSalesPage} from './sales-page.mjs?v=strategy-3';
+import {zahSodaPop} from './sodapop.mjs?v=strategy-3';
+import {completionProgress} from './progress.mjs?v=strategy-3';
 const $=s=>document.querySelector(s);
 export function mountGame({toast,paused,handoff,request,recordInfo,openRecord,go,onClear}){
  const key='zah-atlas-mission-v3';let state=blank(),rewardTimer;
@@ -26,7 +26,7 @@ export function mountGame({toast,paused,handoff,request,recordInfo,openRecord,go
  function reward(i){clearTimeout(rewardTimer);const el=$('.survey-identity');if(!paused())zahSodaPop(el,false);$('#stage-reward').textContent='✓ '+STEPS[i].label+' completed';rewardTimer=setTimeout(header,1800);}
  function navigate(q){state.question=q.id;state.step=q.group;save();render();focusStage();}
  function render(){
-  header();if(state.step===7){$('#stage-eyebrow').textContent='YOUR PERSONAL EQUIPMENT PAGE';$('#stage-reward').textContent='✓ PROFILE COMPLETE';mountSalesPage($('#game-stage'),state,{save,toast,handoff,request,recordInfo,openRecord,go,edit:group=>navigate(questionsFor(state.answers).find(q=>q.group===group))});return;}
+  header();if(state.step===7){$('#stage-eyebrow').textContent='YOUR PERSONALIZED EQUIPMENT PAGE';$('#stage-reward').textContent='✓ PROFILE COMPLETE';mountSalesPage($('#game-stage'),state,{save,toast,handoff,request,recordInfo,openRecord,go,edit:group=>navigate(questionsFor(state.answers).find(q=>q.group===group))});return;}
   const q=current();state.question=q.id;state.step=q.group;header();const groupQs=questionsFor(state.answers).filter(x=>x.group===q.group),position=groupQs.indexOf(q);
   $('#stage-eyebrow').textContent=STEPS[q.group].label+' · '+(position+1)+' of '+groupQs.length;$('#stage-reward').textContent=state.done.includes(q.group)?'✓ Section completed':'Section '+(q.group+1)+' of 7';
   let body='';

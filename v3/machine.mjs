@@ -137,7 +137,6 @@ export function mountMachine(paused){
  canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={id:e.pointerId,type:e.pointerType,x:e.clientX,y:e.clientY,last:e.clientX,locked:false};canvas.dataset.autoPaused='drag';schedule();});
  canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.locked){if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){drag=null;canvas.dataset.autoPaused=hovered?'hover':'false';return;}if(Math.abs(dx)<8)return;drag.locked=true;canvas.setPointerCapture(e.pointerId);canvas.classList.add('is-dragging');}desiredYaw+=(e.clientX-drag.last)*.009;drag.last=e.clientX;dirty=true;schedule();});
  const stopDrag=()=>{drag=null;canvas.classList.remove('is-dragging');canvas.dataset.autoPaused=hovered?'hover':'false';last=0;schedule();};canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);canvas.addEventListener('lostpointercapture',stopDrag);
- const phases=[['Power.','With purpose.','The machine is only the beginning. See how one conversation becomes a useful next step—and stays visible after the handoff.'],['Open it up.','See inside.','Every part does a job. The customer path should, too.'],['Every part.','One purpose.','Attention becomes context. Context becomes a next step someone owns.']];
  function update(){if(manual)return;const r=section.getBoundingClientRect(),h=main.clientHeight,p=clamp(-r.top/(section.clientHeight-h));target=clamp((p-.04)/.82);manual=false;dirty=true;schedule()}
  main.addEventListener('scroll',update,{passive:true});
  main.addEventListener('wheel',()=>{manual=false;},{passive:true});main.addEventListener('touchmove',()=>{manual=false;},{passive:true});main.addEventListener('pointerdown',e=>{if(e.target===main)manual=false;},{passive:true});main.addEventListener('keydown',e=>{if(['PageDown','PageUp','ArrowDown','ArrowUp','End'].includes(e.key)&&!e.target.closest('input,button,textarea,select'))manual=false;});
@@ -166,7 +165,6 @@ export function mountMachine(paused){
  if(host.dataset.phase!==String(phase)){
  host.dataset.phase=String(phase);
  host.closest('.machine-sticky').dataset.phase=String(phase);
- document.querySelector('#hero-line-one').textContent=phases[phase][0];document.querySelector('#hero-line-two').textContent=phases[phase][1];document.querySelector('#hero-description').textContent=phases[phase][2];
  }
  const reveal=current<.2?-1:Math.min(3,Math.floor((current-.2)/.2));
  if(current<.12){seenPart=-1;if(!pinnedPart&&activePart>=0)showPart(-1);}

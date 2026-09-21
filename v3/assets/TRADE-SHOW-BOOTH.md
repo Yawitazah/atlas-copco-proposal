@@ -1,11 +1,20 @@
 # Trade-show booth image provenance
 
 - Tool: OpenAI built-in `image_gen` / ImageGen
-- Generated source: `C:/Users/user/.codex/generated_images/01a0bfe2-52bf-7a50-ad7c-700846b71018/exec-6f7902f8-fd35-4268-86ee-57fe6e4fb5bc.png`
-- Original presentation asset: `web-v3/assets/trade-show-booth.png` (2,319,999 bytes; SHA-256 `07E2B5521EAA0BC1875A21389F6C97B28EA9855749F33DB9289499B3DFC30D5C`)
-- Optimized delivery asset: `web-v3/assets/trade-show-booth.webp` (288,784 bytes; quality 88; SHA-256 `ACA578DFEF2FF8BF29EEE665D9832A91800678613B9D08E6CA7064DCD002CADF`)
+- Initial generated source: `C:/Users/user/.codex/generated_images/01a0bfe2-52bf-7a50-ad7c-700846b71018/exec-6f7902f8-fd35-4268-86ee-57fe6e4fb5bc.png`
+- Corrected generated source: `C:/Users/user/.codex/generated_images/01a0bfe2-52bf-7a50-ad7c-700846b71018/exec-dd31af48-94bd-42a4-855e-2022d73ca788.png`
+- Presentation asset: `web-v3/assets/trade-show-booth.png` (2,272,099 bytes; SHA-256 `0668695736098BBA51240AE424D45E93D876069667F9F05588E8565D1D71EB8B`)
+- Optimized delivery asset: `web-v3/assets/trade-show-booth.webp` (278,112 bytes; quality 88; SHA-256 `DCD27719D5B98262FE4BA6B6BE892EFFA5CE8C5051A4C8171CB94DDC33EB7104`)
 - Reference images: the presentation's existing pneumatic jobsite photograph and XAS 400 cutout.
 - Status: illustrative event concept, not a photograph of an existing Atlas Copco booth or a factory equipment rendering.
+
+## Brand correction
+
+The initial generated scene added a conflicting CAT badge beside the Atlas Copco equipment label. A precise ImageGen edit removed only that CAT badge and restored matching yellow painted metal while preserving the machine, Atlas Copco label, booth, screens, people, lighting and composition.
+
+### Correction prompt
+
+Edit this existing trade-show booth image with one precise correction only. Remove the small black-and-yellow CAT badge from the left side of the large yellow compressor's front side panel. Replace that badge area with clean matching yellow painted metal, preserving the panel contours, lighting, reflections, shadows, fasteners, and photorealistic texture. Keep the existing Atlas Copco badge on the compressor and the Atlas Copco booth sign unchanged. Do not change the machine shape, people, screens, booth, composition, crop, colors, or any other details. The result must remain a photorealistic 16:9 premium B2B event photograph.
 
 ## Prompt
 

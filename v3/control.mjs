@@ -1,7 +1,40 @@
-import {esc,MODELS} from './mission.mjs?v=strategy-2';
+import {esc,MODELS} from './mission.mjs?v=strategy-3';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
+function mountProfileTeaser(){
+ if($('#zah-profile-teaser'))return;
+ const about=$('.about-grid');
+ if(!about)return;
+ if(!about.id)about.id='about-zah';
+ if(!document.querySelector('link[href*="profile-float.css"]')){
+  const style=document.createElement('link');
+  style.rel='stylesheet';style.href='./profile-float.css?v=profile-1';style.dataset.profileFloatStyle='';
+  document.head.append(style);
+ }
+ const teaser=document.createElement('aside');
+ teaser.id='zah-profile-teaser';teaser.className='profile-teaser';teaser.setAttribute('aria-label','About Zah (Lorenzo) White');
+ teaser.dataset.aboutTarget='.about-grid';teaser.dataset.profilePortrait='./assets/zah-headshot.png';
+ teaser.innerHTML='<a class="profile-teaser-link" href="#'+about.id+'"><span class="profile-teaser-portrait"><span class="profile-teaser-initials" aria-hidden="true">ZW</span><img src="./assets/zah-headshot.png" alt="Zah White"></span><span class="profile-teaser-copy"><span class="profile-teaser-eyebrow">ATLAS COPCO CANDIDATE</span><strong>Zah (Lorenzo) White</strong><span>Marketing Communications Manager – APE</span><small>Branding &amp; Marketing Systems Strategist</small><b>Explore Lorenzo <i aria-hidden="true">→</i></b></span></a>';
+ document.body.append(teaser);
+ const link=teaser.querySelector('a'),portrait=teaser.querySelector('img');
+ portrait.addEventListener('error',()=>{portrait.hidden=true;teaser.classList.add('profile-teaser-no-portrait')},{once:true});
+ link.addEventListener('click',event=>{
+  event.preventDefault();
+  about.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+ });
+ if('IntersectionObserver'in globalThis){
+  const observer=new IntersectionObserver(([entry])=>{
+   const hidden=entry.isIntersecting;
+   if(hidden&&teaser.contains(document.activeElement)){
+    about.tabIndex=-1;about.focus({preventScroll:true});
+   }
+   teaser.classList.toggle('is-hidden',hidden);teaser.setAttribute('aria-hidden',String(hidden));link.tabIndex=hidden?-1:0;
+  },{threshold:.12});
+  observer.observe(about);
+ }
+}
 export function mountControl(toast){
+ mountProfileTeaser();
  const C=globalThis.DemoCore,key='zah-atlas-control-v3';let now=Date.now(),records=C.sampleLeads(now),seq=301,filter='all';
  try{const v=JSON.parse(localStorage.getItem(key));if(v&&Array.isArray(v.records)&&v.records.length<250&&Number.isFinite(v.now)&&v.records.every(l=>l.id&&Array.isArray(l.history))){({now,records,seq}=v)}}catch{}
  records=records.map(l=>({...l,source:l.source==='Needs finder'?'Goal Pulse Check':l.source,history:l.history.map(h=>h.text==='Example lead and owner supplied as a static sample, then enriched with needs-finder preferences. No export or live API was used.'?{...h,text:'Example lead and owner supplied as a static sample, then enriched with Goal Pulse Check preferences. No export or live API was used.'}:h)}));
