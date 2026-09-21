@@ -1,4 +1,4 @@
-import {MODELS,esc,fit} from './mission.mjs?v=conversion-10';
+import {MODELS,esc,fit} from './mission.mjs?v=conversion-11';
 
 const POWER_SEGMENTS=10;
 const MAX_COMPARISON_FLOW=Math.max(...MODELS.map(model=>model.flow));

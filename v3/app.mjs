@@ -1,13 +1,13 @@
-import {mountSalesPage} from './sales-page.mjs?v=conversion-10';
-import {mountSignals} from './signals.mjs?v=conversion-10';
-import {mountGame} from './game.mjs?v=conversion-10';
-import {mountControl} from './control.mjs?v=conversion-10';
-import {BASE} from './mission.mjs?v=conversion-10';
-import {mountOverview} from './overview.mjs?v=conversion-10';
-import {alignedScrollTop} from './navigation.mjs?v=conversion-10';
-import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-10';
-import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-10';
-import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-10';
+import {mountSalesPage} from './sales-page.mjs?v=conversion-11';
+import {mountSignals} from './signals.mjs?v=conversion-11';
+import {mountGame} from './game.mjs?v=conversion-11';
+import {mountControl} from './control.mjs?v=conversion-11';
+import {BASE} from './mission.mjs?v=conversion-11';
+import {mountOverview} from './overview.mjs?v=conversion-11';
+import {alignedScrollTop} from './navigation.mjs?v=conversion-11';
+import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-11';
+import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-11';
+import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-11';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
@@ -50,9 +50,9 @@ export function boot(mountDeck){
  if(requestedScene>=0)requestAnimationFrame(()=>requestAnimationFrame(()=>go(requestedScene,{instant:true})));
  window.addEventListener('hashchange',()=>{const i=sceneFromHash();if(i>=0)go(i,{focus:true})});
  const explanations=[
-  ['Sales context from C4C','Lead identity, company, source and assigned owner supply the starting point. This example uses fictional records; a real export or connection has not been configured.'],
-  ['Customer context from the Goal Pulse Check','The customer adds application, equipment needs, buying team and visit preferences. Those details shape a personalized equipment page and enrich the matching local record.'],
-  ['A request becomes a next action','A quote or walkthrough request stays attached to its owner. The demo dashboard shows the new activity. Sending it back to C4C would require a verified write-back connection.']
+  ['A captured need becomes a usable C4C record','A completed Goal Pulse Check creates a lead record or enriches the matching record with identity, source, application and stated equipment need. This example uses fictional records; a real export or connection has not been configured.'],
+  ['Captured context becomes an initial personalized brief','The prospect’s application, equipment needs and buying role shape an initial personalized equipment page with relevant equipment and clear choices for what happens next.'],
+  ['A sales professional owns the next action','The record keeps an assigned sales professional and due next action. A walkthrough activates when requested or qualified. Sending those activities back to C4C would require a verified write-back connection.']
  ];
  function explain(i){document.querySelectorAll('[data-crm-stage]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.crmStage)===i)));$('#crm-explanation').innerHTML='<h4>'+explanations[i][0]+'</h4><p>'+explanations[i][1]+'</p>';}
  document.querySelectorAll('[data-crm-stage]').forEach(b=>b.onclick=()=>explain(Number(b.dataset.crmStage)));explain(0);
