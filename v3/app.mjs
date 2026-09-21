@@ -1,13 +1,13 @@
-import {mountSalesPage} from './sales-page.mjs?v=conversion-7';
-import {mountSignals} from './signals.mjs?v=conversion-7';
-import {mountGame} from './game.mjs?v=conversion-7';
-import {mountControl} from './control.mjs?v=conversion-7';
-import {BASE} from './mission.mjs?v=conversion-7';
-import {mountOverview} from './overview.mjs?v=conversion-7';
-import {alignedScrollTop} from './navigation.mjs?v=conversion-7';
-import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-7';
-import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-7';
-import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-7';
+import {mountSalesPage} from './sales-page.mjs?v=conversion-8';
+import {mountSignals} from './signals.mjs?v=conversion-8';
+import {mountGame} from './game.mjs?v=conversion-8';
+import {mountControl} from './control.mjs?v=conversion-8';
+import {BASE} from './mission.mjs?v=conversion-8';
+import {mountOverview} from './overview.mjs?v=conversion-8';
+import {alignedScrollTop} from './navigation.mjs?v=conversion-8';
+import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-8';
+import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-8';
+import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-8';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
@@ -27,6 +27,16 @@ export function boot(mountDeck){
   sections.forEach((section,i)=>{const nav=document.createElement('nav');nav.className='scene-pager';nav.setAttribute('aria-label','Section navigation');const count=document.createElement('span');count.className='scene-pager-count';count.textContent='SECTION '+String(i+1).padStart(2,'0')+' / '+String(sections.length).padStart(2,'0');nav.append(count);const actions=document.createElement('div');if(i>0){const back=document.createElement('button');back.type='button';back.dataset.go=String(i-1);back.innerHTML='<span aria-hidden="true">←</span> Back to '+names[i-1];actions.append(back)}if(i<sections.length-1){const next=document.createElement('button');next.type='button';next.className='scene-pager-next';next.dataset.go=String(i+1);next.innerHTML='Continue to '+names[i+1]+' <span aria-hidden="true">→</span>';actions.append(next)}else{const overview=document.createElement('button');overview.type='button';overview.className='scene-pager-next';overview.setAttribute('data-overview-open','');overview.innerHTML='Return to strategy overview <span aria-hidden="true">↗</span>';actions.append(overview)}nav.append(actions);section.append(nav)});
  }
  mountScenePagers();
+ function mountAccountabilityPath(){
+  const story=$('.accountability-story');
+  if(!story)return;
+  if(!('IntersectionObserver'in globalThis)){story.classList.add('is-path-active');return}
+  const observer=new IntersectionObserver(entries=>{
+   for(const entry of entries)story.classList.toggle('is-path-active',entry.isIntersecting&&entry.intersectionRatio>=.18);
+  },{root:main,threshold:[0,.18,.42]});
+  observer.observe(story);
+ }
+ mountAccountabilityPath();
  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b&&!b.hasAttribute('data-act')){e.preventDefault();go(Number(b.dataset.go),{focus:Boolean(b.closest('.scene-pager'))})}});
  $('#menu-toggle').onclick=()=>{const el=$('#chapters');el.hidden=!el.hidden;$('#menu-toggle').setAttribute('aria-expanded',String(!el.hidden))};
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false')}});

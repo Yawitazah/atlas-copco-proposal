@@ -15,6 +15,7 @@ Three.js 0.180.0: MIT license in vendor/THREE-LICENSE.txt.
 Transparent *-cutout.png images: AI-assisted derivatives of the original Atlas Copco reference photos. See CUTOUTS.md.
 trade-show-booth.png / trade-show-booth.webp: AI-generated illustrative marketing concept using the presentation's jobsite and XAS 400 reference imagery. The WebP is the optimized delivery asset. See TRADE-SHOW-BOOTH.md.
 strategy-triptych.png / strategy-triptych.webp: AI-generated illustrative introduction, personalization and accountability sequence. The WebP is the optimized delivery asset. See STRATEGY-TRIPTYCH.md.
+prospect-*-campaign-v2.webp and prospect-*-background-v2.png: original ImageGen jobsite environments plus local composition with the existing XAS 188 cutout. All prospect data is fictional. See PROSPECT-CAMPAIGN-MOCKUPS.md.
 
 lorenzo-growth-system-intro.mp4 and poster
 Owner-supplied NotebookLM video: How Lorenzo White's Growth System Connects Industrial Sales. Copied from the owner's local E:\downloads source on September 21, 2026; MP4 was stream-copied with web fast-start metadata and poster extracted from the same video.

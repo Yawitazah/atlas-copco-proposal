@@ -1,7 +1,7 @@
-import {zahSodaPop} from './sodapop.mjs?v=conversion-7';
-import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=conversion-7';
-import {actionCycle,actionAt,goalFill,ACTION_GOALS,CYCLE_MS} from './flow.mjs?v=conversion-7';
-export {CHANNELS} from './channels.mjs?v=conversion-7';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-8';
+import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=conversion-8';
+import {actionCycle,actionAt,goalFill,ACTION_GOALS,CYCLE_MS} from './flow.mjs?v=conversion-8';
+export {CHANNELS} from './channels.mjs?v=conversion-8';
 export const resolvePause=value=>typeof value==='function'?Boolean(value()):Boolean(value);
 export function mountSignals({main,paused=false}){
  paused=resolvePause(paused);

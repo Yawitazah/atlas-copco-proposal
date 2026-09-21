@@ -287,6 +287,89 @@
 
 .detail-specs>div:last-child:nth-child(odd){grid-column:1/-1}
 
+/* Keep the machine and its capability story in the same desktop view. The
+   survey owns the available width, so this switches on from the garage's
+   usable width instead of the full browser width. */
+#garage{container-type:inline-size;container-name:equipment-garage}
+
+@container equipment-garage (min-width:850px){
+ .equipment-selector{
+  display:grid;
+  grid-template-columns:minmax(0,1.3fr) minmax(365px,.82fr);
+  align-items:stretch;
+ }
+ .equipment-selector .equipment-stage{
+  display:flex;
+  min-width:0;
+  min-height:500px;
+  flex-direction:column;
+ }
+ .equipment-selector .machine-platform{
+  flex:1 1 auto;
+  height:auto;
+  min-height:245px;
+ }
+ .equipment-selector .equipment-readings{
+  display:flex;
+  min-width:0;
+  flex-direction:column;
+  padding:17px 17px 15px;
+  border-left:1px solid #c6d5db;
+ }
+ .equipment-selector .capacity-change{
+  min-height:0;
+  margin:0 0 10px;
+  padding:0 1px 10px;
+  border-bottom:1px solid #d5e0e4;
+  font-size:13px;
+  line-height:1.4;
+ }
+ .equipment-selector .equipment-metrics{gap:10px 12px}
+ .equipment-selector .equipment-metrics>div:not(.equipment-power-meter){
+  padding:0 2px 2px;
+ }
+ .equipment-selector .equipment-metrics>div:not(.equipment-power-meter)>span{
+  min-height:0;
+  font-size:11px;
+ }
+ .equipment-selector .equipment-metrics>div:not(.equipment-power-meter)>strong{
+  margin-top:2px;
+  font-size:24px;
+ }
+ .equipment-selector .equipment-power-meter{
+  margin-top:2px;
+  padding:11px 12px 10px;
+ }
+ .equipment-selector .capacity-track.segmented-power{
+  height:24px;
+  margin-top:8px;
+  gap:3px;
+ }
+ .equipment-selector .equipment-power-meter>p{margin-top:6px}
+ .equipment-selector .capability-profile{margin-top:10px}
+ .equipment-selector .capability-profile>header{padding:10px 12px}
+ .equipment-selector .capability-profile>header>span{font-size:9px}
+ .equipment-selector .capability-profile>header>strong{font-size:21px}
+ .equipment-selector .capability-profile>header>b{font-size:11px}
+ .equipment-selector .capability-row{
+  grid-template-columns:minmax(0,1fr) minmax(88px,.72fr);
+  gap:7px;
+  padding:9px 10px;
+ }
+ .equipment-selector .capability-label{grid-template-columns:21px 1fr}
+ .equipment-selector .capability-label>i{width:17px;height:17px;font-size:10px}
+ .equipment-selector .capability-label>b{font-size:10px}
+ .equipment-selector .capability-label>small{font-size:8px}
+ .equipment-selector .capability-score{grid-template-columns:16px 1fr;gap:4px}
+ .equipment-selector .capability-score>em{font-size:11px}
+ .equipment-selector .capability-score>span{height:13px;gap:1px}
+ .equipment-selector .equipment-detail-button{
+  margin-top:auto;
+  padding-top:10px;
+  font-size:13px;
+ }
+}
+
 @keyframes equipmentEngineIdle{
  0%,100%{transform:translate3d(0,0,0) rotate(0)}
  25%{transform:translate3d(.55px,-.9px,0) rotate(.045deg)}

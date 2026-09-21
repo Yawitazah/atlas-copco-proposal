@@ -1,5 +1,5 @@
-import {esc,MODELS} from './mission.mjs?v=conversion-7';
-import {zahSodaPop} from './sodapop.mjs?v=conversion-7';
+import {esc,MODELS} from './mission.mjs?v=conversion-8';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-8';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 function mountProfileTeaser(){
@@ -13,13 +13,30 @@ function mountProfileTeaser(){
   document.head.append(style);
  }
  const teaser=document.createElement('aside');
- teaser.id='zah-profile-teaser';teaser.className='profile-teaser';teaser.setAttribute('aria-label','About Zah (Lorenzo) White');
+ teaser.id='zah-profile-teaser';teaser.className='profile-teaser is-pending';teaser.setAttribute('aria-label','About Zah (Lorenzo) White');
  teaser.dataset.aboutTarget='.about-grid';teaser.dataset.profilePortrait='./assets/zah-headshot.png';
  teaser.innerHTML='<a class="profile-teaser-link" href="#'+about.id+'"><span class="profile-teaser-ribbon">MARKETING COMMUNICATIONS MANAGER · APE CANDIDATE</span><span class="profile-teaser-portrait"><span class="profile-teaser-initials" aria-hidden="true">LW</span><img src="./assets/zah-headshot.png" alt="Lorenzo White"></span><span class="profile-teaser-copy"><span class="profile-teaser-eyebrow">FOUNDER · ZAH BRAND SOLUTIONS</span><strong>Zah (Lorenzo) White</strong><span>Growth Marketing Strategy &amp; Systems Architect</span><small>Atlas Copco role candidate</small><b>Explore Lorenzo <i aria-hidden="true">→</i></b></span></a>';
  document.body.append(teaser);
- if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setTimeout(()=>{
-  if(teaser.isConnected&&!teaser.classList.contains('is-hidden')&&!document.querySelector('dialog[open]'))zahSodaPop(teaser.querySelector('.profile-teaser-ribbon'),true);
- },1450);
+ let entranceDone=false;
+ const finishEntrance=()=>{
+  if(entranceDone)return;
+  const blocked=teaser.classList.contains('is-hidden')||document.body.classList.contains('overview-open')||document.querySelector('dialog[open]')||document.visibilityState==='hidden';
+  if(blocked)return;
+  entranceDone=true;teaser.dataset.sodaPop='complete';
+  entranceObserver.disconnect();document.removeEventListener('visibilitychange',finishEntrance);
+  teaser.classList.remove('is-pending');
+  if(document.body.classList.contains('motion-paused'))return;
+  teaser.classList.add('is-entering');
+  setTimeout(()=>{
+   teaser.classList.remove('is-entering');
+   if(teaser.isConnected&&!teaser.classList.contains('is-hidden')&&!document.body.classList.contains('motion-paused'))zahSodaPop(teaser.querySelector('.profile-teaser-link'),true);
+  },760);
+ };
+ const entranceObserver=new MutationObserver(finishEntrance);
+ entranceObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
+ entranceObserver.observe(teaser,{attributes:true,attributeFilter:['class']});
+ document.addEventListener('visibilitychange',finishEntrance);
+ setTimeout(finishEntrance,850);
  const link=teaser.querySelector('a'),portrait=teaser.querySelector('img');
  portrait.addEventListener('error',()=>{portrait.hidden=true;teaser.classList.add('profile-teaser-no-portrait')},{once:true});
  link.addEventListener('click',event=>{
@@ -36,6 +53,7 @@ function mountProfileTeaser(){
   },{threshold:.12});
   observer.observe(about);
  }
+ teaser.addEventListener('animationend',()=>teaser.classList.remove('is-entering'));
 }
 export function mountControl(toast){
  mountProfileTeaser();

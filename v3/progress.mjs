@@ -1,4 +1,4 @@
-import {questionsFor,questionError} from './questions.mjs?v=conversion-7';
+import {questionsFor,questionError} from './questions.mjs?v=conversion-8';
 export function completionProgress(state){
  const answers=state.answers||{},questions=questionsFor(answers);
  const answered=questions.filter(q=>!questionError(q,answers)).length;

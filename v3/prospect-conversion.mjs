@@ -1,4 +1,4 @@
-const FALLBACK={first:'Marcus',company:'Northline Utilities',application:'Utility maintenance',site:'Active municipal sites',model:'188',flow:'189',pressure:'100'};
+const FALLBACK={first:'Marcus',company:'Northcrew Site Services',application:'Utility maintenance',site:'Active municipal utility sites',model:'188',flow:'189',pressure:'100'};
 const MODEL_NAMES={'110':'XAS 110 KD','188':'XAS 188 CD','400':'XAS 400-150 CD'};
 const MODEL_ASSETS={'110':'./assets/xas110-cutout.png','188':'./assets/xas188-cutout.png','400':'./assets/xas400-cutout.png'};
 const FLOW_LABELS={'110':'Up to 110 cfm','189':'111–189 cfm','400':'190–400 cfm',above400:'More than 400 cfm',unknown:'Sizing review needed'};
@@ -38,9 +38,8 @@ export function mountProspectConversion({toast=()=>{}}={}){
   toast(messages[action.dataset.prospectAction]||'Demonstration only — nothing was sent.');
  });
  const play=root.querySelector('[data-prospect-video]');if(play)play.addEventListener('click',()=>{const screen=play.closest('.prospect-video-screen'),playing=screen.classList.toggle('is-playing');play.setAttribute('aria-pressed',String(playing));play.setAttribute('aria-label',playing?'Pause illustrative YouTube retargeting concept':'Play illustrative YouTube retargeting concept');play.textContent=playing?'Ⅱ':'▶';});
- function readSaved(){try{return JSON.parse(localStorage.getItem('zah-atlas-mission-v3')||'{}')}catch{return {}}}
  function renderProfile(){
-  const profile=prospectProfile(readSaved());
+  const profile=prospectProfile({});
   root.querySelectorAll('[data-prospect-name]').forEach(el=>el.textContent=profile.first);
   root.querySelectorAll('[data-prospect-company]').forEach(el=>el.textContent=profile.company);
   root.querySelectorAll('[data-prospect-application]').forEach(el=>el.textContent=profile.application);
@@ -51,5 +50,4 @@ export function mountProspectConversion({toast=()=>{}}={}){
   root.querySelectorAll('[data-prospect-machine]').forEach(el=>{el.src=MODEL_ASSETS[profile.model];el.alt=profile.modelName+' portable air compressor';});
  }
  renderProfile();select('page');
- const identity=document.querySelector('#player-name');if(identity)new MutationObserver(renderProfile).observe(identity,{childList:true,subtree:true});
 }

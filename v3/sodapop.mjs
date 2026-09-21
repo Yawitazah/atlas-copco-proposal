@@ -1,4 +1,17 @@
 // Built from the original ZAH Tip Jar viewer; no payment or private code included.
+// Web Animations is missing in some Chrome installations used to review this presentation.
+// Keep the Tip Jar keyframes and timing, and use a CSS transition only when the native API is absent.
+function sodaPopAnimate(el, keyframes, options = {}){
+  if (typeof el.animate === 'function') return el.animate(keyframes, options);
+  const first = keyframes[0] || {}, last = keyframes[keyframes.length - 1] || {};
+  Object.assign(el.style, first);
+  void el.offsetWidth;
+  const duration = Number(options.duration) || 0, easing = options.easing || 'ease';
+  const properties = Object.keys(last).filter((name) => name === 'transform' || name === 'opacity');
+  el.style.transition = properties.map((name) => name + ' ' + duration + 'ms ' + easing).join(', ');
+  requestAnimationFrame(() => Object.assign(el.style, last));
+  setTimeout(() => { el.style.transition = ''; }, duration + 80);
+}
 const POP = ['#ff3b30','#ff9f0a','#ffd60a','#34c759','#00c7be','#30d158',
              '#32ade6','#0a84ff','#5e5ce6','#bf5af2','#ff375f','#ff6482',
              '#ffcc00','#7bed9f','#70a1ff','#e84393','#00d2d3','#feca57',
@@ -22,7 +35,7 @@ function popSparks(cx, cy, n = 30){
     burst.appendChild(s);
     const ang  = (Math.PI * 2 * i) / n + Math.random() * 0.35;
     const dist = 110 + Math.random() * 210;
-    s.animate([
+    sodaPopAnimate(s, [
       { transform: 'translate(0,0) scale(1)', opacity: 1 },
       { transform: `translate(${Math.cos(ang)*dist}px, ${Math.sin(ang)*dist}px) scale(0)`, opacity: 0 }
     ], { duration: 1100 + Math.random() * 700, easing: 'cubic-bezier(.15,.75,.3,1)', fill: 'forwards' });
