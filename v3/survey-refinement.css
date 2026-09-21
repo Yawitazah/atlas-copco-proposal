@@ -1,0 +1,34 @@
+/* Completion stays personal and readable. Original state keys are retained. */
+.survey-identity{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px 24px;transition:border-radius .18s,box-shadow .18s}
+.survey-identity>div:first-child{min-width:0}
+.survey-identity strong{overflow-wrap:anywhere}
+.identity-points{min-width:130px}
+.identity-points strong{font-variant-numeric:tabular-nums}
+.identity-points>span{font-size:14px;line-height:1.3}
+.survey-identity .survey-restart{color:#e3edf1;border:1px solid #7c9aa7;border-radius:7px;padding:10px 14px;min-height:44px;font-size:14px;margin:0;background:#214959;white-space:nowrap;align-self:center}
+.survey-identity .survey-restart:hover{background:#315e70;color:#fff}
+.survey-identity .survey-restart:focus-visible{outline:3px solid #f5c36b;outline-offset:3px}
+.survey-identity.is-stuck{width:var(--profile-viewport-width);max-width:none;margin-left:var(--profile-bleed-left);border-radius:0;border-left:0;border-right:0;padding-inline:max(24px,calc((100% - 1288px)/2));box-shadow:0 9px 24px #0e293739}
+.survey-identity .xp-track{grid-column:1/-1}
+@media(max-width:760px){
+ .survey-identity{grid-template-columns:minmax(0,1fr) auto;gap:7px 14px;padding:13px 16px 17px;min-height:108px}
+ .survey-identity>div:first-child{grid-row:1/3;align-self:center}
+ .survey-identity strong{font-size:18px;line-height:1.25}
+ .survey-identity .eyebrow{font-size:11px;line-height:1.4}
+ .survey-identity .identity-points{grid-column:2;grid-row:1;min-width:120px;text-align:right}
+ .identity-points>span{font-size:12px;margin-top:3px}
+ .survey-identity .survey-restart{grid-column:2;grid-row:2;justify-self:end;min-height:32px;padding:5px 11px;font-size:13px;line-height:1.4}
+ .survey-identity.is-stuck{padding-inline:20px}
+ .mission-pass{display:none}
+ .live-xp{min-width:0}
+ .live-xp b{white-space:nowrap}
+}
+@media(max-width:360px){
+ .survey-identity{gap:6px 10px;padding-inline:11px}
+ .survey-identity strong{font-size:16px}
+ .survey-identity .identity-points{min-width:112px}
+ .survey-identity.is-stuck{padding-inline:14px}
+ .survey-identity .survey-restart{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.survey-identity,.survey-identity .xp-track i{transition:none}}
+body:has(.survey-identity.is-stuck) #live-xp{display:none}

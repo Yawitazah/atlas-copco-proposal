@@ -1,0 +1,71 @@
+/* The model, component descriptions and controls each have their own space. */
+.machine-sticky{background:radial-gradient(ellipse at 76% 38%,#28433f 0,transparent 57%),linear-gradient(135deg,#0b2828,#112f2d)}
+.machine-stage{inset:9% 0 235px 37%;pointer-events:auto}
+#machine-canvas{touch-action:pan-y;cursor:grab;outline-offset:-5px}
+#machine-canvas.is-dragging{cursor:grabbing}
+.stage-signature{left:50%;bottom:57px;transform:translateX(-50%);width:max-content;max-width:96%;font-size:10px;letter-spacing:.08em;text-align:center;color:#c1cfca;pointer-events:none}
+.stage-watermark{pointer-events:none}
+.machine-rotation{position:absolute;bottom:0;left:0;right:0;z-index:4;display:flex;align-items:center;justify-content:center;gap:16px;color:#d5dfd9;pointer-events:none}
+.machine-rotation>span{font-size:12px}
+.machine-rotation>div{display:flex;align-items:center;gap:6px;pointer-events:auto}
+.machine-rotation button{min-width:42px;min-height:42px;border:1px solid #7b928a;border-radius:7px;background:#102e2ee8;color:#eff2e6;font-size:20px}
+.machine-rotation button[data-rotate="0"]{font-size:12px;padding:0 12px}
+.machine-explorer{position:absolute;right:4vw;bottom:104px;width:53%;max-width:720px;min-height:117px;z-index:7;background:#102b2cdc;border:1px solid #728e8566;border-radius:12px;padding:12px 15px;backdrop-filter:blur(12px)}
+.machine-part-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.machine-part-tabs button{display:flex;align-items:center;justify-content:center;gap:6px;border-radius:6px;border:1px solid #788c815c;min-height:42px;padding:7px;background:#1c3938;color:#e6eee6;font-size:13px;white-space:nowrap}
+.machine-part-tabs button>span{color:#b4c0b1;font-size:10px}.machine-part-tabs button>b{font-size:15px;font-weight:400}
+.machine-part-tabs button[aria-expanded="true"]{background:#e5c17b;border-color:#e5c17b;color:#19322f}
+.machine-part-tabs button[aria-expanded="true"]>span{color:#31443a}
+.machine-part-detail{position:relative;display:flex;align-items:center;min-height:53px;padding:9px 0 0;color:#d8e4de}
+.machine-part-detail p{font-size:14px;line-height:1.45;max-width:100%;padding-right:0}
+.machine-explorer.has-detail .machine-part-detail p{padding-right:32px}
+#machine-part-close{position:absolute;right:-5px;top:8px;background:transparent;color:#e6e8db;width:34px;height:34px;font-size:24px}
+.assembly-console{bottom:22px}.assembly-console>.mono{font-size:12px}.assembly-console output{font-size:13px}.assembly-controls button{min-height:44px;font-size:14px}
+@media(max-width:1050px) and (min-width:761px){.machine-stage{left:38%;bottom:245px}.machine-explorer{width:55%;right:3vw}.machine-part-tabs button{font-size:12px;gap:4px}.machine-part-tabs button>span{display:none}.machine-part-detail p{font-size:13px}.hero-copy{top:22%;width:42%}.hero-copy h1{font-size:7.3vw}.hero-copy>p:not(.eyebrow){font-size:17px}}
+@media(max-width:760px){
+ .machine-sticky{min-height:780px}
+ .hero-copy{left:22px;right:22px;top:96px;width:auto;z-index:4}
+ .hero-copy .eyebrow{font-size:10px;letter-spacing:.045em;line-height:1.5;margin-bottom:12px;max-width:100%}
+ .hero-copy h1{font-size:clamp(41px,11.3vw,61px);line-height:.99}
+ .hero-copy>p:not(.eyebrow){font-size:16px;line-height:1.45;max-width:100%;margin-top:13px}
+ .hero-actions{margin-top:14px;gap:13px;flex-wrap:nowrap}
+ .hero-actions .btn{font-size:13px;min-height:43px;padding:10px 14px;gap:12px;flex-shrink:0}
+ .scroll-cue{font-size:9px;letter-spacing:0;line-height:1.5}
+ .machine-stage{inset:326px -3% 240px;pointer-events:auto}
+ .stage-watermark{font-size:60vw;top:8%;left:12%}
+ .stage-signature{font-size:9px;bottom:47px;letter-spacing:.03em}
+ .machine-rotation{gap:10px;bottom:0}
+ .machine-rotation>span{font-size:11px}
+ .machine-rotation button{min-width:40px;min-height:40px}
+ .machine-rotation button[data-rotate="0"]{font-size:11px;padding:0 9px}
+ .machine-explorer{bottom:99px;left:16px;right:16px;width:auto;max-width:none;height:132px;min-height:0;padding:10px}
+ .machine-part-tabs{gap:5px}
+ .machine-part-tabs button{min-height:42px;padding:6px 3px;font-size:12px;gap:4px}
+ .machine-part-tabs button>span{display:none}
+ .machine-part-detail{min-height:61px;padding-top:8px}
+ .machine-part-detail p{font-size:13px;line-height:1.45}
+ .assembly-console{left:20px;right:20px;bottom:15px;gap:2px 8px;padding-top:9px;grid-template-columns:1fr auto}
+ .assembly-console>.mono{font-size:10px;letter-spacing:.08em}
+ .assembly-console output{font-size:12px;min-width:90px}
+ .assembly-controls{gap:12px}.assembly-controls button{font-size:13px;min-height:40px}
+}
+@media(max-width:360px){
+ .hero-copy{left:17px;right:17px;top:94px}.hero-copy h1{font-size:39px}
+ .hero-copy>p:not(.eyebrow){font-size:15px}.hero-copy .eyebrow{font-size:9px}
+ .hero-actions .btn{font-size:12px;padding:10px 12px}.scroll-cue{font-size:8px}
+ .machine-stage{top:322px;bottom:246px}.machine-explorer{left:11px;right:11px;height:139px}
+ .machine-part-tabs button{font-size:11px;gap:3px}.machine-part-detail p{font-size:12px;line-height:1.45}
+ .machine-rotation{gap:6px}.machine-rotation>span{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.machine-explorer{transition:none}}
+@media(max-width:760px){.machine-part-tabs button{font-size:14px}.machine-part-detail p{font-size:14px}.machine-rotation>span{font-size:12px}}
+@media(max-width:360px){.machine-part-tabs button{font-size:12px}.machine-part-detail p{font-size:13px}}
+.machine-explorer:not(.has-detail){min-height:0;height:66px}
+.machine-explorer:not(.has-detail) .machine-part-detail{display:none}
+.machine-sticky:has(.machine-explorer:not(.has-detail)) .machine-stage{bottom:184px}
+@media(max-width:760px){
+ .machine-sticky{min-height:720px}
+ #machine-canvas{height:calc(100% - 90px)}
+ .machine-sticky:has(.machine-explorer:not(.has-detail)) .machine-stage{bottom:173px}
+ .machine-explorer:not(.has-detail){height:64px}
+}

@@ -1,8 +1,8 @@
-import {mountSalesPage} from './sales-page.mjs?v=refinement-1';
-import {mountSignals} from './signals.mjs?v=refinement-1';
-import {mountGame} from './game.mjs?v=refinement-1';
-import {mountControl} from './control.mjs?v=refinement-1';
-import {BASE} from './mission.mjs?v=refinement-1';
+import {mountSalesPage} from './sales-page.mjs?v=story-2';
+import {mountSignals} from './signals.mjs?v=story-2';
+import {mountGame} from './game.mjs?v=story-2';
+import {mountControl} from './control.mjs?v=story-2';
+import {BASE} from './mission.mjs?v=story-2';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
@@ -15,7 +15,7 @@ export function boot(mountDeck){
  $('#menu-toggle').onclick=()=>{const el=$('#chapters');el.hidden=!el.hidden;$('#menu-toggle').setAttribute('aria-expanded',String(!el.hidden))};
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false')}});
  const control=mountControl(toast);mountGame({toast,paused:()=>paused,handoff:control.handoff,request:control.request,recordInfo:control.recordInfo,openRecord:control.openRecord,onClear:control.clear,go});
- import('./machine.mjs').then(m=>m.mountMachine(()=>paused)).catch(()=>{$('#machine-fallback').hidden=false;$('#machine-canvas').hidden=true});
+ import('./machine.mjs?v=story-2').then(m=>m.mountMachine(()=>paused)).catch(()=>{$('#machine-fallback').hidden=false;$('#machine-canvas').hidden=true});
  if(location.hash==='#mission')requestAnimationFrame(()=>go(2));
  signals=mountSignals({main,paused});
  if(location.hash==='#signal')requestAnimationFrame(()=>go(1));
@@ -42,8 +42,8 @@ export function boot(mountDeck){
  }
  ids.forEach(id=>$('#'+id).addEventListener('input',model));model();
  const horizons=[
- ['Make the first pilot measurable.',['Map the real C4C lead lifecycle, owners and response expectations. Establish baseline conversion and handoff loss.','Pilot one event: hands-on equipment, a personal needs finder, personal follow-up and a documented walkthrough request.','Review completion, accepted ownership, meeting quality and next-action coverage every week.']],
- ['Scale what earns its place.',['Compare event, LinkedIn, YouTube and referral cohorts by qualified pipeline and outcomes.','Refine permission-based nurture, partner acknowledgment and manager escalation.','Expand the audiences and events that produce useful conversations; test referral incentives with clear terms.']],
+ ['Make the first pilot measurable.',['Map the real C4C lead lifecycle, owners and response expectations. Establish baseline conversion and handoff loss.','Pilot one event: large displays, a staffed hands-on equipment demonstration, a fast needs finder and an owned walkthrough request.','Review completion, accepted ownership, meeting quality and next-action coverage every week.']],
+ ['Scale what earns its place.',['Compare event, LinkedIn, YouTube and referral cohorts by qualified pipeline and outcomes.','Use captured needs to shape LinkedIn and YouTube retargeting. Pair relevant creative with local sales outreach, partner acknowledgment and visible next actions.','Expand the audiences and events that produce useful conversations; test referral incentives with clear terms.']],
  ['Build a learning growth system.',['Feed verified outcomes back into content, recommendations and rep coaching.','Evaluate AI-assisted brief preparation and follow-up prioritization with human review.','Scale across regions with local ownership, consistent measurement and validated CRM integrations.']]
  ];
  function horizon(i){document.querySelectorAll('[data-horizon]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.horizon)===i)));const h=horizons[i];$('#horizon-detail').innerHTML='<h3>'+h[0]+'</h3><ol>'+h[1].map(x=>'<li>'+x+'</li>').join('')+'</ol>';if(!paused)$('#horizon-detail').animate([{clipPath:'inset(0 100% 0 0)',transform:'translateX(-15px)'},{clipPath:'inset(0 0 0 0)',transform:'none'}],{duration:650,easing:'cubic-bezier(.16,1,.3,1)'})}

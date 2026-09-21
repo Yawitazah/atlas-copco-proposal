@@ -1,4 +1,4 @@
-import {MODELS,esc,fit} from './mission.mjs?v=refinement-1';
+import {MODELS,esc,fit} from './mission.mjs?v=story-2';
 export function showDetails(title,html){
  const dialog=document.querySelector('#detail-dialog');
  document.querySelector('#detail-content').innerHTML='<header class="detail-head"><h2 id="detail-title">'+title+'</h2><button type="button" aria-label="Close details" id="detail-close">×</button></header><div class="detail-body">'+html+'</div>';
