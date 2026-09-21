@@ -1,5 +1,5 @@
-import {MODELS,esc,fit,briefing,publicLink} from './mission.mjs?v=layout-4';
-import {equipmentDetails} from './equipment.mjs?v=layout-4';
+import {MODELS,esc,fit,briefing,publicLink} from './mission.mjs?v=conversion-7';
+import {equipmentDetails} from './equipment.mjs?v=conversion-7';
 export function mountSalesPage(host,state,{save,toast,handoff,request,recordInfo,openRecord,go,edit}){
  const a=state.answers,m=MODELS.find(x=>x.id===a.model)||MODELS[1];
  if(!state.code){state.code='AIR-'+crypto.getRandomValues(new Uint32Array(1))[0].toString(36).toUpperCase();save();}
@@ -16,7 +16,7 @@ export function mountSalesPage(host,state,{save,toast,handoff,request,recordInfo
   if(action==='copy')return copy();
   if(action==='share'){try{if(navigator.share)await navigator.share({title:'Find equipment for your next project',url:publicLink(state.code)});else await copy();}catch(e){if(e.name!=='AbortError')toast('Use Copy invitation link below.');}return;}
   if(action==='download'){const blob=new Blob([briefing(state)],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='portable-air-private-brief.txt';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
-  if(action==='record'){const id=ensure();if(openRecord)openRecord(id);else go(3);return;}
+  if(action==='record'){const id=ensure();if(openRecord)openRecord(id);else go(4);return;}
   if(action==='visit'&&a.visit==='Later'&&edit){edit(5);return;}
   const id=ensure(),info=request(id,action==='quote'?'quote':'walkthrough');
   const receipt=host.querySelector('.sales-receipt');receipt.hidden=false;receipt.innerHTML='<b>✓ '+(action==='quote'?'Quote request captured':'Walkthrough request captured')+'</b><span>'+esc(info.owner)+' owns the next step: '+esc(info.next)+'.</span><small>Visible in your local sales record · '+esc(id)+'</small>';owner();

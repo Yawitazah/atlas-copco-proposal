@@ -1,9 +1,9 @@
-import {STEPS,MODELS,blank,preferred,complete,esc,localDate} from './mission.mjs?v=layout-4';
-import {QUESTIONS,questionsFor,questionError} from './questions.mjs?v=layout-4';
-import {mountEquipment,showDetails} from './equipment.mjs?v=layout-4';
-import {mountSalesPage} from './sales-page.mjs?v=layout-4';
-import {zahSodaPop} from './sodapop.mjs?v=layout-4';
-import {completionProgress} from './progress.mjs?v=layout-4';
+import {STEPS,MODELS,blank,preferred,complete,esc,localDate} from './mission.mjs?v=conversion-7';
+import {QUESTIONS,questionsFor,questionError} from './questions.mjs?v=conversion-7';
+import {mountEquipment,showDetails} from './equipment.mjs?v=conversion-7';
+import {mountSalesPage} from './sales-page.mjs?v=conversion-7';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-7';
+import {completionProgress} from './progress.mjs?v=conversion-7';
 const $=s=>document.querySelector(s);
 export function mountGame({toast,paused,handoff,request,recordInfo,openRecord,go,onClear}){
  const key='zah-atlas-mission-v3';let state=blank(),rewardTimer;
@@ -61,5 +61,5 @@ export function mountGame({toast,paused,handoff,request,recordInfo,openRecord,go
  new ResizeObserver(scheduleSticky).observe(shell);
  $('#restart-mission').onclick=()=>{const d=showDetails('Restart your equipment plan?','<p>This clears the profile and its demonstration sales record on this device. You can keep your current plan or start again.</p><div class="sales-actions"><button type="button" class="btn dark" id="keep-profile">Keep my plan</button><button type="button" class="btn gold" id="confirm-restart">Restart my plan</button></div>');$('#keep-profile').onclick=()=>d.close();$('#confirm-restart').onclick=()=>{d.close();onClear(state.id);state=blank();save();render();focusStage();scheduleSticky();toast('Ready for a new equipment profile.');};};
  render();scheduleSticky();
- return {showExample(example){state=example;save();render();go(2);requestAnimationFrame(focusStage);}};
+ return {showExample(example){state=example;save();render();go(3);requestAnimationFrame(focusStage);}};
 }

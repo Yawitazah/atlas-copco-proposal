@@ -1,4 +1,4 @@
-import {MODELS,esc,fit} from './mission.mjs?v=layout-4';
+import {MODELS,esc,fit} from './mission.mjs?v=conversion-7';
 
 const POWER_SEGMENTS=10;
 const MAX_COMPARISON_FLOW=Math.max(...MODELS.map(model=>model.flow));
@@ -7,6 +7,27 @@ export function equipmentPower(model){
  const level=Math.max(1,Math.min(POWER_SEGMENTS,Math.round(model.flow/MAX_COMPARISON_FLOW*POWER_SEGMENTS)));
  const descriptor=level<=3?'Compact output':level<=6?'Stronger output':'Highest output here';
  return {level,descriptor,max:POWER_SEGMENTS};
+}
+
+export function equipmentCapabilities(model){
+ const delivery=equipmentPower(model).level;
+ const metrics=[
+  {key:'delivery',label:'Air delivery',icon:'≈',value:delivery,detail:model.flow+' cfm at 100 psi'},
+  {key:'pressure',label:'Pressure flexibility',icon:'↕',value:model.pressureLevel,detail:model.pressure+' psi working range'},
+  {key:'mobility',label:'Jobsite mobility',icon:'→',value:model.mobilityLevel,detail:model.weight.toLocaleString()+' lb wet weight'},
+  {key:'range',label:'Application range',icon:'◇',value:model.rangeLevel,detail:model.signature}
+ ];
+ const overall=Math.round(metrics.reduce((sum,item)=>sum+item.value,0)/metrics.length);
+ return {metrics,overall,signature:model.signature};
+}
+
+function capabilitySegments(value){
+ return Array.from({length:10},(_,index)=>'<i class="capability-segment'+(index<value?' is-active':'')+'" aria-hidden="true"></i>').join('');
+}
+
+function capabilityPanel(model,variant='compact'){
+ const profile=equipmentCapabilities(model);
+ return '<section class="capability-profile capability-profile--'+variant+'" aria-label="'+model.name+' capability profile"><header><span>Overall capability</span><strong>'+String(profile.overall).padStart(2,'0')+' <small>/ 10</small></strong><b>'+profile.signature+'</b></header><div class="capability-list">'+profile.metrics.map(metric=>'<div class="capability-row"><span class="capability-label"><i aria-hidden="true">'+metric.icon+'</i><b>'+metric.label+'</b><small>'+metric.detail+'</small></span><span class="capability-score" aria-label="'+metric.label+' '+metric.value+' out of 10"><em>'+metric.value+'</em><span>'+capabilitySegments(metric.value)+'</span></span></div>').join('')+'</div></section>';
 }
 
 function powerMeter(model,power){
@@ -29,7 +50,7 @@ export function showDetails(title,html){
 
 export function equipmentDetails(model,answers,previous){
  const m=model,old=previous&&previous.id!==m.id?previous:null,power=equipmentPower(m);
- showDetails(m.name,'<div class="equipment-detail-image" data-power-level="'+power.level+'" style="--equipment-accent:'+m.accent+'"><img src="./assets/'+m.image+'" alt="'+m.name+' product cutout"></div><p>'+m.use+'</p><dl class="detail-specs"><div><dt>Airflow at 100 psi</dt><dd>'+m.flow+' cfm</dd></div><div><dt>Working pressure</dt><dd>'+m.pressure+' psi</dd></div><div><dt>Engine</dt><dd>'+m.engine+'</dd></div><div><dt>Power source</dt><dd>Diesel</dd></div><div><dt>Relative power level</dt><dd>'+power.level+' / '+power.max+'</dd></div></dl>'+(old?'<div class="compare-change"><b>Compared with '+old.name+'</b><p>'+(m.flow-old.flow>0?'+':'')+(m.flow-old.flow)+' cfm at 100 psi. '+(m.id==='400'?'This option also lists 150 psi operation.':'Compare the operating point with your actual tool demand.')+'</p></div>':'')+'<h3>Your application</h3><p>'+esc(answers.application||'Tell us about your site to make this comparison more useful.')+'</p><p class="fit-note">'+esc(fit(answers,m))+'</p><p>Final selection depends on simultaneous tool demand, duty cycle and site conditions. More capacity is useful when the work requires it.</p><a class="btn dark" href="'+m.url+'" target="_blank" rel="noopener">Manufacturer details ↗</a><p class="form-hint">The power level is a relative view of listed airflow across these three machines, not an efficiency or quality rating. Product image may show optional equipment. Published specifications checked September 20, 2026.</p>');
+ showDetails(m.name,'<div class="equipment-detail-image" data-power-level="'+power.level+'" style="--equipment-accent:'+m.accent+'">'+airflowField()+'<img src="./assets/'+m.image+'" alt="'+m.name+' product cutout"></div><p>'+m.use+'</p>'+capabilityPanel(m,'detail')+'<dl class="detail-specs"><div><dt>Airflow at 100 psi</dt><dd>'+m.flow+' cfm</dd></div><div><dt>Working pressure</dt><dd>'+m.pressure+' psi</dd></div><div><dt>Engine</dt><dd>'+m.engine+'</dd></div><div><dt>Wet weight</dt><dd>'+m.weight.toLocaleString()+' lb</dd></div><div><dt>Dimensions</dt><dd>'+m.dimensions+'</dd></div><div><dt>Sound pressure</dt><dd>'+m.sound+'</dd></div></dl><div class="application-signature"><span>Signature strength</span><b>'+m.signature+'</b><p>'+m.applications+'.</p></div>'+(old?'<div class="compare-change"><b>Compared with '+old.name+'</b><p>'+(m.flow-old.flow>0?'+':'')+(m.flow-old.flow)+' cfm at 100 psi. '+(m.id==='400'?'This option also lists 150 psi operation.':'Compare the operating point with your actual tool demand.')+'</p></div>':'')+'<h3>Your application</h3><p>'+esc(answers.application||'Tell us about your site to make this comparison more useful.')+'</p><p class="fit-note">'+esc(fit(answers,m))+'</p><p>Final selection depends on simultaneous tool demand, duty cycle and site conditions. More capacity is useful when the work requires it.</p><a class="btn dark" href="'+m.url+'" target="_blank" rel="noopener">Manufacturer details ↗</a><p class="form-hint">Capability scores compare these three machines within this demonstration. They are not quality, efficiency or final-sizing ratings. Product image may show optional equipment. Published specifications checked September 21, 2026.</p>');
 }
 
 export function mountEquipment(host,answers,{paused,onSelect}){
@@ -37,7 +58,7 @@ export function mountEquipment(host,answers,{paused,onSelect}){
  function draw(animate=false){
   const m=MODELS[index],power=equipmentPower(m),delta=previous?m.flow-previous.flow:0;
   const changeText=delta?(delta>0?'↑ '+Math.abs(delta)+' cfm more than ':'↓ '+Math.abs(delta)+' cfm less than ')+previous.name+'. Power level '+power.level+' of '+power.max+'.':m.note+' Power level '+power.level+' of '+power.max+'.';
-  host.innerHTML='<div class="equipment-selector" data-power-level="'+power.level+'" style="--equipment-accent:'+m.accent+'"><div class="equipment-stage"><div class="equipment-top"><span>ATLAS COPCO / PORTABLE AIR</span><span>'+String(index+1).padStart(2,'0')+' / 03</span></div><div class="machine-platform">'+airflowField()+'<div class="platform-ring"></div><div class="machine-shadow"></div><div class="machine-running"><img class="equipment-cutout" src="./assets/'+m.image+'" alt="'+m.name+' product cutout" draggable="false"></div></div><div class="equipment-title"><p>'+m.tag+'</p><h4>'+m.name+'</h4></div><div class="equipment-switch"><button type="button" id="machine-prev" aria-label="Previous machine" '+(index===0?'disabled':'')+'>←</button><div class="model-positions" role="group" aria-label="Choose equipment">'+MODELS.map((v,i)=>'<button type="button" data-model="'+i+'" aria-pressed="'+(i===index)+'" aria-label="'+v.name+', '+v.flow+' cfm">'+v.flow+'<small>cfm</small></button>').join('')+'</div><button type="button" id="machine-next" aria-label="Next machine" '+(index===MODELS.length-1?'disabled':'')+'>→</button></div></div><div class="equipment-readings"><div class="capacity-change" role="status">'+changeText+'</div><div class="equipment-metrics"><div><span>Airflow at 100 psi</span><strong>'+m.flow+' <small>cfm</small></strong></div><div><span>Working pressure</span><strong>'+m.pressure+' <small>psi</small></strong></div>'+powerMeter(m,power)+'</div><button type="button" class="equipment-detail-button" id="equipment-details">View details &amp; application fit <span>↗</span></button></div></div>';
+  host.innerHTML='<div class="equipment-selector" data-power-level="'+power.level+'" style="--equipment-accent:'+m.accent+'"><div class="equipment-stage"><div class="equipment-top"><span>ATLAS COPCO / PORTABLE AIR</span><span>'+String(index+1).padStart(2,'0')+' / 03</span></div><div class="machine-platform">'+airflowField()+'<div class="platform-ring"></div><div class="machine-shadow"></div><div class="machine-running"><img class="equipment-cutout" src="./assets/'+m.image+'" alt="'+m.name+' product cutout" draggable="false"></div></div><div class="equipment-title"><p>'+m.tag+'</p><h4>'+m.name+'</h4></div><div class="equipment-switch"><button type="button" id="machine-prev" aria-label="Previous machine" '+(index===0?'disabled':'')+'>←</button><div class="model-positions" role="group" aria-label="Choose equipment">'+MODELS.map((v,i)=>'<button type="button" data-model="'+i+'" aria-pressed="'+(i===index)+'" aria-label="'+v.name+', '+v.flow+' cfm">'+v.flow+'<small>cfm</small></button>').join('')+'</div><button type="button" id="machine-next" aria-label="Next machine" '+(index===MODELS.length-1?'disabled':'')+'>→</button></div></div><div class="equipment-readings"><div class="capacity-change" role="status">'+changeText+'</div><div class="equipment-metrics"><div><span>Airflow at 100 psi</span><strong>'+m.flow+' <small>cfm</small></strong></div><div><span>Working pressure</span><strong>'+m.pressure+' <small>psi</small></strong></div>'+powerMeter(m,power)+'</div>'+capabilityPanel(m)+'<button type="button" class="equipment-detail-button" id="equipment-details">View details &amp; application fit <span>↗</span></button></div></div>';
   answers.model=m.id;
   onSelect(m.id);
   const change=j=>{if(j<0||j>=MODELS.length||j===index)return;previous=m;index=j;draw(true);};
@@ -52,9 +73,10 @@ export function mountEquipment(host,answers,{paused,onSelect}){
   surface.onpointercancel=()=>{start=null;surface.classList.remove('is-interacting');};
   surface.onpointerleave=()=>{start=null;surface.classList.remove('is-interacting');};
   if(animate&&!paused()){
-   host.querySelector('.equipment-cutout').animate([{transform:'translateY(20px) scale(.9)',opacity:.2},{transform:'translateY(-7px) scale(1.02)',opacity:1},{transform:'translateY(0) scale(1)',opacity:1}],{duration:750,easing:'cubic-bezier(.16,1,.3,1)'});
-   host.querySelector('.equipment-power-meter').animate([{filter:'brightness(1.8)',transform:'scaleX(.96)'},{filter:'brightness(1)',transform:'scaleX(1)'}],{duration:900,easing:'cubic-bezier(.16,1,.3,1)'});
-   host.querySelector('.equipment-stage').animate([{boxShadow:'inset 0 0 90px '+m.accent+'99'},{boxShadow:'inset 0 0 0 '+m.accent+'00'}],{duration:1100});
+   const animate=(element,frames,options)=>{if(typeof element?.animate==='function')element.animate(frames,options)};
+   animate(host.querySelector('.equipment-cutout'),[{transform:'translateY(20px) scale(.9)',opacity:.2},{transform:'translateY(-7px) scale(1.02)',opacity:1},{transform:'translateY(0) scale(1)',opacity:1}],{duration:750,easing:'cubic-bezier(.16,1,.3,1)'});
+   animate(host.querySelector('.equipment-power-meter'),[{filter:'brightness(1.8)',transform:'scaleX(.96)'},{filter:'brightness(1)',transform:'scaleX(1)'}],{duration:900,easing:'cubic-bezier(.16,1,.3,1)'});
+   animate(host.querySelector('.equipment-stage'),[{boxShadow:'inset 0 0 90px '+m.accent+'99'},{boxShadow:'inset 0 0 0 '+m.accent+'00'}],{duration:1100});
   }
  }
  draw();

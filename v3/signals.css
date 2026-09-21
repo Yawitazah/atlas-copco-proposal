@@ -13,6 +13,12 @@
 .signal-core>#signal-core-status{font-size:9px;padding-top:8px;border-top:1px solid #bace9d33;width:100%;min-height:22px;color:#f1d588}
 .signal-lab[data-phase=personalize] .signal-core{animation:profilePulse .8s ease-in-out infinite alternate}.signal-lab[data-phase=complete] .signal-core{box-shadow:0 0 0 5px #c8ae6525,0 12px 32px #173f3414}
 @keyframes profilePulse{to{box-shadow:0 0 0 15px #ccb76215,0 0 45px #b3a24a40}}
+@keyframes signalPulseIn{0%,100%{transform:translate(-50%,-50%) scale(1)}55%{transform:translate(-50%,-50%) scale(1.06)}}
+@keyframes signalPulseOut{0%,100%{transform:translate(-50%,-50%) scale(1)}38%{transform:translate(-50%,-50%) scale(.965)}72%{transform:translate(-50%,-50%) scale(1.025)}}
+@keyframes signalPulseTap{0%,100%{transform:scale(1)}38%{transform:scale(.94)}72%{transform:scale(1.06)}}
+.signal-core.signal-pulse-in{animation:signalPulseIn .35s cubic-bezier(.2,.75,.25,1)}
+.signal-core.signal-pulse-out{animation:signalPulseOut .35s cubic-bezier(.2,.75,.25,1)}
+.signal-lab .source.signal-pulse-tap{animation:signalPulseTap .48s cubic-bezier(.2,.75,.25,1)}
 .signal-destinations{gap:18px}.signal-destinations>div{min-height:94px;padding:18px 15px 16px 43px;background:#e5e7db;border:1px solid #afbd9e77;border-radius:10px;transition:background .35s,border-color .35s}
 .signal-destinations b{font-size:13px;line-height:1.25;display:block}.signal-destinations small{font-size:10px;margin:5px 0 7px;line-height:1.4;color:#556e5d}.signal-mobile-break{display:none}
 .delivery-check{position:absolute;left:13px;top:18px;width:21px;height:21px;display:grid;place-items:center;border:1px solid #a1b493;border-radius:50%;font-size:10px;color:#627952;background:#eef0e5}.delivery-status{display:block;font-size:9px;color:#637454;min-height:13px}

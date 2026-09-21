@@ -1,4 +1,5 @@
-import {esc,MODELS} from './mission.mjs?v=layout-4';
+import {esc,MODELS} from './mission.mjs?v=conversion-7';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-7';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 function mountProfileTeaser(){
@@ -14,8 +15,11 @@ function mountProfileTeaser(){
  const teaser=document.createElement('aside');
  teaser.id='zah-profile-teaser';teaser.className='profile-teaser';teaser.setAttribute('aria-label','About Zah (Lorenzo) White');
  teaser.dataset.aboutTarget='.about-grid';teaser.dataset.profilePortrait='./assets/zah-headshot.png';
- teaser.innerHTML='<a class="profile-teaser-link" href="#'+about.id+'"><span class="profile-teaser-portrait"><span class="profile-teaser-initials" aria-hidden="true">ZW</span><img src="./assets/zah-headshot.png" alt="Zah White"></span><span class="profile-teaser-copy"><span class="profile-teaser-eyebrow">ATLAS COPCO CANDIDATE</span><strong>Zah (Lorenzo) White</strong><span>Marketing Communications Manager – APE</span><small>Branding &amp; Marketing Systems Strategist</small><b>Explore Lorenzo <i aria-hidden="true">→</i></b></span></a>';
+ teaser.innerHTML='<a class="profile-teaser-link" href="#'+about.id+'"><span class="profile-teaser-ribbon">MARKETING COMMUNICATIONS MANAGER · APE CANDIDATE</span><span class="profile-teaser-portrait"><span class="profile-teaser-initials" aria-hidden="true">LW</span><img src="./assets/zah-headshot.png" alt="Lorenzo White"></span><span class="profile-teaser-copy"><span class="profile-teaser-eyebrow">FOUNDER · ZAH BRAND SOLUTIONS</span><strong>Zah (Lorenzo) White</strong><span>Growth Marketing Strategy &amp; Systems Architect</span><small>Atlas Copco role candidate</small><b>Explore Lorenzo <i aria-hidden="true">→</i></b></span></a>';
  document.body.append(teaser);
+ if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setTimeout(()=>{
+  if(teaser.isConnected&&!teaser.classList.contains('is-hidden')&&!document.querySelector('dialog[open]'))zahSodaPop(teaser.querySelector('.profile-teaser-ribbon'),true);
+ },1450);
  const link=teaser.querySelector('a'),portrait=teaser.querySelector('img');
  portrait.addEventListener('error',()=>{portrait.hidden=true;teaser.classList.add('profile-teaser-no-portrait')},{once:true});
  link.addEventListener('click',event=>{

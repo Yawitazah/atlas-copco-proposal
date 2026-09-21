@@ -1,4 +1,4 @@
-import {showDetails} from './equipment.mjs?v=layout-4';
+import {showDetails} from './equipment.mjs?v=conversion-7';
 
 const svg=paths=>`<svg class="strategy-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 const ICONS={
@@ -11,6 +11,9 @@ const ICONS={
  capture:svg('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M9 9h6M9 13h6M9 17h4"/>'),
  personalize:svg('<path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/><path d="m18.4 5.6-2.1 2.1M7.7 16.3l-2.1 2.1M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1"/>'),
  follow:svg('<circle cx="9" cy="8" r="3"/><path d="M3.5 20c.5-4 2.2-6 5.5-6s5 2 5.5 6"/><path d="m15.5 15.5 2 2 4-5"/>')
+ ,brief:svg('<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M9 12h7M9 16h5"/>')
+ ,walkthrough:svg('<path d="M4 20V8l8-5 8 5v12"/><path d="M8 20v-7h8v7M3 20h18"/><path d="m16.5 8.5 1.5 1.5 3-3"/>')
+ ,owner:svg('<circle cx="9" cy="7" r="3"/><path d="M3.5 18c.5-4 2.2-6 5.5-6 2.2 0 3.7.9 4.6 2.5"/><path d="m15 15 2 2 4-5"/>')
 };
 
 export const CHANNELS=[
@@ -70,9 +73,9 @@ export const CHANNELS=[
 ];
 
 export const OUTCOMES=[
- {title:'Equipment brief',goal:40,summary:'A personalized equipment page makes the next decision easier.',body:'The captured application, equipment requirements and buying role shape a complete personalized sales page with relevant imagery, useful specifications and a clear next step.',steps:['Use the prospect’s name, company and application to personalize the page.','Show relevant equipment with a useful explanation of fit.','Offer quote, walkthrough and buying-team sharing options.'],meaning:'40 personalized equipment briefs in this illustrative cycle.'},
- {title:'Walkthrough',goal:25,summary:'Turn interest into a real site conversation.',body:'The prospect chooses the visit format, preferred window and people who should attend. A sales representative confirms the arrangement and learns about the actual work.',steps:['Capture site, timing, time zone and attendees.','Retain the request with the sales representative until availability is confirmed.','Log the visit and its next action so the conversation does not disappear.'],meaning:'25 walkthrough requests in this illustrative cycle. Requests are not confirmed appointments.'},
- {title:'Sales owner',goal:35,summary:'A handoff does not end accountability.',body:'A lead keeps its named sales representative, next action and due date. Sending it to a dealer, distributor or another team creates a tracked handoff instead of an invisible exit.',steps:['Show the assigned sales representative and whether the next action is accepted.','Record contact, partner acknowledgment and subsequent activity.','Surface missing actions and overdue follow-up for accountability review.'],meaning:'35 accountable next steps in this illustrative cycle.'}
+ {title:'Equipment brief',icon:ICONS.brief,goal:40,summary:'Turn captured needs into a personalized recommendation.',body:'The prospect’s application, equipment requirements and buying role shape a complete personalized sales page with relevant imagery, useful specifications and clear conversion options.',steps:['Use the prospect’s name, company and application to personalize the page.','Show relevant equipment with a useful explanation of fit.','Offer quote, walkthrough and buying-team sharing options.'],meaning:'40 personalized equipment briefs in this illustrative cycle.'},
+ {title:'Walkthrough',icon:ICONS.walkthrough,goal:25,summary:'Convert interest into a site-specific sales conversation.',body:'The prospect chooses the visit format, preferred window and people who should attend. An assigned sales professional confirms the arrangement and learns about the actual work.',steps:['Capture site, timing, time zone and attendees.','Retain the request with the assigned sales professional until availability is confirmed.','Log the visit and its next action so the conversation does not disappear.'],meaning:'25 walkthrough requests in this illustrative cycle. Requests are not confirmed appointments.'},
+ {title:'Assigned sales professional',icon:ICONS.owner,goal:35,summary:'Give every qualified lead an accountable next action.',body:'The lead keeps a named internal sales professional, next action and due date through conversion. A dealer, distributor, rental partner or another team becomes a governed route instead of an invisible exit.',steps:['Show the assigned sales professional and whether the next action is accepted.','Record contact, partner acknowledgment and subsequent activity.','Surface missing actions and overdue follow-up so a handoff never becomes a pass-off.'],meaning:'35 accountable next steps in this illustrative cycle.'}
 ];
 
 export function channelDetail(i,onSend){
@@ -88,5 +91,5 @@ export function channelDetail(i,onSend){
 
 export function outcomeDetail(i){
  const c=OUTCOMES[i];
- showDetails(c.title+' / why it matters','<div class="outcome-summary"><span class="eyebrow">A VISIBLE CUSTOMER OUTCOME</span><h3>'+c.summary+'</h3><p>'+c.body+'</p></div><ol class="strategy-steps">'+c.steps.map((s,n)=>'<li><b>0'+(n+1)+'</b><p>'+s+'</p></li>').join('')+'</ol><div class="goal-explainer"><b>'+c.meaning+'</b><p>Together the three cards total 100 follow-through actions. The same person may have more than one action, so this is not a count of 100 unique leads. Each traveling dot represents an illustrative batch of five actions. Soda Pop celebrates a completed card goal; the activity charge then settles before the next cycle.</p></div><p class="form-hint">Illustrative campaign goals, not actual performance or a forecast. Production outcomes would need verified activity records and a configured C4C connection.</p>');
+ showDetails(c.title+' / why it matters','<div class="outcome-summary"><span class="outcome-detail-icon">'+c.icon+'</span><span class="eyebrow">A VISIBLE CUSTOMER OUTCOME</span><h3>'+c.summary+'</h3><p>'+c.body+'</p></div><ol class="strategy-steps">'+c.steps.map((s,n)=>'<li><b>0'+(n+1)+'</b><p>'+s+'</p></li>').join('')+'</ol><div class="goal-explainer"><b>'+c.meaning+'</b><p>Together the three cards total 100 follow-through actions. The same person may have more than one action, so this is not a count of 100 unique leads. Each traveling dot represents an illustrative batch of five actions. Soda Pop celebrates a completed card goal; the activity charge then settles before the next cycle.</p></div><p class="form-hint">Illustrative campaign goals, not actual performance or a forecast. Production outcomes would need verified activity records and a configured C4C connection.</p>');
 }

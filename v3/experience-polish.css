@@ -36,6 +36,7 @@
  #zw-main{scroll-padding-top:78px}
  [data-experience]{scroll-margin-top:68px}
  .scene-pager{display:block;position:relative;z-index:12;padding:28px 20px 34px;border-top:12px solid #d5b767;background:#0c332d;color:#f3f1e8}
+ [data-experience="disconnect"] .scene-pager{background:#e6ebec;color:#143b3d;border-top-color:#a34b39}
  [data-experience="signal"] .scene-pager,[data-experience="impact"] .scene-pager{background:#e6ebec;color:#143b3d;border-top-color:#176dcc}
  [data-experience="mission"] .scene-pager{background:#123746;color:#f4f6f4;border-top-color:#65a8c5}
  [data-experience="control"] .scene-pager{background:#0b2938;color:#f1f5f5;border-top-color:#69b3ce}
@@ -44,7 +45,7 @@
  .scene-pager button{display:flex;align-items:center;justify-content:space-between;gap:15px;width:100%;min-height:54px;padding:14px 16px;border:1px solid #a8bcae7d;border-radius:9px;background:#ffffff0b;color:inherit;text-align:left;font-size:14px;font-weight:650;line-height:1.35}
  .scene-pager button span{font-size:20px;font-weight:400}
  .scene-pager .scene-pager-next{background:#f3c46d;border-color:#f3c46d;color:#173b31}
- [data-experience="signal"] .scene-pager button:not(.scene-pager-next),[data-experience="impact"] .scene-pager button:not(.scene-pager-next){background:#fff;border-color:#b4c6ca}
+ [data-experience="disconnect"] .scene-pager button:not(.scene-pager-next),[data-experience="signal"] .scene-pager button:not(.scene-pager-next),[data-experience="impact"] .scene-pager button:not(.scene-pager-next){background:#fff;border-color:#b4c6ca}
  .signal-field::before{inset:8px 0;border-radius:25px;background:linear-gradient(135deg,#ffffff70,#dce5df24)}
  .signal-field::after{width:236px;height:236px;box-shadow:0 0 0 24px #6c8b7b09}
  .signal-engine-label{top:19px;font-size:8px}
