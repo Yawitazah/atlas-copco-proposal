@@ -2,7 +2,8 @@
 
 - Tool: OpenAI built-in `image_gen` / ImageGen
 - Generated source: `C:/Users/user/.codex/generated_images/01a0bfe2-52bf-7a50-ad7c-700846b71018/exec-6f7902f8-fd35-4268-86ee-57fe6e4fb5bc.png`
-- Presentation asset: `web-v3/assets/trade-show-booth.png`
+- Original presentation asset: `web-v3/assets/trade-show-booth.png` (2,319,999 bytes; SHA-256 `07E2B5521EAA0BC1875A21389F6C97B28EA9855749F33DB9289499B3DFC30D5C`)
+- Optimized delivery asset: `web-v3/assets/trade-show-booth.webp` (288,784 bytes; quality 88; SHA-256 `ACA578DFEF2FF8BF29EEE665D9832A91800678613B9D08E6CA7064DCD002CADF`)
 - Reference images: the presentation's existing pneumatic jobsite photograph and XAS 400 cutout.
 - Status: illustrative event concept, not a photograph of an existing Atlas Copco booth or a factory equipment rendering.
 
