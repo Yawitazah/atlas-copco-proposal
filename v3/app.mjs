@@ -1,26 +1,32 @@
-import {mountSalesPage} from './sales-page.mjs?v=strategy-1';
-import {mountSignals} from './signals.mjs?v=strategy-1';
-import {mountGame} from './game.mjs?v=strategy-1';
-import {mountControl} from './control.mjs?v=strategy-1';
-import {BASE} from './mission.mjs?v=strategy-1';
-import {mountOverview} from './overview.mjs?v=strategy-1';
+import {mountSalesPage} from './sales-page.mjs?v=strategy-2';
+import {mountSignals} from './signals.mjs?v=strategy-2';
+import {mountGame} from './game.mjs?v=strategy-2';
+import {mountControl} from './control.mjs?v=strategy-2';
+import {BASE} from './mission.mjs?v=strategy-2';
+import {mountOverview} from './overview.mjs?v=strategy-2';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
- const main=$('#zw-main'),root=$('.zw-root');let paused=matchMedia('(prefers-reduced-motion: reduce)').matches,overviewOpen=false,timer,signals;
+ const main=$('#zw-main'),root=$('.zw-root');let paused=false,overviewOpen=false,timer,signals,machine;
  const effectsPaused=()=>paused||overviewOpen;
- const motion=()=>{document.body.classList.toggle('motion-paused',paused);$('#motion-toggle').textContent=paused?'Enable effects':'Pause effects';$('#motion-toggle').setAttribute('aria-pressed',String(paused));signals?.setPaused(effectsPaused())};motion();$('#motion-toggle').onclick=()=>{paused=!paused;motion()};
+ const motion=()=>{document.body.classList.toggle('motion-paused',paused);$('#motion-toggle').textContent=paused?'Enable effects':'Pause effects';$('#motion-toggle').setAttribute('aria-pressed',String(paused));signals?.setPaused(effectsPaused());machine?.setPaused(effectsPaused())};motion();$('#motion-toggle').onclick=()=>{paused=!paused;motion()};
  function toast(s){clearTimeout(timer);$('#toast').textContent=s;$('#toast').classList.add('show');timer=setTimeout(()=>$('#toast').classList.remove('show'),4200)}
- function go(i){const el=$('[data-idx="'+i+'"]');if(!el)return;main.scrollTo({top:el.offsetTop,behavior:paused?'auto':'smooth'});$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false')}
+ function go(i,{focus=false}={}){const el=$('[data-idx="'+i+'"]');if(!el)return;main.scrollTo({top:el.offsetTop,behavior:paused?'auto':'smooth'});$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false');if(focus){const heading=el.querySelector('h1,h2');if(heading){heading.tabIndex=-1;setTimeout(()=>heading.focus({preventScroll:true}),paused?0:520)}}}
  mountDeck(root,{onScene(i){root.dataset.activeScene=i;document.body.dataset.scene=i}});
- document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b&&!b.hasAttribute('data-act')){e.preventDefault();go(Number(b.dataset.go))}});
+ function mountScenePagers(){
+  const sections=[...main.querySelectorAll('[data-idx]')],fallback=['Inside the machine','Follow the signal','Take the Goal Pulse Check','Keep ownership visible','Model the impact','The road ahead'];
+  const names=sections.map((section,i)=>section.getAttribute('aria-label')||fallback[i]||'Section '+(i+1));
+  sections.forEach((section,i)=>{const nav=document.createElement('nav');nav.className='scene-pager';nav.setAttribute('aria-label','Section navigation');const count=document.createElement('span');count.className='scene-pager-count';count.textContent='SECTION '+String(i+1).padStart(2,'0')+' / '+String(sections.length).padStart(2,'0');nav.append(count);const actions=document.createElement('div');if(i>0){const back=document.createElement('button');back.type='button';back.dataset.go=String(i-1);back.innerHTML='<span aria-hidden="true">←</span> Back to '+names[i-1];actions.append(back)}if(i<sections.length-1){const next=document.createElement('button');next.type='button';next.className='scene-pager-next';next.dataset.go=String(i+1);next.innerHTML='Continue to '+names[i+1]+' <span aria-hidden="true">→</span>';actions.append(next)}else{const overview=document.createElement('button');overview.type='button';overview.className='scene-pager-next';overview.setAttribute('data-overview-open','');overview.innerHTML='Return to strategy overview <span aria-hidden="true">↗</span>';actions.append(overview)}nav.append(actions);section.append(nav)});
+ }
+ mountScenePagers();
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b&&!b.hasAttribute('data-act')){e.preventDefault();go(Number(b.dataset.go),{focus:Boolean(b.closest('.scene-pager'))})}});
  $('#menu-toggle').onclick=()=>{const el=$('#chapters');el.hidden=!el.hidden;$('#menu-toggle').setAttribute('aria-expanded',String(!el.hidden))};
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false')}});
  const control=mountControl(toast);mountGame({toast,paused:effectsPaused,handoff:control.handoff,request:control.request,recordInfo:control.recordInfo,openRecord:control.openRecord,onClear:control.clear,go});
- import('./machine.mjs?v=strategy-1').then(m=>m.mountMachine(effectsPaused)).catch(()=>{$('#machine-fallback').hidden=false;$('#machine-canvas').hidden=true});
+ import('./machine.mjs?v=strategy-2').then(m=>{machine=m.mountMachine(effectsPaused)}).catch(()=>{$('#machine-fallback').hidden=false;$('#machine-canvas').hidden=true});
  if(location.hash==='#mission')requestAnimationFrame(()=>go(2));
- signals=mountSignals({main,paused:effectsPaused});
- mountOverview({onEnter:()=>go(0),onOpenChange(open){overviewOpen=open;signals?.setPaused(effectsPaused())}});
+ signals=mountSignals({main,paused:effectsPaused()});
+ mountOverview({onEnter:()=>go(0),onOpenChange(open){overviewOpen=open;signals?.setPaused(effectsPaused());machine?.setPaused(effectsPaused())}});
  if(location.hash==='#signal')requestAnimationFrame(()=>go(1));
  const explanations=[
   ['Sales context from C4C','Lead identity, company, source and assigned owner supply the starting point. This example uses fictional records; a real export or connection has not been configured.'],

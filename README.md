@@ -10,6 +10,9 @@ V3 adds a scroll-controlled 3D compressor cutaway, the original ZAH Tip Jar
 Soda Pop, a seven-achievement mission, real equipment photography and
 capacity comparisons, personal profiles, buying-team mapping, walkthrough
 preferences, referral invitations and an accountable local lead dashboard.
+It also includes a strategy overview, automatic/manual compressor rotation,
+an animated connected-journey signal engine, an illustrative trade-show booth
+concept, and explicit Back/Continue section navigation on phones.
 
 It consumes the installed ZAH Workshop engine. The original Tip Jar effect
 is extracted at build time; payment and private application code are not included.

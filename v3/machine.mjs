@@ -2,6 +2,7 @@ import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+export const mobileCameraDistance=(expansion,aspect=1)=>T.MathUtils.lerp(8.4,15.2,clamp((1.1-aspect)/.36))+.4*clamp(expansion);
 export function fitToEnvelope(object,min,max){
  const bounds=new T.Box3().setFromObject(object),size=bounds.getSize(new T.Vector3()),room=new T.Vector3().subVectors(max,min);
  const scale=Math.min(1,room.x/size.x,room.y/size.y,room.z/size.z);object.scale.multiplyScalar(scale);
@@ -115,7 +116,8 @@ export function mountMachine(paused){
  const ring=mesh(new T.TorusGeometry(3.45,.012,5,100),new T.MeshBasicMaterial({color:0xa5b1b0,transparent:true,opacity:.19}),[0,-.15,0],group);ring.rotation.x=-Math.PI/2;
  for(let i=0;i<48;i++){const a=i*Math.PI/24;const m=box(.012,.012,i%4===0?.19:.07,green,[Math.cos(a)*3.6,-.14,Math.sin(a)*3.6]);m.rotation.y=-a+Math.PI/2;}
  group.rotation.y=-.34;group.position.y=-1.3;
- let target=0,current=0,manual=false,visible=true,last=0,dirty=true,yaw=0,desiredYaw=0,drag=null;
+ let target=0,current=0,manual=false,visible=true,last=0,dirty=true,yaw=0,desiredYaw=0,drag=null,hovered=false,raf=0,contextLost=false;
+ const AUTO_YAW_SPEED=Math.PI*2/24000,FAN_SPEED=.0045;
  const range=document.querySelector('#assembly-scrub'),readout=document.querySelector('#assembly-readout');
  document.querySelectorAll('[data-component]').forEach(l=>l.remove());
  const explorer=document.createElement('aside');explorer.className='machine-explorer';explorer.setAttribute('aria-label','Explore machine components');
@@ -126,47 +128,57 @@ export function mountMachine(paused){
  let activePart=-1,pinnedPart=false,peekUntil=0,seenPart=-1;
  function showPart(index,pinned=false){activePart=index;pinnedPart=pinned;peekUntil=performance.now()+2600;partCopy.textContent=index<0?'Explore a component to see its role.':details[index][1];partClose.hidden=index<0;explorer.classList.toggle('has-detail',index>=0);partButtons.forEach((b,i)=>{b.setAttribute('aria-expanded',String(i===index));b.querySelector('b').textContent=i===index?'−':'+';});}
  partButtons.forEach((b,i)=>b.addEventListener('click',()=>showPart(activePart===i?-1:i,true)));partClose.addEventListener('click',()=>showPart(-1));
- const rotation=document.createElement('div');rotation.className='machine-rotation';rotation.innerHTML='<span>Drag sideways to rotate</span><div><button type="button" data-rotate="-1" aria-label="Rotate machine left">↶</button><button type="button" data-rotate="0">Reset view</button><button type="button" data-rotate="1" aria-label="Rotate machine right">↷</button></div>';
- host.append(rotation);rotation.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{desiredYaw=+b.dataset.rotate===0?0:desiredYaw+(+b.dataset.rotate)*Math.PI/4;dirty=true;}));
+ const rotation=document.createElement('div');rotation.className='machine-rotation';rotation.innerHTML='<span>Auto-rotates · drag to inspect</span><div><button type="button" data-rotate="-1" aria-label="Rotate machine left">↶</button><button type="button" data-rotate="0">Reset view</button><button type="button" data-rotate="1" aria-label="Rotate machine right">↷</button></div>';
+ host.append(rotation);rotation.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{desiredYaw=+b.dataset.rotate===0?0:desiredYaw+(+b.dataset.rotate)*Math.PI/4;dirty=true;schedule();}));
  canvas.setAttribute('aria-label','Illustrative portable compressor, not factory CAD. Drag horizontally to rotate. Scroll or use the expansion slider to inspect the components.');canvas.setAttribute('tabindex','0');
- canvas.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();e.stopPropagation();desiredYaw+=(e.key==='ArrowLeft'?-1:1)*Math.PI/12;dirty=true;}if(e.key==='Home'){e.preventDefault();desiredYaw=0;dirty=true;}});
- canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={id:e.pointerId,x:e.clientX,y:e.clientY,last:e.clientX,locked:false};});
- canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.locked){if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){drag=null;return;}if(Math.abs(dx)<8)return;drag.locked=true;canvas.setPointerCapture(e.pointerId);canvas.classList.add('is-dragging');}desiredYaw+=(e.clientX-drag.last)*.009;drag.last=e.clientX;dirty=true;});
- const stopDrag=()=>{drag=null;canvas.classList.remove('is-dragging');};canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);canvas.addEventListener('lostpointercapture',stopDrag);
+ canvas.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();e.stopPropagation();desiredYaw+=(e.key==='ArrowLeft'?-1:1)*Math.PI/12;dirty=true;schedule();}if(e.key==='Home'){e.preventDefault();desiredYaw=0;dirty=true;schedule();}});
+ canvas.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hovered=true;desiredYaw=yaw;canvas.dataset.autoPaused='hover';}});
+ canvas.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){hovered=false;canvas.dataset.autoPaused='false';last=0;schedule();}});
+ canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={id:e.pointerId,type:e.pointerType,x:e.clientX,y:e.clientY,last:e.clientX,locked:false};canvas.dataset.autoPaused='drag';schedule();});
+ canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.locked){if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){drag=null;canvas.dataset.autoPaused=hovered?'hover':'false';return;}if(Math.abs(dx)<8)return;drag.locked=true;canvas.setPointerCapture(e.pointerId);canvas.classList.add('is-dragging');}desiredYaw+=(e.clientX-drag.last)*.009;drag.last=e.clientX;dirty=true;schedule();});
+ const stopDrag=()=>{drag=null;canvas.classList.remove('is-dragging');canvas.dataset.autoPaused=hovered?'hover':'false';last=0;schedule();};canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);canvas.addEventListener('lostpointercapture',stopDrag);
  const phases=[['Power.','With purpose.','The machine is only the beginning. See how one conversation becomes a useful next step—and stays visible after the handoff.'],['Open it up.','See inside.','Every part does a job. The customer path should, too.'],['Every part.','One purpose.','Attention becomes context. Context becomes a next step someone owns.']];
- function update(){if(manual)return;const r=section.getBoundingClientRect(),h=main.clientHeight,p=clamp(-r.top/(section.clientHeight-h));target=clamp((p-.04)/.82);manual=false;dirty=true}
+ function update(){if(manual)return;const r=section.getBoundingClientRect(),h=main.clientHeight,p=clamp(-r.top/(section.clientHeight-h));target=clamp((p-.04)/.82);manual=false;dirty=true;schedule()}
  main.addEventListener('scroll',update,{passive:true});
  main.addEventListener('wheel',()=>{manual=false;},{passive:true});main.addEventListener('touchmove',()=>{manual=false;},{passive:true});main.addEventListener('pointerdown',e=>{if(e.target===main)manual=false;},{passive:true});main.addEventListener('keydown',e=>{if(['PageDown','PageUp','ArrowDown','ArrowUp','End'].includes(e.key)&&!e.target.closest('input,button,textarea,select'))manual=false;});
- range.addEventListener('input',()=>{target=Number(range.value)/100;manual=true;dirty=true});
- document.querySelectorAll('[data-assembly]').forEach(b=>b.addEventListener('click',()=>{target=Number(b.dataset.assembly);range.value=target*100;manual=true;dirty=true}));
- const resize=()=>{const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();dirty=true};new ResizeObserver(resize).observe(host);
- new IntersectionObserver(es=>{visible=es[0].isIntersecting;dirty=true},{root:main}).observe(host);
+ range.addEventListener('input',()=>{target=Number(range.value)/100;manual=true;dirty=true;schedule()});
+ document.querySelectorAll('[data-assembly]').forEach(b=>b.addEventListener('click',()=>{target=Number(b.dataset.assembly);range.value=target*100;manual=true;dirty=true;schedule()}));
+ const resize=()=>{const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();dirty=true;schedule()};new ResizeObserver(resize).observe(host);
+ new IntersectionObserver(es=>{visible=es[0].isIntersecting;dirty=true;if(visible)schedule();else stop()},{root:main}).observe(host);
  function tick(time){
- requestAnimationFrame(tick);if(!visible||document.hidden||time-last<30)return;last=time;
- const diff=target-current;current=paused()?target:current+diff*.095;
- const turnDiff=desiredYaw-yaw;yaw=paused()?desiredYaw:yaw+turnDiff*.16;
+ raf=0;if(!visible||document.hidden||contextLost){last=0;return;}const dt=last?Math.min(64,time-last):16.7;last=time;const motionPaused=paused();
+ if(!motionPaused&&!drag&&!hovered)desiredYaw+=AUTO_YAW_SPEED*dt;
+ const diff=target-current;current=motionPaused?target:current+diff*(1-Math.exp(-dt/145));
+ const turnDiff=desiredYaw-yaw;yaw=motionPaused?desiredYaw:yaw+turnDiff*(1-Math.exp(-dt/90));
  if(activePart>=0&&!pinnedPart&&time>peekUntil)showPart(-1);
- if(Math.abs(diff)<.0002&&Math.abs(turnDiff)<.0002&&!dirty&&(paused()||current<.25))return;
- dirty=false;const p=current,e=p*p*(3-2*p);
- parts.forEach(({g,delta},i)=>{const k=clamp(e*(1.16)-(i%3)*.045);g.position.copy(delta).multiplyScalar(k)});
+ if(!motionPaused)fan.rotation.x=(fan.rotation.x+FAN_SPEED*dt)%(Math.PI*2);
+ dirty=false;const p=current,e=p*p*(3-2*p),mobile=host.clientWidth<700,mobileSpread=mobile?.82:1;
+ parts.forEach(({g,delta},i)=>{const k=clamp(e*(1.16)-(i%3)*.045);g.position.copy(delta).multiplyScalar(k*mobileSpread)});
  hood.rotation.z=e*-.035;panels[0].rotation.x=-e*.1;panels[1].rotation.x=e*.1;
  group.rotation.y=-.34+e*.24+yaw;canvas.dataset.rotation=String(Math.round(yaw*180/Math.PI));internal.forEach(g=>g.visible=e>.015);
- const mobile=host.clientWidth<700;
  camera.position.set(-8.4-e*.6,5.5+e*1.5,9.4+e*1.9);
- const focus=new T.Vector3(-.45,.35+e*.85,0);if(mobile)camera.position.sub(focus).multiplyScalar(.52+e*.22).add(focus);camera.lookAt(focus);camera.fov=mobile?40:33;camera.updateProjectionMatrix();
- if(!paused())fan.rotation.x=time*.003;
+ const focus=new T.Vector3(-.45,.35+e*.85,0);if(mobile){const cameraOffset=camera.position.clone().sub(focus).setLength(mobileCameraDistance(e,camera.aspect));camera.position.copy(focus).add(cameraOffset)}camera.lookAt(focus);camera.fov=mobile?40:33;camera.updateProjectionMatrix();
+ canvas.dataset.fanAngle=fan.rotation.x.toFixed(3);canvas.dataset.autoRotation=motionPaused?'paused':hovered?'hover-paused':drag?'dragging':'running';
  renderer.render(scene,camera);
  const pct=Math.round(e*100);readout.textContent=pct+'% expanded';canvas.dataset.expanded=String(pct);
  if(!manual)range.value=Math.round(current*100);
  const phase=current<.16?0:current<.62?1:2;
  if(host.dataset.phase!==String(phase)){
  host.dataset.phase=String(phase);
+ host.closest('.machine-sticky').dataset.phase=String(phase);
  document.querySelector('#hero-line-one').textContent=phases[phase][0];document.querySelector('#hero-line-two').textContent=phases[phase][1];document.querySelector('#hero-description').textContent=phases[phase][2];
  }
  const reveal=current<.2?-1:Math.min(3,Math.floor((current-.2)/.2));
  if(current<.12){seenPart=-1;if(!pinnedPart&&activePart>=0)showPart(-1);}
  if(reveal>seenPart){seenPart=reveal;if(!pinnedPart)showPart(reveal);}
+ if(!motionPaused||dirty||(activePart>=0&&!pinnedPart))schedule();
  }
- update();resize();requestAnimationFrame(tick);canvas.dataset.renderer='three';
- canvas.addEventListener('webglcontextlost',()=>{document.querySelector('#machine-fallback').hidden=false;canvas.hidden=true});
+ function schedule(){if(!raf&&visible&&!document.hidden&&!contextLost)raf=requestAnimationFrame(tick)}
+ function stop(){if(raf)cancelAnimationFrame(raf);raf=0;last=0}
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else schedule()});
+ update();resize();schedule();canvas.dataset.renderer='three';canvas.dataset.autoPaused='false';
+ const fallback=document.querySelector('#machine-fallback');
+ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;stop();fallback.hidden=false;canvas.hidden=true});
+ canvas.addEventListener('webglcontextrestored',()=>{contextLost=false;canvas.hidden=false;fallback.hidden=true;resize();schedule()});
+ return {setPaused(){last=0;dirty=true;schedule()}};
 }
