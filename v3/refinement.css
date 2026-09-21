@@ -62,3 +62,9 @@
 .equipment-metrics span{font-size:14px}
 @media(max-width:760px){.equipment-metrics span{font-size:13px}.game-buttons{position:static}.top-actions #motion-toggle{font-size:12px}}
 .game-buttons{position:static}
+
+/* Strategy overview entry points */
+.top-actions .overview-header{padding:8px 12px;border:1px solid #e3c07766;border-radius:999px;color:#f2d38f;line-height:1}
+#chapters .overview-menu{margin-bottom:4px;background:#e3c077;color:#123b30;border-radius:5px;font-weight:800}
+#chapters .overview-menu span{color:#5f4a18}
+@media(max-width:980px){.top-actions .overview-header{display:none}}

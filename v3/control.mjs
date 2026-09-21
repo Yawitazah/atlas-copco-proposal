@@ -1,9 +1,10 @@
-import {esc,MODELS} from './mission.mjs?v=story-2';
+import {esc,MODELS} from './mission.mjs?v=strategy-1';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function mountControl(toast){
  const C=globalThis.DemoCore,key='zah-atlas-control-v3';let now=Date.now(),records=C.sampleLeads(now),seq=301,filter='all';
  try{const v=JSON.parse(localStorage.getItem(key));if(v&&Array.isArray(v.records)&&v.records.length<250&&Number.isFinite(v.now)&&v.records.every(l=>l.id&&Array.isArray(l.history))){({now,records,seq}=v)}}catch{}
+ records=records.map(l=>({...l,source:l.source==='Needs finder'?'Goal Pulse Check':l.source,history:l.history.map(h=>h.text==='Example lead and owner supplied as a static sample, then enriched with needs-finder preferences. No export or live API was used.'?{...h,text:'Example lead and owner supplied as a static sample, then enriched with Goal Pulse Check preferences. No export or live API was used.'}:h)}));
  const save=()=>{try{localStorage.setItem(key,JSON.stringify({now,records,seq}))}catch{toast('Storage unavailable: this session is not saved.')}};
  const date=n=>new Date(n).toLocaleDateString('en-US',{month:'short',day:'numeric'});
  function draw(){const stats=C.stats(records,now),attention=records.filter(l=>['red','amber'].includes(C.status(l,now).tone)).length;
@@ -29,7 +30,7 @@ export function mountControl(toast){
  handoff(s){const existing=records.find(l=>l.id===s.id),a=s.answers;let l;
  if(existing&&JSON.stringify(existing.profile)===JSON.stringify(a))return existing.id;
  if(existing){l={...existing,company:a.company,profile:{...a},ref:s.ref,history:[...existing.history,{at:now,kind:'Customer profile · local',text:'Profile details updated; sales owner and activity retained.'}]};records=records.map(x=>x.id===l.id?l:x)}
- else{l=C.createLead({...a,intent:a.intent==='Rent'?'Rent for a project':a.intent,source:s.ref?'Referral':'Needs finder'},now,seq++);if(s.sampleId)l.id=s.sampleId;l.isMission=true;l.profile={...a};l.ref=s.ref;l.next=a.visit==='Later'?'Accept and clarify equipment requirements':'Accept and confirm walkthrough preferences';l.history=[{at:now,kind:'Profile completed · local',text:'Personal profile, buying team and equipment brief captured. Walkthrough '+(a.visit==='Later'?'deferred.':'requested; not booked.')}];if(s.sampleId){l.source='C4C-style snapshot · sample';l.history.unshift({at:now,kind:'C4C-style snapshot · fictional',text:'Example lead and owner supplied as a static sample, then enriched with needs-finder preferences. No export or live API was used.'});}records.unshift(l)}
+ else{l=C.createLead({...a,intent:a.intent==='Rent'?'Rent for a project':a.intent,source:s.ref?'Referral':'Goal Pulse Check'},now,seq++);if(s.sampleId)l.id=s.sampleId;l.isMission=true;l.profile={...a};l.ref=s.ref;l.next=a.visit==='Later'?'Accept and clarify equipment requirements':'Accept and confirm walkthrough preferences';l.history=[{at:now,kind:'Profile completed · local',text:'Personal profile, buying team and equipment brief captured. Walkthrough '+(a.visit==='Later'?'deferred.':'requested; not booked.')}];if(s.sampleId){l.source='C4C-style snapshot · sample';l.history.unshift({at:now,kind:'C4C-style snapshot · fictional',text:'Example lead and owner supplied as a static sample, then enriched with Goal Pulse Check preferences. No export or live API was used.'});}records.unshift(l)}
  save();filter='mine';draw();return l.id;
  },
  openRecord:show,

@@ -1,27 +1,30 @@
-import {mountSalesPage} from './sales-page.mjs?v=story-2';
-import {mountSignals} from './signals.mjs?v=story-2';
-import {mountGame} from './game.mjs?v=story-2';
-import {mountControl} from './control.mjs?v=story-2';
-import {BASE} from './mission.mjs?v=story-2';
+import {mountSalesPage} from './sales-page.mjs?v=strategy-1';
+import {mountSignals} from './signals.mjs?v=strategy-1';
+import {mountGame} from './game.mjs?v=strategy-1';
+import {mountControl} from './control.mjs?v=strategy-1';
+import {BASE} from './mission.mjs?v=strategy-1';
+import {mountOverview} from './overview.mjs?v=strategy-1';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
- const main=$('#zw-main'),root=$('.zw-root');let paused=matchMedia('(prefers-reduced-motion: reduce)').matches,timer,signals;
- const motion=()=>{document.body.classList.toggle('motion-paused',paused);$('#motion-toggle').textContent=paused?'Enable effects':'Pause effects';$('#motion-toggle').setAttribute('aria-pressed',String(paused));signals?.setPaused(paused)};motion();$('#motion-toggle').onclick=()=>{paused=!paused;motion()};
+ const main=$('#zw-main'),root=$('.zw-root');let paused=matchMedia('(prefers-reduced-motion: reduce)').matches,overviewOpen=false,timer,signals;
+ const effectsPaused=()=>paused||overviewOpen;
+ const motion=()=>{document.body.classList.toggle('motion-paused',paused);$('#motion-toggle').textContent=paused?'Enable effects':'Pause effects';$('#motion-toggle').setAttribute('aria-pressed',String(paused));signals?.setPaused(effectsPaused())};motion();$('#motion-toggle').onclick=()=>{paused=!paused;motion()};
  function toast(s){clearTimeout(timer);$('#toast').textContent=s;$('#toast').classList.add('show');timer=setTimeout(()=>$('#toast').classList.remove('show'),4200)}
  function go(i){const el=$('[data-idx="'+i+'"]');if(!el)return;main.scrollTo({top:el.offsetTop,behavior:paused?'auto':'smooth'});$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false')}
  mountDeck(root,{onScene(i){root.dataset.activeScene=i;document.body.dataset.scene=i}});
  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b&&!b.hasAttribute('data-act')){e.preventDefault();go(Number(b.dataset.go))}});
  $('#menu-toggle').onclick=()=>{const el=$('#chapters');el.hidden=!el.hidden;$('#menu-toggle').setAttribute('aria-expanded',String(!el.hidden))};
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false')}});
- const control=mountControl(toast);mountGame({toast,paused:()=>paused,handoff:control.handoff,request:control.request,recordInfo:control.recordInfo,openRecord:control.openRecord,onClear:control.clear,go});
- import('./machine.mjs?v=story-2').then(m=>m.mountMachine(()=>paused)).catch(()=>{$('#machine-fallback').hidden=false;$('#machine-canvas').hidden=true});
+ const control=mountControl(toast);mountGame({toast,paused:effectsPaused,handoff:control.handoff,request:control.request,recordInfo:control.recordInfo,openRecord:control.openRecord,onClear:control.clear,go});
+ import('./machine.mjs?v=strategy-1').then(m=>m.mountMachine(effectsPaused)).catch(()=>{$('#machine-fallback').hidden=false;$('#machine-canvas').hidden=true});
  if(location.hash==='#mission')requestAnimationFrame(()=>go(2));
- signals=mountSignals({main,paused});
+ signals=mountSignals({main,paused:effectsPaused});
+ mountOverview({onEnter:()=>go(0),onOpenChange(open){overviewOpen=open;signals?.setPaused(effectsPaused())}});
  if(location.hash==='#signal')requestAnimationFrame(()=>go(1));
  const explanations=[
   ['Sales context from C4C','Lead identity, company, source and assigned owner supply the starting point. This example uses fictional records; a real export or connection has not been configured.'],
-  ['Customer context from the needs finder','The customer adds application, equipment needs, buying team and visit preferences. Those details shape the equipment page and enrich the matching local record.'],
+  ['Customer context from the Goal Pulse Check','The customer adds application, equipment needs, buying team and visit preferences. Those details shape the equipment page and enrich the matching local record.'],
   ['A request becomes a next action','A quote or walkthrough request stays attached to its owner. The demo dashboard shows the new activity. Sending it back to C4C would require a verified write-back connection.']
  ];
  function explain(i){document.querySelectorAll('[data-crm-stage]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.crmStage)===i)));$('#crm-explanation').innerHTML='<h4>'+explanations[i][0]+'</h4><p>'+explanations[i][1]+'</p>';}
@@ -42,9 +45,9 @@ export function boot(mountDeck){
  }
  ids.forEach(id=>$('#'+id).addEventListener('input',model));model();
  const horizons=[
- ['Make the first pilot measurable.',['Map the real C4C lead lifecycle, owners and response expectations. Establish baseline conversion and handoff loss.','Pilot one event: large displays, a staffed hands-on equipment demonstration, a fast needs finder and an owned walkthrough request.','Review completion, accepted ownership, meeting quality and next-action coverage every week.']],
- ['Scale what earns its place.',['Compare event, LinkedIn, YouTube and referral cohorts by qualified pipeline and outcomes.','Use captured needs to shape LinkedIn and YouTube retargeting. Pair relevant creative with local sales outreach, partner acknowledgment and visible next actions.','Expand the audiences and events that produce useful conversations; test referral incentives with clear terms.']],
- ['Build a learning growth system.',['Feed verified outcomes back into content, recommendations and rep coaching.','Evaluate AI-assisted brief preparation and follow-up prioritization with human review.','Scale across regions with local ownership, consistent measurement and validated CRM integrations.']]
+ ['Make the first pilot measurable.',['Map the real C4C lead lifecycle, owners and response expectations. Establish baseline conversion and handoff loss.','Pilot one event: large displays, a staffed hands-on equipment demonstration, a focused Goal Pulse Check and an owned walkthrough request.','Review completion, accepted ownership, meeting quality and next-action coverage every week.']],
+ ['Scale what earns its place.',['Compare event, LinkedIn, YouTube and referral cohorts by qualified pipeline and outcomes.','Use Goal Pulse Check context to shape LinkedIn and YouTube retargeting. Pair relevant creative with local sales outreach, partner acknowledgment and visible next actions.','Expand the audiences and events that produce useful conversations; test referral incentives with clear terms.']],
+ ['Keep learning from the work.',['Feed verified outcomes back into content, recommendations and rep coaching.','Evaluate AI-assisted brief preparation and follow-up prioritization with human review.','Scale across regions with local ownership, consistent measurement and validated CRM integrations.']]
  ];
  function horizon(i){document.querySelectorAll('[data-horizon]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.horizon)===i)));const h=horizons[i];$('#horizon-detail').innerHTML='<h3>'+h[0]+'</h3><ol>'+h[1].map(x=>'<li>'+x+'</li>').join('')+'</ol>';if(!paused)$('#horizon-detail').animate([{clipPath:'inset(0 100% 0 0)',transform:'translateX(-15px)'},{clipPath:'inset(0 0 0 0)',transform:'none'}],{duration:650,easing:'cubic-bezier(.16,1,.3,1)'})}
  document.querySelectorAll('[data-horizon]').forEach(b=>b.onclick=()=>horizon(Number(b.dataset.horizon)));horizon(0);
