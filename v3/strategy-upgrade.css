@@ -176,7 +176,7 @@
 @keyframes accountFlow{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 8px);opacity:0}}
 @keyframes accountReturn{to{left:118%}}
 
-@media(max-width:1000px){
+@media(max-width:1100px){
  .accountability-story{grid-template-columns:1fr;padding:28px;gap:32px}
  .accountability-copy>p{max-width:780px}
 }

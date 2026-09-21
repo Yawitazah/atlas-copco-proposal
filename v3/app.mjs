@@ -1,17 +1,22 @@
-import {mountSalesPage} from './sales-page.mjs?v=strategy-3';
-import {mountSignals} from './signals.mjs?v=strategy-3';
-import {mountGame} from './game.mjs?v=strategy-3';
-import {mountControl} from './control.mjs?v=strategy-3';
-import {BASE} from './mission.mjs?v=strategy-3';
-import {mountOverview} from './overview.mjs?v=strategy-3';
+import {mountSalesPage} from './sales-page.mjs?v=layout-4';
+import {mountSignals} from './signals.mjs?v=layout-4';
+import {mountGame} from './game.mjs?v=layout-4';
+import {mountControl} from './control.mjs?v=layout-4';
+import {BASE} from './mission.mjs?v=layout-4';
+import {mountOverview} from './overview.mjs?v=layout-4';
+import {alignedScrollTop} from './navigation.mjs?v=layout-4';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
- const main=$('#zw-main'),root=$('.zw-root');let paused=false,overviewOpen=false,timer,signals,machine;
+ const main=$('#zw-main'),root=$('.zw-root'),sections=[...main.querySelectorAll('[data-idx]')];let paused=false,overviewOpen=false,timer,signals,machine;
  const effectsPaused=()=>paused||overviewOpen;
  const motion=()=>{document.body.classList.toggle('motion-paused',paused);$('#motion-toggle').textContent=paused?'Enable effects':'Pause effects';$('#motion-toggle').setAttribute('aria-pressed',String(paused));signals?.setPaused(effectsPaused());machine?.setPaused(effectsPaused())};motion();$('#motion-toggle').onclick=()=>{paused=!paused;motion()};
  function toast(s){clearTimeout(timer);$('#toast').textContent=s;$('#toast').classList.add('show');timer=setTimeout(()=>$('#toast').classList.remove('show'),4200)}
- function go(i,{focus=false}={}){const el=$('[data-idx="'+i+'"]');if(!el)return;main.scrollTo({top:el.offsetTop,behavior:paused?'auto':'smooth'});$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false');if(focus){const heading=el.querySelector('h1,h2');if(heading){heading.tabIndex=-1;setTimeout(()=>heading.focus({preventScroll:true}),paused?0:520)}}}
+ function sceneTop(el){
+  const isMachine=el.dataset.experience==='machine',anchor=isMachine?el:el.querySelector('.section-head')||el,header=$('.topbar');
+  return alignedScrollTop({scrollTop:main.scrollTop,anchorTop:anchor.getBoundingClientRect().top,containerTop:main.getBoundingClientRect().top,headerHeight:header?.getBoundingClientRect().height||0,gap:isMachine?0:(matchMedia('(max-width:760px)').matches?16:24)});
+ }
+ function go(i,{focus=false,instant=false}={}){const el=sections[i];if(!el)return;main.scrollTo({top:i===0?0:sceneTop(el),behavior:instant||paused?'auto':'smooth'});$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false');if(focus){const heading=el.querySelector('h1,h2');if(heading){heading.tabIndex=-1;setTimeout(()=>heading.focus({preventScroll:true}),instant||paused?0:520)}}}
  mountDeck(root,{onScene(i){root.dataset.activeScene=i;document.body.dataset.scene=i}});
  function mountScenePagers(){
   const sections=[...main.querySelectorAll('[data-idx]')],fallback=['Inside the machine','Follow the signal','Take the Goal Pulse Check','Keep ownership visible','Model the impact','The road ahead'];
@@ -24,10 +29,12 @@ export function boot(mountDeck){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false')}});
  const control=mountControl(toast);mountGame({toast,paused:effectsPaused,handoff:control.handoff,request:control.request,recordInfo:control.recordInfo,openRecord:control.openRecord,onClear:control.clear,go});
  import('./machine.mjs?v=strategy-2').then(m=>{machine=m.mountMachine(effectsPaused)}).catch(()=>{$('#machine-fallback').hidden=false;$('#machine-canvas').hidden=true});
- if(location.hash==='#mission')requestAnimationFrame(()=>go(2));
  signals=mountSignals({main,paused:effectsPaused()});
  mountOverview({onEnter:()=>go(0),onOpenChange(open){overviewOpen=open;signals?.setPaused(effectsPaused());machine?.setPaused(effectsPaused())}});
- if(location.hash==='#signal')requestAnimationFrame(()=>go(1));
+ function sceneFromHash(){let key='';try{key=decodeURIComponent(location.hash.slice(1))}catch{key=location.hash.slice(1)}return sections.findIndex(section=>section.dataset.experience===key)}
+ const requestedScene=sceneFromHash();
+ if(requestedScene>=0)requestAnimationFrame(()=>requestAnimationFrame(()=>go(requestedScene,{instant:true})));
+ window.addEventListener('hashchange',()=>{const i=sceneFromHash();if(i>=0)go(i,{focus:true})});
  const explanations=[
   ['Sales context from C4C','Lead identity, company, source and assigned owner supply the starting point. This example uses fictional records; a real export or connection has not been configured.'],
   ['Customer context from the Goal Pulse Check','The customer adds application, equipment needs, buying team and visit preferences. Those details shape a personalized equipment page and enrich the matching local record.'],

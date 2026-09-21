@@ -69,3 +69,55 @@
 @media(max-width:760px){.machine-part-tabs button{font-size:14px}.machine-part-detail p{font-size:14px}.machine-rotation>span{font-size:12px}}
 @media(max-width:360px){.machine-part-tabs button{font-size:12px}.machine-part-detail p{font-size:13px}}
 .machine-explorer:not(.has-detail) .machine-part-detail{display:none}
+
+/*
+ * Keep the complete opening composition inside shorter desktop viewports.
+ * Width alone made the display type grow to 115px even when the browser had
+ * less than 1,000px of usable height, pushing the description and CTA behind
+ * the engineering controls. The height-aware bounds preserve the large-screen
+ * character while reserving a clear lower control rail.
+ */
+@media(min-width:761px) and (max-height:1100px){
+ .hero-copy{top:clamp(100px,14svh,150px)}
+ .hero-copy .eyebrow{margin-bottom:clamp(12px,1.8svh,20px)}
+ .hero-copy h1{font-size:clamp(58px,min(7.3vw,10.5svh),104px);line-height:.96}
+ .hero-copy h1 em{max-width:min(760px,100%)}
+ .hero-copy>p:not(.eyebrow){max-width:min(390px,100%);margin-top:clamp(13px,1.8svh,20px);font-size:clamp(15px,1.8svh,18px);line-height:1.48}
+ .hero-actions{margin-top:clamp(12px,1.8svh,20px);gap:18px}
+ .hero-actions .btn{min-height:46px;padding:12px 18px;font-size:14px}
+ .scroll-cue{font-size:10px;line-height:1.55}
+}
+
+@media(min-width:761px) and (max-height:820px){
+ .hero-copy{top:clamp(88px,12svh,102px)}
+ .hero-copy .eyebrow{margin-bottom:10px;font-size:10px}
+ .hero-copy h1{font-size:clamp(54px,min(6.8vw,9svh),74px)}
+ .hero-copy>p:not(.eyebrow){margin-top:11px;font-size:15px;line-height:1.42}
+ .hero-actions{margin-top:11px;gap:12px}
+ .hero-actions .btn{min-height:43px;padding:10px 15px;font-size:13px}
+ .scroll-cue{font-size:9px;line-height:1.4}
+ .machine-stage{top:max(82px,9%);bottom:168px}
+ .machine-rotation{bottom:4px}
+ .machine-explorer{bottom:104px}
+ .assembly-console{bottom:12px;padding-top:12px}
+}
+
+/* The profile shortcut shares the lower rail on the opening scene. Compact it
+   slightly and stop the expansion controls before the card instead of laying
+   the two interactive surfaces on top of each other. */
+@media(min-width:761px){
+ .assembly-console{right:calc(6vw + 360px)}
+ .machine-rotation{transition:bottom .2s ease}
+ .machine-sticky:has(.machine-explorer.has-detail) .machine-rotation{bottom:90px}
+ body:is(:not([data-scene]),[data-scene="0"]) .profile-teaser{bottom:10px;width:min(340px,calc(100vw - 36px))}
+ body:is(:not([data-scene]),[data-scene="0"]) .profile-teaser-link{grid-template-columns:60px minmax(0,1fr);gap:11px;min-height:86px;padding:8px 14px 8px 8px}
+ body:is(:not([data-scene]),[data-scene="0"]) .profile-teaser-portrait{width:60px;height:60px}
+ body:is(:not([data-scene]),[data-scene="0"]) .profile-teaser-eyebrow{margin-bottom:1px}
+ body:is(:not([data-scene]),[data-scene="0"]) .profile-teaser-copy>span:not(.profile-teaser-eyebrow){margin-top:1px}
+ body:is(:not([data-scene]),[data-scene="0"]) .profile-teaser-copy small{margin-top:1px}
+ body:is(:not([data-scene]),[data-scene="0"]) .profile-teaser-copy b{margin-top:3px}
+}
+
+@media(min-width:761px) and (max-width:1100px){
+ .assembly-console{right:calc(5vw + 350px)}
+}

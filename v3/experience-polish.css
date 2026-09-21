@@ -1,5 +1,14 @@
 /* Final scene polish: a legible signal engine and explicit mobile chapters. */
+#zw-main{scroll-padding-top:96px}
 .scene-pager{display:none}
+
+/* Let a section settle at its visible heading when the reader finishes a
+   desktop scroll gesture. Proximity preserves ordinary scrolling through the
+   longer interactive sections; it only assists near a section boundary. */
+@media(min-width:761px){
+ #zw-main{scroll-snap-type:y proximity!important}
+ [data-experience="machine"],[data-experience] .section-head{scroll-snap-align:start!important;scroll-snap-stop:normal}
+}
 
 @media(min-width:1051px){
  .signal-lab{grid-template-columns:230px minmax(430px,540px) 235px;justify-content:center;gap:clamp(22px,2.3vw,38px);min-height:550px;max-width:1240px;margin-left:auto;margin-right:auto}
@@ -24,6 +33,7 @@
 @keyframes signalEngineBreath{to{opacity:.48;transform:translate(-50%,-50%) scale(1.035)}}
 
 @media(max-width:760px){
+ #zw-main{scroll-padding-top:78px}
  [data-experience]{scroll-margin-top:68px}
  .scene-pager{display:block;position:relative;z-index:12;padding:28px 20px 34px;border-top:12px solid #d5b767;background:#0c332d;color:#f3f1e8}
  [data-experience="signal"] .scene-pager,[data-experience="impact"] .scene-pager{background:#e6ebec;color:#143b3d;border-top-color:#176dcc}
@@ -43,4 +53,3 @@
 }
 
 @media(prefers-reduced-motion:reduce){.signal-lab .signal-field::after{animation:none!important}.scene-pager button{transition:none}}
-
