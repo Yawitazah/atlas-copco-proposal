@@ -11,3 +11,5 @@ Illustrative cutaway geometry, presentation and interface: ZAH project.
 Zah portrait and wordmark: ZAH Brand Solutions.
 Soda Pop: original ZAH Tip Jar effect, consumed from the owner's product at build time.
 Three.js 0.180.0: MIT license in vendor/THREE-LICENSE.txt.
+
+Transparent *-cutout.png images: AI-assisted derivatives of the original Atlas Copco reference photos. See CUTOUTS.md.
