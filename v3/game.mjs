@@ -1,9 +1,9 @@
-import {STEPS,MODELS,blank,preferred,complete,esc,localDate} from './mission.mjs?v=conversion-15';
-import {QUESTIONS,questionsFor,questionError} from './questions.mjs?v=conversion-15';
-import {mountEquipment,showDetails} from './equipment.mjs?v=conversion-15';
-import {mountSalesPage} from './sales-page.mjs?v=conversion-15';
-import {zahSodaPop} from './sodapop.mjs?v=conversion-15';
-import {completionProgress} from './progress.mjs?v=conversion-15';
+import {STEPS,MODELS,blank,preferred,complete,esc,localDate} from './mission.mjs?v=conversion-16';
+import {QUESTIONS,questionsFor,questionError} from './questions.mjs?v=conversion-16';
+import {mountEquipment,showDetails} from './equipment.mjs?v=conversion-16';
+import {mountSalesPage} from './sales-page.mjs?v=conversion-16';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-16';
+import {completionProgress} from './progress.mjs?v=conversion-16';
 const $=s=>document.querySelector(s);
 export function mountGame({toast,paused,handoff,request,recordInfo,openRecord,go,onClear}){
  const key='zah-atlas-mission-v3';let state=blank(),rewardTimer;
