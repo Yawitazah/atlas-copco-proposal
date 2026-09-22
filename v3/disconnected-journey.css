@@ -4,11 +4,11 @@
 .disconnect-journey>.section-head,.disconnect-stage,.disconnect-conclusion,.disconnect-actions,.disconnect-note,.interview-note{max-width:1350px;margin-left:auto;margin-right:auto}
 .disconnect-journey .section-head{align-items:center}.disconnect-journey .section-head .eyebrow{color:#a34b39}.disconnect-journey .section-head em{color:#a34b39}.disconnect-journey .section-head>p{max-width:410px;color:#496267;font-size:16px;line-height:1.65}
 
-.interview-note{display:flex;gap:13px;align-items:flex-start;max-width:480px;margin:22px 0 34px;padding:13px 16px;border:1px solid #ddd5c2;border-radius:12px;background:#f8f6ef}
-.interview-note img{width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:50% 26%;flex-shrink:0;margin-top:1px}
-.interview-note-tag{display:block;margin-bottom:5px;color:#93763f;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.interview-note p{margin:0;color:#5b5342;font-size:13px;line-height:1.6;font-style:italic}
-@media(max-width:820px){.interview-note{max-width:100%}}
+.interview-note{display:flex;gap:22px;align-items:center;margin:26px 0 34px;padding:24px 30px;border:1px solid #ddd5c2;border-radius:18px;background:#f8f6ef}
+.interview-note img{width:60px;height:60px;border-radius:50%;object-fit:cover;object-position:50% 26%;flex-shrink:0}
+.interview-note-tag{display:block;margin-bottom:8px;color:#93763f;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.interview-note p{margin:0;color:#4c4536;font-size:17px;line-height:1.65;font-style:italic}
+@media(max-width:820px){.interview-note{flex-direction:column;align-items:flex-start;gap:14px;padding:20px 22px}}
 
 .disconnect-stage{overflow:hidden;border:1px solid #aebfc1;border-radius:18px;background:#0b2934;color:#ecf4f2;box-shadow:0 32px 90px #173a4030}
 .disconnect-stage-top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px;border-bottom:1px solid #486572;background:#113642;color:#b9d0d4;font-size:11px;font-weight:750;letter-spacing:.12em}
