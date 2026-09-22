@@ -16,26 +16,19 @@ export function mountDisconnected({paused=false}={}){
  const status=section.querySelector('[data-disconnect-status]');
  const day=section.querySelector('[data-disconnect-day]');
  const replay=section.querySelector('[data-disconnect-replay]');
- const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  let visible=false,isPaused=typeof paused==='function'?Boolean(paused()):Boolean(paused),start=performance.now(),pausedAt=0,raf=0,last='';
 
  function render(now){
   raf=0;
-  if(!visible||isPaused||reduced)return;
+  if(!visible||isPaused)return;
   const frame=disconnectedFrame(now-start);
   if(frame.step!==last){section.dataset.leakStep=frame.step;last=frame.step;}
   if(day){day.textContent=frame.day?`Day ${frame.day}`:'New';day.setAttribute('aria-label',frame.day?`${frame.day} days without a recorded next action`:'New lead');}
   if(status)status.textContent=frame.status;
   schedule();
  }
- function schedule(){if(!raf&&visible&&!isPaused&&!reduced)raf=requestAnimationFrame(render);}
- function showReducedState(){
-  section.dataset.leakStep='cold';section.classList.add('is-visible');
-  if(day){day.textContent='Day 6';day.setAttribute('aria-label','6 days without a recorded next action');}
-  if(status)status.textContent='The leads have gone cold and Atlas Copco has lost visibility.';
- }
+ function schedule(){if(!raf&&visible&&!isPaused)raf=requestAnimationFrame(render);}
  function restart(){
-  if(reduced){showReducedState();return;}
   cancelAnimationFrame(raf);raf=0;start=performance.now();last='';section.dataset.leakStep='enter';
   section.classList.remove('is-running');void section.offsetWidth;section.classList.add('is-running');
   if(day){day.textContent='New';day.setAttribute('aria-label','New lead');}
@@ -46,12 +39,10 @@ export function mountDisconnected({paused=false}={}){
  const observer=new IntersectionObserver(entries=>{
   visible=entries.some(entry=>entry.isIntersecting);
   section.classList.toggle('is-visible',visible);
-  if(reduced)return;
   if(visible){if(!section.classList.contains('is-running'))restart();else schedule();}
   else{cancelAnimationFrame(raf);raf=0;}
  },{threshold:.18});
  observer.observe(section);
- if(reduced)showReducedState();
  return {setPaused(value){
   const next=Boolean(value);if(next===isPaused)return;isPaused=next;section.classList.toggle('is-paused',next);
   if(next){pausedAt=performance.now();cancelAnimationFrame(raf);raf=0;}

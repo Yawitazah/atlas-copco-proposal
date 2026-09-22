@@ -47,7 +47,7 @@ export function mountProspectConversion({toast=()=>{}}={}){
   root.querySelectorAll('[data-prospect-model]').forEach(el=>el.textContent=profile.modelName);
   root.querySelectorAll('[data-prospect-flow]').forEach(el=>el.textContent=profile.flow);
   root.querySelectorAll('[data-prospect-pressure]').forEach(el=>el.textContent=profile.pressure);
-  root.querySelectorAll('[data-prospect-machine]').forEach(el=>{el.src=MODEL_ASSETS[profile.model];el.alt=profile.modelName+' portable air compressor';});
+  root.querySelectorAll('[data-prospect-machine]').forEach(el=>{el.src=MODEL_ASSETS[profile.model];el.alt=profile.modelName+' mobile air compressor';});
  }
  renderProfile();select('page');
 }

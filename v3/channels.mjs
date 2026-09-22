@@ -1,4 +1,4 @@
-import {showDetails} from './equipment.mjs?v=conversion-12';
+import {showDetails} from './equipment.mjs?v=conversion-13';
 
 const svg=paths=>`<svg class="strategy-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 const ICONS={
@@ -38,11 +38,11 @@ export const CHANNELS=[
   next:'A sales representative builds the human relationship while personalized LinkedIn ads return eligible prospects to their equipment page, quote request or walkthrough.',
   steps:[
    ['LinkedIn Opportunity Scouting','Sales representatives identify relevant local businesses and decision-makers, introduce themselves and offer to learn about the site. Interested contacts enter the Goal Pulse Check.','conversation'],
-   ['Prospecting ads','Prospecting campaigns introduce portable air equipment to new audiences. Interested people enter the Goal Pulse Check, and their answers generate a personalized equipment page.','attention'],
+   ['Prospecting ads','Prospecting campaigns introduce relevant Atlas Copco equipment to new audiences. Interested people enter the Goal Pulse Check, and their answers generate a personalized equipment page.','attention'],
    ['Result-based retargeting','Group the captured prospects by application, equipment interest and readiness for a quote or walkthrough. Create personalized ad creative that matches the context in each prospect’s captured data.','personalize'],
    ['Bring the prospect back','Use personalized LinkedIn ads to return eligible prospects to relevant equipment, a quote request or a walkthrough. Keep the sales representative and next action visible.','follow']
   ],
-  quote:'“We work with local teams like yours. I would love to introduce myself, learn about your site and see where our portable air equipment could help.”'
+  quote:'“We work with local teams like yours. I would love to introduce myself, learn about your site and see where Atlas Copco equipment could support your work.”'
  },
  {
   name:'YouTube',color:'#cd493e',light:'#ffebe6',icon:ICONS.youtube,
@@ -51,7 +51,7 @@ export const CHANNELS=[
   activity:'Prospecting video ads introduce the equipment and direct new interest into the Goal Pulse Check. Retargeting ads use personalized creative based on each eligible audience’s captured application and equipment needs.',
   next:'Bring the prospect back to a personalized equipment page, a quote request or a walkthrough with a named sales representative.',
   steps:[
-   ['Show a recognizable application','Use targeted video campaigns to show portable air equipment solving a real jobsite need.','attention'],
+   ['Show a recognizable application','Use targeted video campaigns to show Atlas Copco equipment solving a real jobsite need.','attention'],
    ['Capture the prospect’s goal','Direct interested viewers to the Goal Pulse Check so they can share their application and equipment requirements.','capture'],
    ['Personalize the creative','Use captured application and equipment data to create personalized video creative for eligible retargeting audiences.','personalize'],
    ['Drive a clear next action','Return the prospect to a personalized equipment page where they can request a quote or arrange a site walkthrough.','follow']
@@ -82,7 +82,7 @@ export const OUTCOMES=[
 export function channelDetail(i,onSend){
  const c=CHANNELS[i],isTradeShow=i===0;
  const visualSrc=isTradeShow?'./assets/trade-show-booth.webp?v=brand-2':'./assets/xas400-cutout.png';
- const visualAlt=isTradeShow?'Proposed portable-air trade-show booth with tall displays, a full-size compressor and a product specialist':'Portable air equipment';
+ const visualAlt=isTradeShow?'Proposed Atlas Copco trade-show booth with tall displays, a full-size compressor and a product specialist':'Atlas Copco equipment';
  const visualClass='campaign-visual'+(isTradeShow?' campaign-visual--booth':'');
  const steps=c.steps.map(([title,body,icon])=>'<li><span class="strategy-step-icon">'+ICONS[icon]+'</span><b>'+title+'</b><p>'+body+'</p></li>').join('');
  const advertisingNote=[1,2].includes(i)?'<details class="audience-note"><summary>How personalization becomes advertising</summary><p>Goal Pulse Check results guide eligible audience segments and personalized creative. Ad delivery depends on consent, permitted first-party data, audience matching, minimum audience size and account eligibility. It does not guarantee an ad to a named individual. No ad account is connected to this demonstration.</p><p><a href="https://www.linkedin.com/help/linkedin/answer/a420552" target="_blank" rel="noopener">LinkedIn retargeting requirements ↗</a><br><a href="https://support.google.com/google-ads/answer/6299717?hl=en" target="_blank" rel="noopener">Google Customer Match requirements ↗</a></p></details>':'';

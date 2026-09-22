@@ -12,6 +12,7 @@
  background-size:300% auto;
  box-shadow:0 18px 35px #143b4720;
  isolation:isolate;
+ transition:background-size .55s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;
 }
 .strategy-card-visual::before{
  content:"";
@@ -255,13 +256,14 @@
  .account-partner-route{margin-top:36px;padding:17px}.account-partner-route ul{grid-template-columns:1fr}.account-partner-route>strong{font-size:12px}.account-governance{border-radius:12px;justify-content:flex-start;padding:13px}.account-governance b{font-size:12px}
 }
 /* NotebookLM video entry points appear automatically when their exported MP4 exists. */
-.strategy-card-visual.has-video:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 42%,#061f1bbb);opacity:0;transition:opacity .28s ease}
+.strategy-card-visual.has-video:after{content:"";position:absolute;z-index:2;inset:0;padding:0;border:0;border-radius:0;background:rgba(3,24,21,.56);opacity:0;backdrop-filter:none;pointer-events:none;transition:opacity .32s ease}
 .strategy-video-launch{position:absolute;z-index:3;left:50%;top:50%;display:grid;place-items:center;gap:8px;min-width:126px;padding:0;border:0;background:transparent;color:white;opacity:0;transform:translate(-50%,-42%) scale(.9);transition:opacity .28s ease,transform .34s cubic-bezier(.16,1,.3,1)}
 .strategy-video-launch>span{display:grid;place-items:center;width:58px;height:58px;padding-left:4px;border:1px solid #ffffffaa;border-radius:50%;background:#0b352ecc;box-shadow:0 0 0 8px #ffffff18,0 18px 36px #001a1788;font-size:20px}.strategy-video-launch>b{font:800 10px/1 'Hanken Grotesk',sans-serif;letter-spacing:.12em;text-transform:uppercase;text-shadow:0 2px 8px #000}
-.strategy-card-visual.has-video:hover:after,.strategy-card-visual.has-video:focus-within:after{opacity:1}.strategy-card-visual.has-video:hover .strategy-video-launch,.strategy-card-visual.has-video:focus-within .strategy-video-launch{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.strategy-video-launch:focus-visible{outline:0}.strategy-video-launch:focus-visible>span{outline:3px solid #efc35d;outline-offset:5px}
+.strategy-card-visual.has-video:hover,.strategy-card-visual.has-video:focus-within{background-size:315% auto;box-shadow:0 22px 44px #0b302936}.strategy-card-visual.has-video:hover:after,.strategy-card-visual.has-video:focus-within:after{opacity:1}.strategy-card-visual.has-video:hover .strategy-video-launch,.strategy-card-visual.has-video:focus-within .strategy-video-launch{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .strategy-video-dialog{width:min(560px,calc(100vw - 30px));max-width:none;padding:0;border:1px solid #7ea49766;border-radius:20px;background:#092e28;color:#f8f3e7;box-shadow:0 36px 110px #001b18aa}.strategy-video-dialog::backdrop{background:#001713c9;backdrop-filter:blur(10px)}.strategy-video-frame header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 22px;border-bottom:1px solid #ffffff1e}.strategy-video-frame header span{font:800 8px/1 'Hanken Grotesk',sans-serif;letter-spacing:.16em;color:#e7bd5d}.strategy-video-frame header h2{margin:5px 0 0;font-size:23px}.strategy-video-frame header button{width:42px;height:42px;border-radius:50%;background:#ffffff15;color:white;font-size:27px}.strategy-video-frame video{display:block;width:100%;height:min(75dvh,760px);object-fit:contain;background:#031814}
-@media(max-width:760px){.strategy-video-launch{opacity:1;transform:translate(-50%,-50%) scale(.9)}.strategy-card-visual.has-video:after{opacity:.55}.strategy-video-launch>span{width:50px;height:50px}.strategy-video-dialog{width:calc(100vw - 16px)}}
-@media(prefers-reduced-motion:reduce){.strategy-video-launch,.strategy-card-visual.has-video:after{transition:none}}
+@media(max-width:760px){.strategy-video-launch{opacity:1;transform:translate(-50%,-50%) scale(.9)}.strategy-card-visual.has-video:after{opacity:.38}.strategy-video-launch>span{width:50px;height:50px}.strategy-video-dialog{width:calc(100vw - 16px)}}
+@media(prefers-reduced-motion:reduce){.strategy-card-visual,.strategy-video-launch,.strategy-card-visual.has-video:after{transition:none}}
 
 /* The accountability graphic is presentation copy, so it must remain readable
    without requiring a modal or a zoom gesture. */

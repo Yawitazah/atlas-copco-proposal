@@ -96,7 +96,7 @@ export function mountMachine(paused){
   for(let i=0;i<14;i++)box(.045,.45,.017,dark,[.93+i*.055,1.52,z*1.063],side,.01);
   box(.37,.12,.04,dark,[-.98,1.7,z*1.075],side);
   for(const x of [-1.75,1.77])for(const y of [1.12,1.82])cyl(.028,.035,steel,[x,y,z*1.085],side,'z');
-  const cv=document.createElement('canvas');cv.width=1024;cv.height=256;const ctx=cv.getContext('2d');ctx.fillStyle='#26383a';ctx.fillRect(0,0,1024,256);ctx.fillStyle='#f1f3de';ctx.font='bold 90px Arial';ctx.fillText('PORTABLE AIR',45,110);ctx.fillStyle='#eabb3e';ctx.font='38px Arial';ctx.fillText('PORTABLE COMPRESSOR',48,185);
+  const cv=document.createElement('canvas');cv.width=1024;cv.height=256;const ctx=cv.getContext('2d');ctx.fillStyle='#26383a';ctx.fillRect(0,0,1024,256);ctx.fillStyle='#f1f3de';ctx.font='bold 90px Arial';ctx.fillText('POWER TECHNIQUE',45,110);ctx.fillStyle='#eabb3e';ctx.font='38px Arial';ctx.fillText('PORTABLE COMPRESSOR',48,185);
   const tx=new T.CanvasTexture(cv);tx.colorSpace=T.SRGBColorSpace;
   const plate=mesh(new T.PlaneGeometry(1.4,.35),new T.MeshStandardMaterial({map:tx,roughness:.5}),[-.65,1.3,z*1.065],side);if(z<0)plate.rotation.y=Math.PI;
  }
