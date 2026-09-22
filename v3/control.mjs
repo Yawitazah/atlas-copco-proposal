@@ -1,5 +1,5 @@
-import {esc,MODELS} from './mission.mjs?v=conversion-22';
-import {zahSodaPop} from './sodapop.mjs?v=conversion-22';
+import {esc,MODELS} from './mission.mjs?v=conversion-24';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-24';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 function mountProfileTeaser(){
@@ -39,6 +39,23 @@ function mountProfileTeaser(){
  setTimeout(finishEntrance,850);
  const link=teaser.querySelector('a'),portrait=teaser.querySelector('img');
  portrait.addEventListener('error',()=>{portrait.hidden=true;teaser.classList.add('profile-teaser-no-portrait')},{once:true});
+ // The card sits over the lower-right corner, which is where the mobile
+ // Continue button lives. Let the reader tuck it away and bring it back.
+ const collapseKey='zah-atlas-profile-collapsed-v3';
+ const toggle=document.createElement('button');
+ toggle.type='button';toggle.className='profile-teaser-toggle';toggle.setAttribute('aria-controls',teaser.id);
+ teaser.append(toggle);
+ const isCollapsed=()=>teaser.classList.contains('is-collapsed');
+ function setCollapsed(next,persist=true){
+  teaser.classList.toggle('is-collapsed',next);
+  toggle.setAttribute('aria-expanded',String(!next));
+  toggle.setAttribute('aria-label',next?'Open the presenter profile':'Collapse the presenter profile');
+  link.tabIndex=next||teaser.classList.contains('is-hidden')?-1:0;
+  if(persist)try{localStorage.setItem(collapseKey,next?'1':'0')}catch{}
+ }
+ let collapsedAtStart=false;try{collapsedAtStart=localStorage.getItem(collapseKey)==='1'}catch{}
+ setCollapsed(collapsedAtStart,false);
+ toggle.addEventListener('click',()=>setCollapsed(!isCollapsed()));
  link.addEventListener('click',event=>{
   event.preventDefault();
   about.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
@@ -49,7 +66,7 @@ function mountProfileTeaser(){
    if(hidden&&teaser.contains(document.activeElement)){
     about.tabIndex=-1;about.focus({preventScroll:true});
    }
-   teaser.classList.toggle('is-hidden',hidden);teaser.setAttribute('aria-hidden',String(hidden));link.tabIndex=hidden?-1:0;
+   teaser.classList.toggle('is-hidden',hidden);teaser.setAttribute('aria-hidden',String(hidden));link.tabIndex=hidden||isCollapsed()?-1:0;
   },{threshold:.12});
   observer.observe(about);
  }

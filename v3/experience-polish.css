@@ -38,13 +38,18 @@
 @keyframes signalEngineBreath{to{opacity:.48;transform:translate(-50%,-50%) scale(1.035)}}
 
 @media(max-width:760px){
- #zw-main{scroll-padding-top:78px}
- [data-experience]{scroll-margin-top:68px}
- /* Each section reads as its own page on mobile; the Continue/Back buttons
-    below are the deliberate way through, so snap is mandatory here instead
-    of the assist-only proximity desktop uses. */
+ #zw-main{scroll-padding-top:0}
+ [data-experience]{scroll-margin-top:0}
+ /* Each section is its own page on mobile: it fills the screen and scrolls
+    inside itself, and overscroll-behavior stops that scroll at the section's
+    own end instead of chaining on into the next one. The Continue/Back
+    buttons at the bottom are the only way through. Snapping to whole
+    sections (never to a heading inside one) is what stops the reader being
+    thrown past content they have not seen yet. */
  #zw-main{scroll-snap-type:y mandatory!important}
- [data-experience="machine"],[data-experience] .section-head{scroll-snap-align:start!important;scroll-snap-stop:normal}
+ [data-idx]{scroll-snap-align:start!important;scroll-snap-stop:always}
+ [data-idx]:not([data-experience="machine"]){height:100svh;overflow-y:auto;overscroll-behavior:contain}
+ [data-experience] .section-head{scroll-snap-align:none!important}
  .scene-pager{display:block;position:relative;z-index:12;padding:28px 20px 34px;border-top:12px solid #d5b767;background:#0c332d;color:#f3f1e8}
  [data-experience="disconnect"] .scene-pager{background:#e6ebec;color:#143b3d;border-top-color:#a34b39}
  [data-experience="signal"] .scene-pager,[data-experience="impact"] .scene-pager{background:#e6ebec;color:#143b3d;border-top-color:#176dcc}
