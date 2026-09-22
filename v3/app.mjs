@@ -1,17 +1,19 @@
-import {mountSalesPage} from './sales-page.mjs?v=conversion-27';
-import {mountSignals} from './signals.mjs?v=conversion-27';
-import {mountGame} from './game.mjs?v=conversion-27';
-import {mountControl} from './control.mjs?v=conversion-27';
-import {BASE} from './mission.mjs?v=conversion-27';
-import {mountOverview} from './overview.mjs?v=conversion-27';
-import {alignedScrollTop} from './navigation.mjs?v=conversion-27';
-import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-27';
-import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-27';
-import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-27';
+import {mountSalesPage} from './sales-page.mjs?v=conversion-28';
+import {mountSignals} from './signals.mjs?v=conversion-28';
+import {mountGame} from './game.mjs?v=conversion-28';
+import {mountControl} from './control.mjs?v=conversion-28';
+import {BASE} from './mission.mjs?v=conversion-28';
+import {mountOverview} from './overview.mjs?v=conversion-28';
+import {alignedScrollTop} from './navigation.mjs?v=conversion-28';
+import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-28';
+import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-28';
+import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-28';
+import {mountTracker} from './tracker.mjs?v=conversion-28';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
  const main=$('#zw-main'),root=$('.zw-root'),sections=[...main.querySelectorAll('[data-idx]')];let paused=false,overviewOpen=false,timer,signals,machine,disconnected;
+ const tracker=mountTracker();let lastTrackedScene=-1;
  const effectsPaused=()=>paused||overviewOpen;
  const motion=()=>{document.body.classList.toggle('motion-paused',paused);$('#motion-toggle').textContent=paused?'Enable effects':'Pause effects';$('#motion-toggle').setAttribute('aria-pressed',String(paused));signals?.setPaused(effectsPaused());machine?.setPaused(effectsPaused());disconnected?.setPaused(effectsPaused())};motion();$('#motion-toggle').onclick=()=>{paused=!paused;motion()};
  function toast(s){clearTimeout(timer);$('#toast').textContent=s;$('#toast').classList.add('show');timer=setTimeout(()=>$('#toast').classList.remove('show'),4200)}
@@ -20,7 +22,7 @@ export function boot(mountDeck){
   return alignedScrollTop({scrollTop:main.scrollTop,anchorTop:anchor.getBoundingClientRect().top,containerTop:main.getBoundingClientRect().top,headerHeight:header?.getBoundingClientRect().height||0,gap:isMachine?0:(matchMedia('(max-width:760px)').matches?16:24)});
  }
  function go(i,{focus=false,instant=false}={}){const el=sections[i];if(!el)return;main.scrollTo({top:i===0?0:sceneTop(el),behavior:instant||paused?'auto':'smooth'});$('#chapters').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false');if(focus){const heading=el.querySelector('h1,h2');if(heading){heading.tabIndex=-1;setTimeout(()=>heading.focus({preventScroll:true}),instant||paused?0:520)}}}
- mountDeck(root,{onScene(i){root.dataset.activeScene=i;document.body.dataset.scene=i}});
+ mountDeck(root,{onScene(i){root.dataset.activeScene=i;document.body.dataset.scene=i;if(i!==lastTrackedScene){lastTrackedScene=i;tracker.onScene(sections[i]?.dataset.experience||('scene-'+i))}}});
  function mountScenePagers(){
   const sections=[...main.querySelectorAll('[data-idx]')],fallback=['Inside the machine','See the disconnected journey','Follow the connected journey','Take the Goal Pulse Check','Keep ownership visible','Model the impact','The road ahead'];
   const names=sections.map((section,i)=>section.getAttribute('aria-label')||fallback[i]||'Section '+(i+1));
