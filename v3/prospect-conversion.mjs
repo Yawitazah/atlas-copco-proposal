@@ -35,7 +35,7 @@ export function mountProspectConversion({toast=()=>{}}={}){
   const view=event.target.closest('[data-view-prospect]');if(view){select(view.dataset.viewProspect);const panel=root.querySelector('#prospect-'+view.dataset.viewProspect);panel?.focus({preventScroll:true});panel?.scrollIntoView({behavior:document.body.classList.contains('motion-paused')?'auto':'smooth',block:'nearest'});return;}
   const action=event.target.closest('[data-prospect-action]');if(!action)return;
   const messages={walkthrough:'A real version would open the prospect’s preferred walkthrough times.',pricing:'A real version would create a pricing request for the assigned sales professional.',share:'A real version would create a shareable buying-team view.'};
-  toast(messages[action.dataset.prospectAction]||'Demonstration only — nothing was sent.');
+  toast(messages[action.dataset.prospectAction]||'Demonstration only, nothing was sent.');
  });
  const play=root.querySelector('[data-prospect-video]');if(play)play.addEventListener('click',()=>{const screen=play.closest('.prospect-video-screen'),playing=screen.classList.toggle('is-playing');play.setAttribute('aria-pressed',String(playing));play.setAttribute('aria-label',playing?'Pause illustrative YouTube retargeting concept':'Play illustrative YouTube retargeting concept');play.textContent=playing?'Ⅱ':'▶';});
  function renderProfile(){

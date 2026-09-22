@@ -24,7 +24,7 @@ export const QUESTIONS=[
  pick('priority',4,'What matters most for this job?',['Uptime / reliability','Capacity','Portability','Operating cost','Lower site emissions','Flexibility']),
  pick('visit',5,'Would a walkthrough help?',[['On site','Yes, at our site'],['Virtual','Yes, by video'],['Later','Let’s discuss it later']],{hint:'Meet a real person and review your tools, site and equipment options.'}),
  form('date',5,'When would suit your team?',[f('date','Preferred date','date'),{name:'slot',label:'Time window',type:'select',required:true,options:['Morning, 8–12','Afternoon, 12–5','Flexible']}],{show:a=>a.visit&&a.visit!=='Later',hint:'This is a request. A rep must confirm availability.'}),
- pick('timezone',5,'Which time zone is that?',['US Eastern','US Central','US Mountain','US Pacific','Other — see notes'],{show:a=>a.visit&&a.visit!=='Later',detail:f('notes','Time zone or scheduling notes (optional)','text',false)}),
+ pick('timezone',5,'Which time zone is that?',['US Eastern','US Central','US Mountain','US Pacific','Other, see notes'],{show:a=>a.visit&&a.visit!=='Later',detail:f('notes','Time zone or scheduling notes (optional)','text',false)}),
  form('site',5,'Where should the rep meet you?',[f('site','Site address or meeting location')],{show:a=>a.visit==='On site'}),
  {id:'attendees',group:5,title:'Who should join the walkthrough?',type:'multi',options:['Me','Technical evaluator','Budget approver','Purchasing team'],show:a=>a.visit&&a.visit!=='Later',hint:'Choose everyone who would benefit. Names can be confirmed later.'},
  pick('contact',5,'How would you prefer to hear back?',['Email','Phone','SMS']),

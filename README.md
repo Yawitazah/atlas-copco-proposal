@@ -2,9 +2,9 @@
 
 An interactive interview proposal by Zah White / ZAH Brand Solutions.
 
-- **Version three — Power, with purpose:** https://yawitazah.github.io/atlas-copco-proposal/v3/
-- **Version two — preserved:** https://yawitazah.github.io/atlas-copco-proposal/v2/
-- **Version one — preserved:** https://yawitazah.github.io/atlas-copco-proposal/
+- **Live:** https://yawitazah.github.io/atlas-copco-proposal/v3/
+
+Earlier drafts (V1, V2) have been removed. The bare repo URL redirects to V3.
 
 V3 adds a scroll-controlled 3D compressor cutaway, the original ZAH Tip Jar
 Soda Pop, a seven-achievement mission, real equipment photography and
@@ -16,10 +16,9 @@ concept, and explicit Back/Continue section navigation on phones.
 
 It consumes the installed ZAH Workshop engine. The original Tip Jar effect
 is extracted at build time; payment and private application code are not included.
-The earlier onboarding effect remains only in preserved V2.
 
 Serve this directory with any static web server. GitHub Pages publishes main/root.
-No backend or deployment build is required. V1 and V2 are unchanged.
+No backend or deployment build is required.
 
 Sample leads are fictional. Visitor-entered data stays in the browser unless
 the visitor downloads their personal brief. Public invitation links contain an

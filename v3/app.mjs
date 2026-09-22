@@ -1,13 +1,13 @@
-import {mountSalesPage} from './sales-page.mjs?v=conversion-19';
-import {mountSignals} from './signals.mjs?v=conversion-19';
-import {mountGame} from './game.mjs?v=conversion-19';
-import {mountControl} from './control.mjs?v=conversion-19';
-import {BASE} from './mission.mjs?v=conversion-19';
-import {mountOverview} from './overview.mjs?v=conversion-19';
-import {alignedScrollTop} from './navigation.mjs?v=conversion-19';
-import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-19';
-import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-19';
-import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-19';
+import {mountSalesPage} from './sales-page.mjs?v=conversion-21';
+import {mountSignals} from './signals.mjs?v=conversion-21';
+import {mountGame} from './game.mjs?v=conversion-21';
+import {mountControl} from './control.mjs?v=conversion-21';
+import {BASE} from './mission.mjs?v=conversion-21';
+import {mountOverview} from './overview.mjs?v=conversion-21';
+import {alignedScrollTop} from './navigation.mjs?v=conversion-21';
+import {mountProspectConversion} from './prospect-conversion.mjs?v=conversion-21';
+import {mountDisconnected} from './disconnected-journey.mjs?v=conversion-21';
+import {mountStrategyVideoSlots} from './strategy-video-slots.mjs?v=conversion-21';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(Math.round(n/10000)/100).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 export function boot(mountDeck){
@@ -79,5 +79,5 @@ export function boot(mountDeck){
  function horizon(i){document.querySelectorAll('[data-horizon]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.horizon)===i)));const h=horizons[i],detail=$('#horizon-detail');detail.innerHTML='<h3>'+h[0]+'</h3><ol>'+h[1].map(x=>'<li>'+x+'</li>').join('')+'</ol>';if(!paused&&typeof detail.animate==='function')detail.animate([{clipPath:'inset(0 100% 0 0)',transform:'translateX(-15px)'},{clipPath:'inset(0 0 0 0)',transform:'none'}],{duration:650,easing:'cubic-bezier(.16,1,.3,1)'})}
  document.querySelectorAll('[data-horizon]').forEach(b=>b.onclick=()=>horizon(Number(b.dataset.horizon)));horizon(0);
 
- $('#share-experience').onclick=async()=>{try{if(navigator.share)await navigator.share({title:'Power, with purpose. — Version 3',url:BASE});else{await navigator.clipboard.writeText(BASE);toast('Version 3 link copied.')}}catch(e){if(e.name!=='AbortError')toast(BASE)}};
+ $('#share-experience').onclick=async()=>{try{if(navigator.share)await navigator.share({title:'Power, with purpose. Version 3',url:BASE});else{await navigator.clipboard.writeText(BASE);toast('Version 3 link copied.')}}catch(e){if(e.name!=='AbortError')toast(BASE)}};
 }
