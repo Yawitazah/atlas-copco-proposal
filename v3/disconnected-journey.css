@@ -53,6 +53,8 @@
 @keyframes leakLeadTail{0%,72%{opacity:0;transform:translate(-50%,2px) scaleY(.2)}80%{opacity:.5;transform:translate(-50%,2px) scaleY(.75)}92%{opacity:.15;transform:translate(-50%,2px) scaleY(1.2)}96%,100%{opacity:0;transform:translate(-50%,2px) scaleY(1.35)}}
 @keyframes leakRecord{0%,14%,32%,100%{box-shadow:0 0 0 0 #64d4ae00}18%{box-shadow:0 0 0 13px #64d4ae00}20%{box-shadow:0 0 0 4px #64d4ae88}}
 @keyframes leakClock{to{transform:rotate(465deg)}}
+.leak-c4c.leak-hit,.leak-review.leak-hit,.leak-lower.leak-hit{animation:leakCardHit .6s ease-out}
+@keyframes leakCardHit{0%{box-shadow:0 0 0 0 #7be6c700}28%{box-shadow:0 0 36px 6px #7be6c7a6}100%{box-shadow:0 0 0 0 #7be6c700}}
 
 @media(max-width:1120px){
  .leak-flow{grid-template-columns:minmax(105px,.8fr) 38px minmax(145px,1fr) 38px minmax(155px,1fr) 38px minmax(215px,1.3fr);gap:9px;padding-inline:18px}.leak-card{padding-inline:15px}.leak-value{left:15px;right:15px}.leak-card strong,.leak-lower strong{font-size:18px}.leak-lower{padding-inline:16px}.leak-signal{left:16px;right:16px}.leak-sources>span{grid-template-columns:34px 1fr;padding-inline:7px}.leak-sources i{width:32px;height:32px}.leak-sources b{font-size:12px}
@@ -71,5 +73,7 @@
  86%{left:calc(50% + var(--lead-drift));top:89%;opacity:.48;transform:translate3d(var(--lead-drift),0,0) scale(.62);filter:grayscale(.6) saturate(.3) brightness(.56)}
  95%,100%{left:calc(50% + var(--lead-drift));top:98%;opacity:0;transform:translate3d(calc(var(--lead-drift) * 1.7),18px,0) scale(.12);filter:grayscale(1) saturate(0) brightness(.2)}
 }
-@media(prefers-reduced-motion:reduce){.disconnect-journey *{animation:none!important;transition:none!important}.leak-wire b,.leak-lead-stream{display:none}.leak-lower{border-color:#bf574c;background:#39282a}.leak-signal i{transform:scaleX(.1);background:#b94e43}}
+/* This current-state illustration is core to the pitch, not decorative flourish, so it
+   always plays even when the viewer's OS has reduced motion on; the manual "Pause effects"
+   control in the header remains the way to stop it. */
 @media print{.disconnect-stage,.disconnect-conclusion{print-color-adjust:exact}.disconnect-actions [data-disconnect-replay]{display:none}}
