@@ -120,14 +120,6 @@ export function mountMachine(paused){
  const AUTO_YAW_SPEED=Math.PI*2/24000,FAN_SPEED=.0045;
  const range=document.querySelector('#assembly-scrub'),readout=document.querySelector('#assembly-readout');
  document.querySelectorAll('[data-component]').forEach(l=>l.remove());
- const explorer=document.createElement('aside');explorer.className='machine-explorer';explorer.setAttribute('aria-label','Explore machine components');
- const details=[['Canopy','A protective enclosure with service access. A clear experience helps people understand a complex system.'],['Engine','Power for the compressor. Match the power source to the site, access and working conditions.'],['Air end','The compression stage. Required airflow and working pressure guide the equipment conversation.'],['Cooling','Heat management supports sustained operation. Application and environment belong in the needs assessment.']];
- explorer.innerHTML='<div class="machine-part-tabs">'+details.map((d,i)=>'<button type="button" data-machine-part="'+i+'" aria-expanded="false" aria-controls="machine-part-detail"><span>0'+(i+1)+'</span> '+d[0]+' <b>+</b></button>').join('')+'</div><div id="machine-part-detail" class="machine-part-detail"><p id="machine-part-copy">Explore a component to see its role.</p><button type="button" id="machine-part-close" aria-label="Close component details" hidden>×</button></div>';
- host.parentElement.append(explorer);
- const partCopy=explorer.querySelector('#machine-part-copy'),partClose=explorer.querySelector('#machine-part-close'),partButtons=[...explorer.querySelectorAll('[data-machine-part]')];
- let activePart=-1,pinnedPart=false,peekUntil=0,seenPart=-1;
- function showPart(index,pinned=false){activePart=index;pinnedPart=pinned;peekUntil=performance.now()+2600;partCopy.textContent=index<0?'Explore a component to see its role.':details[index][1];partClose.hidden=index<0;explorer.classList.toggle('has-detail',index>=0);partButtons.forEach((b,i)=>{b.setAttribute('aria-expanded',String(i===index));b.querySelector('b').textContent=i===index?'−':'+';});}
- partButtons.forEach((b,i)=>b.addEventListener('click',()=>showPart(activePart===i?-1:i,true)));partClose.addEventListener('click',()=>showPart(-1));
  const rotation=document.createElement('div');rotation.className='machine-rotation';rotation.innerHTML='<span>Auto-rotates · drag to inspect</span><div><button type="button" data-rotate="-1" aria-label="Rotate machine left">↶</button><button type="button" data-rotate="0">Reset view</button><button type="button" data-rotate="1" aria-label="Rotate machine right">↷</button></div>';
  host.append(rotation);rotation.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{desiredYaw=+b.dataset.rotate===0?0:desiredYaw+(+b.dataset.rotate)*Math.PI/4;dirty=true;schedule();}));
  canvas.setAttribute('aria-label','Illustrative portable compressor, not factory CAD. Drag horizontally to rotate. Scroll or use the expansion slider to inspect the components.');canvas.setAttribute('tabindex','0');
@@ -137,7 +129,11 @@ export function mountMachine(paused){
  canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={id:e.pointerId,type:e.pointerType,x:e.clientX,y:e.clientY,last:e.clientX,locked:false};canvas.dataset.autoPaused='drag';schedule();});
  canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.locked){if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){drag=null;canvas.dataset.autoPaused=hovered?'hover':'false';return;}if(Math.abs(dx)<8)return;drag.locked=true;canvas.setPointerCapture(e.pointerId);canvas.classList.add('is-dragging');}desiredYaw+=(e.clientX-drag.last)*.009;drag.last=e.clientX;dirty=true;schedule();});
  const stopDrag=()=>{drag=null;canvas.classList.remove('is-dragging');canvas.dataset.autoPaused=hovered?'hover':'false';last=0;schedule();};canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);canvas.addEventListener('lostpointercapture',stopDrag);
- function update(){if(manual)return;const r=section.getBoundingClientRect(),h=main.clientHeight,p=clamp(-r.top/(section.clientHeight-h));target=clamp((p-.04)/.82);manual=false;dirty=true;schedule()}
+ function update(){
+  if(manual)return;
+  if(host.clientWidth<700){target=0;dirty=true;schedule();return}
+  const r=section.getBoundingClientRect(),h=main.clientHeight,p=clamp(-r.top/(section.clientHeight-h));target=clamp((p-.04)/.82);manual=false;dirty=true;schedule()
+ }
  main.addEventListener('scroll',update,{passive:true});
  main.addEventListener('wheel',()=>{manual=false;},{passive:true});main.addEventListener('touchmove',()=>{manual=false;},{passive:true});main.addEventListener('pointerdown',e=>{if(e.target===main)manual=false;},{passive:true});main.addEventListener('keydown',e=>{if(['PageDown','PageUp','ArrowDown','ArrowUp','End'].includes(e.key)&&!e.target.closest('input,button,textarea,select'))manual=false;});
  range.addEventListener('input',()=>{target=Number(range.value)/100;manual=true;dirty=true;schedule()});
@@ -149,7 +145,6 @@ export function mountMachine(paused){
  if(!motionPaused&&!drag&&!hovered)desiredYaw+=AUTO_YAW_SPEED*dt;
  const diff=target-current;current=motionPaused?target:current+diff*(1-Math.exp(-dt/145));
  const turnDiff=desiredYaw-yaw;yaw=motionPaused?desiredYaw:yaw+turnDiff*(1-Math.exp(-dt/90));
- if(activePart>=0&&!pinnedPart&&time>peekUntil)showPart(-1);
  if(!motionPaused)fan.rotation.x=(fan.rotation.x+FAN_SPEED*dt)%(Math.PI*2);
  dirty=false;const p=current,e=p*p*(3-2*p),mobile=host.clientWidth<700,mobileSpread=mobile?.82:1;
  parts.forEach(({g,delta},i)=>{const k=clamp(e*(1.16)-(i%3)*.045);g.position.copy(delta).multiplyScalar(k*mobileSpread)});
@@ -166,10 +161,7 @@ export function mountMachine(paused){
  host.dataset.phase=String(phase);
  host.closest('.machine-sticky').dataset.phase=String(phase);
  }
- const reveal=current<.2?-1:Math.min(3,Math.floor((current-.2)/.2));
- if(current<.12){seenPart=-1;if(!pinnedPart&&activePart>=0)showPart(-1);}
- if(reveal>seenPart){seenPart=reveal;if(!pinnedPart)showPart(reveal);}
- if(!motionPaused||dirty||(activePart>=0&&!pinnedPart))schedule();
+ if(!motionPaused||dirty)schedule();
  }
  function schedule(){if(!raf&&visible&&!document.hidden&&!contextLost)raf=requestAnimationFrame(tick)}
  function stop(){if(raf)cancelAnimationFrame(raf);raf=0;last=0}

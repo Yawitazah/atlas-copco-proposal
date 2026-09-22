@@ -1,8 +1,8 @@
-import {zahSodaPop} from './sodapop.mjs?v=conversion-21';
-import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=conversion-21';
-import {actionCycle,actionAt,goalFill,MILESTONE_GOALS,CYCLE_MS,REQUIRED_MILESTONES} from './flow.mjs?v=conversion-21';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-22';
+import {CHANNELS,OUTCOMES,channelDetail,outcomeDetail} from './channels.mjs?v=conversion-22';
+import {actionCycle,actionAt,goalFill,MILESTONE_GOALS,CYCLE_MS,REQUIRED_MILESTONES} from './flow.mjs?v=conversion-22';
 
-export {CHANNELS} from './channels.mjs?v=conversion-21';
+export {CHANNELS} from './channels.mjs?v=conversion-22';
 export const resolvePause=value=>typeof value==='function'?Boolean(value()):Boolean(value);
 
 const milestoneSupport=[

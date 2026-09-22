@@ -40,6 +40,11 @@
 @media(max-width:760px){
  #zw-main{scroll-padding-top:78px}
  [data-experience]{scroll-margin-top:68px}
+ /* Each section reads as its own page on mobile; the Continue/Back buttons
+    below are the deliberate way through, so snap is mandatory here instead
+    of the assist-only proximity desktop uses. */
+ #zw-main{scroll-snap-type:y mandatory!important}
+ [data-experience="machine"],[data-experience] .section-head{scroll-snap-align:start!important;scroll-snap-stop:normal}
  .scene-pager{display:block;position:relative;z-index:12;padding:28px 20px 34px;border-top:12px solid #d5b767;background:#0c332d;color:#f3f1e8}
  [data-experience="disconnect"] .scene-pager{background:#e6ebec;color:#143b3d;border-top-color:#a34b39}
  [data-experience="signal"] .scene-pager,[data-experience="impact"] .scene-pager{background:#e6ebec;color:#143b3d;border-top-color:#176dcc}
