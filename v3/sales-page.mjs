@@ -1,5 +1,5 @@
-import {MODELS,esc,fit,briefing,publicLink} from './mission.mjs?v=conversion-18';
-import {equipmentDetails} from './equipment.mjs?v=conversion-18';
+import {MODELS,esc,fit,briefing,publicLink} from './mission.mjs?v=conversion-19';
+import {equipmentDetails} from './equipment.mjs?v=conversion-19';
 export function mountSalesPage(host,state,{save,toast,handoff,request,recordInfo,openRecord,go,edit}){
  const a=state.answers,m=MODELS.find(x=>x.id===a.model)||MODELS[1];
  if(!state.code){state.code='AIR-'+crypto.getRandomValues(new Uint32Array(1))[0].toString(36).toUpperCase();save();}

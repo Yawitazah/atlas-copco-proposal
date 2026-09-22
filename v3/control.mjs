@@ -1,5 +1,5 @@
-import {esc,MODELS} from './mission.mjs?v=conversion-18';
-import {zahSodaPop} from './sodapop.mjs?v=conversion-18';
+import {esc,MODELS} from './mission.mjs?v=conversion-19';
+import {zahSodaPop} from './sodapop.mjs?v=conversion-19';
 const $=s=>document.querySelector(s);
 const short=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'m':'$'+Math.round(n/1000)+'k';
 function mountProfileTeaser(){
