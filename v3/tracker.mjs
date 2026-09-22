@@ -28,6 +28,14 @@ function send(event_type,label,detail){
 }
 
 export function mountTracker(){
+ // Opening the link with ?preview once marks this browser as the owner's own,
+ // so reviewing it never mixes into what a visitor actually did. No UI, no
+ // separate URL to maintain: the same link, just with one extra query param
+ // the one time you check it from a new device/browser.
+ try{
+  if(new URLSearchParams(location.search).has('preview'))localStorage.setItem('acw-owner','1');
+  if(localStorage.getItem('acw-owner')==='1')return {onScene(){}};
+ }catch{}
  send('pageview',location.hash||'/',document.referrer?'from referrer':'direct/link');
  document.addEventListener('click',e=>{
   const el=e.target.closest('a,button');
