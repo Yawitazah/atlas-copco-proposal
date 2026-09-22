@@ -65,7 +65,10 @@
  .signal-field::after{width:236px;height:236px;box-shadow:0 0 0 24px #6c8b7b09}
  .signal-field{height:320px}
  .signal-core{top:49%;width:212px;min-height:224px;height:auto;padding:24px 18px 20px;gap:8px}
- .signal-engine-label{top:19px;font-size:8px}
+ /* Give the label its own chip: the connector lines from the four channel
+    buttons converge right through this zone, and floating text alone got
+    crossed out by them. */
+ .signal-engine-label{top:22px;font-size:8px;padding:6px 12px;background:#f2f1e9;border-radius:99px;box-shadow:0 0 0 6px #f2f1e9}
  .signal-process{bottom:13px;width:76%;gap:7px;font-size:7px}
  .signal-process i{min-width:16px}
 }
